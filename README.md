@@ -28,8 +28,8 @@ L'identité visuelle reprend celle de la carte de visite :
    vignettes, glisser au doigt, flèches du clavier et visionneuse plein écran.
 5. **Accompagnement** : trois cartes 3D (Enfants, Adolescents, Adultes) qui s'inclinent sous le
    curseur, avec un reflet et un effet de profondeur.
-6. **Tarifs & horaires** : 60 € / 50 € (étudiants), frise horaire du lundi au vendredi avec le
-   jour courant et l'heure actuelle.
+6. **Tarifs & horaires** : 60 € / 50 € (étudiants), frise horaire du lundi au samedi avec le
+   jour courant et l'heure actuelle (samedi : 8h–12h / 13h–18h, dernier rendez-vous à 18h).
 7. **Contact & mentions** : liens directs (`tel:0601685312`, `mailto:`, Google Maps), boutons
    « copier », photo de l'entrée avec repère sur la plaque, numéros ADELI et RPPS, numéros d'urgence.
 8. **Pied de page** avec le rappel des informations légales et une fenêtre « Mentions légales ».
@@ -55,7 +55,8 @@ Les endroits à modifier sont signalés par `✏️` dans `index.html`.
   (ex. `--pos:50% 40%`), et `data-title` / `data-text` donnent le titre et la légende affichés.
   Une photo manquante est remplacée par un visuel d'attente élégant.
 - **Horaires :** modifiez la liste « HORAIRES » dans le HTML **et** la constante `HOURS` en haut du
-  script : c'est elle qui calcule l'état « Ouvert / Fermé ».
+  script : c'est elle qui calcule l'état « Ouvert / Fermé ». Un 3e élément `true` sur un créneau
+  indique que l'heure de fin est celle du dernier rendez-vous (cas du samedi).
 - **Tarifs, textes :** directement dans le HTML (sections `#tarifs`, `#accompagnement`, etc.).
 - **Couleurs :** variables CSS au début de la feuille de style (`--cream`, `--peri`, `--royal`…).
 - **Mentions légales :** complétez la rubrique « Hébergement » au moment de la mise en ligne.

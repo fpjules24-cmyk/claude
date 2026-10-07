@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Marie-Claude Sanchez · Psychologue clinicienne à Bordeaux</title>
-<meta name="description" content="Marie-Claude Sanchez, psychologue clinicienne à Bordeaux (132 rue François de Sourdis). Consultations sur rendez-vous pour enfants, adolescents et adultes, du lundi au vendredi.">
+<meta name="description" content="Marie-Claude Sanchez, psychologue clinicienne à Bordeaux (132 rue François de Sourdis). Consultations sur rendez-vous pour enfants, adolescents et adultes, du lundi au samedi.">
 <meta name="theme-color" content="#FFE7C2">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
@@ -38,7 +38,9 @@
   },
   "openingHoursSpecification": [
     { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "12:00" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "13:00", "closes": "19:00" }
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "13:00", "closes": "19:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "12:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "13:00", "closes": "18:00", "description": "Dernier rendez-vous à 18h00" }
   ],
   "priceRange": "50 € – 60 €",
   "currenciesAccepted": "EUR",
@@ -518,6 +520,7 @@ address { font-style: normal; }
 .day__now { position: absolute; top: 50%; width: 3px; height: 20px; margin-left: -1.5px; border-radius: 3px; background: var(--cream-50); translate: 0 -50%; box-shadow: 0 0 0 3px rgba(255, 231, 194, .25); }
 .day__time { text-align: right; font-size: .86rem; font-variant-numeric: tabular-nums; color: rgba(255, 250, 242, .88); white-space: nowrap; }
 .day--off .day__time { color: rgba(255, 250, 242, .5); }
+.day__time small { display: block; margin-top: 2px; font-size: .74rem; color: var(--peri); }
 .hours__scale { position: relative; display: grid; grid-template-columns: 6.6em minmax(80px, 1fr) 14.2em; gap: 16px; padding: 4px 14px 0; font-size: .7rem; color: rgba(255, 250, 242, .55); }
 .hours__scale > span { position: relative; height: 1.2em; }
 .hours__scale i { position: absolute; font-style: normal; translate: -50% 0; }
@@ -592,8 +595,10 @@ address { font-style: normal; }
 .footer__role { margin: 0; font-family: var(--font-display); font-size: 1.25rem; color: var(--peri); }
 .footer__publics { margin: 10px 0 0; font-size: .9rem; letter-spacing: .06em; }
 .footer h4 { margin-bottom: 14px; font-family: var(--font-body); font-size: .74rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--peri); }
-.footer ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: .95rem; }
+.footer ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; font-size: .95rem; }
 .footer a { text-decoration: none; transition: color .3s; }
+.footer__day { font-weight: 600; color: var(--cream); }
+.footer small { font-size: .82rem; color: var(--peri); }
 .footer a:hover { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
 .footer__legal { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 28px; margin-top: clamp(48px, 6vw, 80px); padding-top: 26px; border-top: 1px solid rgba(255, 231, 194, .15); font-size: .84rem; color: rgba(255, 242, 222, .66); }
 .footer__legal p { margin: 0; }
@@ -663,6 +668,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
 .modal__infos { display: grid; gap: 10px; margin: 0; padding: 18px 0 0; border-top: 1px solid rgba(3, 29, 140, .1); list-style: none; font-size: .92rem; color: var(--ink-2); }
 .modal__infos li { display: flex; gap: 10px; align-items: flex-start; }
 .modal__infos .i { margin-top: .2em; color: var(--royal); }
+.modal__status { font-weight: 600; color: var(--royal); }
 .legal h3 { margin: 24px 0 8px; font-family: var(--font-body); font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--royal); }
 .legal p { font-size: .94rem; color: var(--ink-2); }
 .legal .todo { padding: .1em .45em; border-radius: 6px; background: var(--cream); color: var(--ink); }
@@ -838,7 +844,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
     <div class="topbar__right">
       <a href="tel:0601685312"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg><span>06 01 68 53 12</span></a>
       <a class="topbar__mail" href="mailto:sanchez.psy@proton.me"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><span>sanchez.psy@proton.me</span></a>
-      <span class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Lun – Ven · 8h – 19h</span></span>
+      <span class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Lun – Sam · sur rendez-vous</span></span>
     </div>
   </div>
 </div>
@@ -900,7 +906,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
         </div>
         <ul class="hero__meta" data-hero-in style="--i:5">
           <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">132 rue François de Sourdis, Bordeaux</a></li>
-          <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Lun – Ven · 8h – 12h / 13h – 19h</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Du lundi au samedi · sur rendez-vous</li>
         </ul>
       </div>
     </div>
@@ -1096,7 +1102,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       <ul class="values" data-stagger>
         <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></span><div><strong>Une écoute bienveillante</strong><p>Un accueil chaleureux et sans jugement, à votre rythme.</p></div></li>
         <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg></span><div><strong>La confidentialité</strong><p>Le secret professionnel encadre chacun des échanges.</p></div></li>
-        <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg></span><div><strong>Des horaires étendus</strong><p>Du lundi au vendredi, de 8h à 19h, sur rendez-vous.</p></div></li>
+        <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg></span><div><strong>Des horaires étendus</strong><p>Du lundi au samedi : de 8h à 19h en semaine, dernier rendez-vous à 18h le samedi.</p></div></li>
       </ul>
     </div>
   </section>
@@ -1110,7 +1116,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
           <p class="eyebrow">Infos pratiques</p>
           <h2 id="tarifs-title">Tarifs <em>&amp;</em> horaires</h2>
         </div>
-        <p class="section-head__text" data-reveal style="--d:.12s">Les consultations ont lieu au cabinet, sur rendez-vous, du lundi au vendredi.</p>
+        <p class="section-head__text" data-reveal style="--d:.12s">Les consultations ont lieu au cabinet, sur rendez-vous, du lundi au samedi.</p>
       </header>
 
       <div class="practical">
@@ -1148,7 +1154,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
             <li class="day" data-day="3"><span class="day__name">Mercredi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.12s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.24s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
             <li class="day" data-day="4"><span class="day__name">Jeudi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.18s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.3s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
             <li class="day" data-day="5"><span class="day__name">Vendredi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.24s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.36s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
-            <li class="day day--off" data-day="6"><span class="day__name">Samedi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"></span><span class="day__time">Fermé</span></li>
+            <li class="day" data-day="6"><span class="day__name">Samedi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.3s"></span><span class="day__seg" style="--a:45.45%;--w:45.45%;--d:.42s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 18h00<small>dernier rendez-vous à&nbsp;18h00</small></span></li>
             <li class="day day--off" data-day="0"><span class="day__name">Dimanche<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"></span><span class="day__time">Fermé</span></li>
           </ol>
           <div class="hours__scale" aria-hidden="true"><span></span><span><i style="left:0%">8h</i><i style="left:36.36%">12h</i><i style="left:45.45%">13h</i><i style="left:100%">19h</i></span><span></span></div>
@@ -1258,9 +1264,8 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
     <div>
       <h4>Horaires</h4>
       <ul>
-        <li>Du lundi au vendredi</li>
-        <li>08h00 – 12h00</li>
-        <li>13h00 – 19h00</li>
+        <li><span class="footer__day">Du lundi au vendredi</span><br>08h00 – 12h00 · 13h00 – 19h00</li>
+        <li><span class="footer__day">Le samedi</span><br>08h00 – 12h00 · 13h00 – 18h00<br><small>Dernier rendez-vous à&nbsp;18h00</small></li>
       </ul>
     </div>
   </div>
@@ -1302,7 +1307,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       </a>
     </div>
     <ul class="modal__infos">
-      <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span>Du lundi au vendredi · 08h00 – 12h00 / 13h00 – 19h00 · <span data-status><span data-status-text></span></span></span></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span>Lundi – vendredi : 08h00 – 12h00 / 13h00 – 19h00<br>Samedi : 08h00 – 12h00 / 13h00 – 18h00 (dernier rendez-vous à&nbsp;18h00)<br><span class="modal__status" data-status><span data-status-text></span></span></span></li>
       <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">132 rue François de Sourdis, 33000 Bordeaux (Centre de Santé Sourdis)</a></li>
       <li><svg class="i" aria-hidden="true"><use href="#i-cap"/></svg><span>Consultation 60&nbsp;€ · Tarif étudiant 50&nbsp;€</span></li>
     </ul>
@@ -1373,13 +1378,16 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
   /* ==========================================================================
      ✏️ RÉGLAGES DU CABINET
      ========================================================================== */
-  // Horaires (heure de Paris) en minutes depuis minuit — 1 = lundi … 5 = vendredi
+  // Horaires (heure de Paris) en minutes depuis minuit — 1 = lundi … 6 = samedi.
+  // Un 3e élément « true » signifie que l'heure indiquée est celle du DERNIER rendez-vous
+  // (la séance ne se termine pas à cette heure-là).
   const HOURS = {
     1: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
     2: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
     3: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
     4: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
-    5: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]]
+    5: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
+    6: [[8 * 60, 12 * 60], [13 * 60, 18 * 60, true]] // samedi : dernier rendez-vous à 18h00
   };
   const SLIDE_MS = 6500; // durée d'affichage de chaque photo du carrousel
   const THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
@@ -1644,8 +1652,8 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
     };
     const status = (now) => {
       const slots = HOURS[now.day] || [];
-      const cur = slots.find(([a, b]) => now.min >= a && now.min < b);
-      if (cur) return { open: true, text: 'Ouvert · jusqu’à ' + fmt(cur[1]) };
+      const cur = slots.find(([a, b, lastAppt]) => now.min >= a && (lastAppt ? now.min <= b : now.min < b));
+      if (cur) return { open: true, text: cur[2] ? 'Ouvert · dernier RDV à ' + fmt(cur[1]) : 'Ouvert · jusqu’à ' + fmt(cur[1]) };
       const next = slots.find(([a]) => now.min < a);
       if (next) return { open: false, text: (slots[0][0] < now.min ? 'Pause · reprise à ' : 'Fermé · ouvre à ') + fmt(next[0]) };
       for (let i = 1; i <= 7; i++) {
