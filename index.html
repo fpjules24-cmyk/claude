@@ -1,0 +1,2337 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marie-Claude Sanchez · Psychologue clinicienne à Bordeaux</title>
+<meta name="description" content="Marie-Claude Sanchez, psychologue clinicienne à Bordeaux (132 rue François de Sourdis). Consultations sur rendez-vous pour enfants, adolescents et adultes, du lundi au vendredi.">
+<meta name="theme-color" content="#FFE7C2">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Marie-Claude Sanchez · Psychologue clinicienne à Bordeaux">
+<meta property="og:description" content="Consultations pour enfants, adolescents et adultes · 132 rue François de Sourdis, 33000 Bordeaux · 06 01 68 53 12">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M112 104C80 104 36 98 18 78C2 60 4 30 24 16C44 2 72 10 78 34C84 58 96 86 112 104Z' fill='%2399ACFF'/%3E%3Cpath d='M76 80C60 76 34 68 26 54C18 40 26 24 42 26C58 28 60 46 64 58C67 67 71 75 76 80Z' fill='%23031D8C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<!-- Titres : « Della Respira » (la plus proche de la police de la carte de visite) · Texte : « Plus Jakarta Sans » -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Della+Respira&family=Plus+Jakarta+Sans:ital,wght@0,300..700;1,400..500&display=swap">
+<script>
+  // Active les animations uniquement si JavaScript fonctionne (filet de sécurité si le script principal échoue)
+  document.documentElement.classList.add('js');
+  setTimeout(function () { if (!window.__siteReady) document.documentElement.classList.add('js-failed'); }, 4000);
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalBusiness",
+  "name": "Marie-Claude SANCHEZ — Psychologue clinicienne",
+  "description": "Consultations de psychologie pour enfants, adolescents et adultes à Bordeaux, sur rendez-vous.",
+  "telephone": "+33 6 01 68 53 12",
+  "email": "sanchez.psy@proton.me",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "132 rue François de Sourdis",
+    "postalCode": "33000",
+    "addressLocality": "Bordeaux",
+    "addressCountry": "FR"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "12:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "13:00", "closes": "19:00" }
+  ],
+  "priceRange": "50 € – 60 €",
+  "currenciesAccepted": "EUR",
+  "founder": { "@type": "Person", "name": "Marie-Claude Sanchez", "jobTitle": "Psychologue clinicienne" }
+}
+</script>
+<style>
+/* =========================================================================
+   1. DESIGN TOKENS — palette relevée directement sur la carte de visite
+   ========================================================================= */
+:root {
+  /* Carte de visite : fond #FFE7C2 · pervenche #99ACFF / #A0B0FA · bleu nuit #031D8C */
+  --cream: #FFE7C2;
+  --cream-50: #FFFAF2;
+  --cream-100: #FFF2DE;
+  --cream-300: #F5D6A6;
+  --peri: #99ACFF;
+  --peri-2: #A0B0FA;
+  --peri-50: #F1F4FF;
+  --peri-100: #E4EAFF;
+  --peri-200: #CBD5FF;
+  --peri-300: #B4C2FF;
+  --royal: #031D8C;
+  --royal-600: #12309F;
+  --royal-800: #021467;
+  --ink: #0B1340;
+  --ink-2: #3B4271;
+  --ink-3: #686D92;
+  --glass: rgba(255, 248, 236, .62);
+  --glass-strong: rgba(255, 248, 236, .86);
+  --shadow-sm: 0 4px 14px -6px rgba(11, 19, 64, .18);
+  --shadow-md: 0 22px 44px -26px rgba(11, 19, 64, .34);
+  --shadow-lg: 0 40px 80px -40px rgba(3, 29, 140, .5);
+  --font-display: 'Della Respira', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --container: 1200px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --topbar-h: 40px;
+  --header-gap: 12px;
+  --header-h: 66px;
+}
+
+/* =========================================================================
+   2. BASE
+   ========================================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--topbar-h) + var(--header-gap) + var(--header-h) + 20px);
+  scrollbar-color: var(--peri) var(--cream-100);
+}
+html.has-modal { overflow: hidden; }
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(16px, .94rem + .15vw, 17.5px);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; line-height: 1.08; margin: 0; color: var(--ink); letter-spacing: -.005em; }
+h2 { font-size: clamp(2.15rem, 1.45rem + 2.6vw, 3.7rem); }
+h2 em { font-style: normal; color: var(--royal); }
+h3 { font-size: clamp(1.45rem, 1.2rem + .8vw, 1.9rem); }
+p { margin: 0 0 1em; }
+a { color: inherit; }
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; }
+address { font-style: normal; }
+::selection { background: var(--peri); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--royal); outline-offset: 3px; border-radius: 8px; }
+.on-dark :focus-visible, .on-dark:focus-visible { outline-color: var(--cream); }
+.nowrap { white-space: nowrap; }
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.container { width: min(100% - 2 * var(--gutter), var(--container)); margin-inline: auto; }
+.skip-link {
+  position: fixed; left: 16px; top: -80px; z-index: 300; padding: 12px 18px; border-radius: 14px;
+  background: var(--royal); color: var(--cream-50); font-weight: 600; text-decoration: none; transition: top .3s var(--ease-out);
+}
+.skip-link:focus { top: 16px; }
+.i { width: 1.2em; height: 1.2em; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.i--fill { fill: currentColor; stroke: none; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .7em; margin: 0;
+  font-size: .76rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--royal);
+}
+.eyebrow::before { content: ""; width: 26px; height: 2px; border-radius: 2px; background: currentColor; opacity: .55; }
+
+/* =========================================================================
+   3. BOUTONS (remplissage depuis le point d'entrée du curseur + effet magnétique)
+   ========================================================================= */
+.btn {
+  --bg: var(--royal); --fg: var(--cream-50); --fill: var(--ink);
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: .65em;
+  min-height: 54px; padding: .9em 1.6em; border: 0; border-radius: 999px;
+  background: var(--bg); color: var(--fg); font-weight: 600; font-size: .98rem; letter-spacing: .01em;
+  text-decoration: none; white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 14px 28px -14px rgba(3, 29, 140, .6);
+  transition: translate .55s var(--ease-out), transform .3s var(--ease-out), box-shadow .5s var(--ease-out), color .35s;
+}
+.btn::before {
+  content: ""; position: absolute; z-index: -1; left: var(--x, 50%); top: var(--y, 50%);
+  width: 240%; aspect-ratio: 1; border-radius: 50%; background: var(--fill);
+  transform: translate(-50%, -50%) scale(0); transition: transform .65s var(--ease-out);
+}
+.btn:hover::before { transform: translate(-50%, -50%) scale(1); }
+.btn:hover { box-shadow: 0 20px 36px -16px rgba(3, 29, 140, .65); }
+.btn:active { transform: scale(.97); }
+.btn .i { transition: transform .5s var(--ease-out); }
+.btn:hover .i--arrow { transform: translateX(4px); }
+.btn--ghost { --bg: rgba(255, 250, 242, .35); --fg: var(--royal); --fill: var(--peri-200); box-shadow: inset 0 0 0 1.5px rgba(3, 29, 140, .35); }
+.btn--ghost:hover { box-shadow: inset 0 0 0 1.5px rgba(3, 29, 140, 0), 0 16px 30px -18px rgba(3, 29, 140, .5); }
+.btn--light { --bg: var(--cream-50); --fg: var(--royal); --fill: var(--peri-200); box-shadow: 0 14px 28px -16px rgba(0, 0, 0, .45); }
+.btn--sm { min-height: 44px; padding: .6em 1.2em; font-size: .92rem; }
+.icon-btn {
+  display: grid; place-items: center; width: 52px; height: 52px; border: 0; border-radius: 50%;
+  background: var(--royal); color: var(--cream-50); cursor: pointer;
+  transition: translate .55s var(--ease-out), background .3s, transform .3s var(--ease-out), box-shadow .4s;
+  box-shadow: 0 12px 24px -14px rgba(3, 29, 140, .7);
+}
+.icon-btn:hover { background: var(--ink); }
+.icon-btn:active { transform: scale(.94); }
+.icon-btn--soft { background: var(--peri-100); color: var(--royal); box-shadow: none; }
+.icon-btn--soft:hover { background: var(--peri-200); }
+
+/* =========================================================================
+   4. BANDEAU D'ADRESSE + EN-TÊTE FIXE (glassmorphism)
+   ========================================================================= */
+.progress {
+  position: fixed; left: 0; right: 0; top: calc(var(--topbar-h) - 3px); z-index: 75; height: 3px;
+  background: linear-gradient(90deg, var(--peri), #DCE3FF); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none;
+}
+.topbar {
+  position: fixed; inset: 0 0 auto 0; z-index: 70; height: var(--topbar-h);
+  background: var(--royal); color: var(--cream-100); font-size: .82rem;
+}
+.topbar__in { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.topbar__right { display: flex; align-items: center; gap: 22px; }
+.topbar a { display: inline-flex; align-items: center; gap: .55em; color: inherit; text-decoration: none; white-space: nowrap; opacity: .92; transition: opacity .3s; }
+.topbar a:hover { opacity: 1; }
+.topbar a:hover span { text-decoration: underline; text-underline-offset: 3px; }
+.topbar .i { width: 1.05em; height: 1.05em; color: var(--peri); }
+.topbar__go { display: inline-flex; align-items: center; gap: .3em; margin-left: .5em; padding: .15em .7em; border-radius: 999px; background: rgba(153, 172, 255, .2); font-weight: 600; font-size: .76rem; }
+.topbar__go .i { width: .95em; height: .95em; color: inherit; }
+.status { display: inline-flex; align-items: center; gap: .6em; white-space: nowrap; }
+.status__dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #CDB792; flex: none; }
+.status.is-open .status__dot { background: var(--peri); }
+.status.is-open .status__dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--peri); animation: ping 2.4s var(--ease-out) infinite; }
+@keyframes ping { 0% { transform: scale(.5); opacity: .9; } 100% { transform: scale(1.9); opacity: 0; } }
+
+.header { position: fixed; left: 0; right: 0; top: calc(var(--topbar-h) + var(--header-gap)); z-index: 65; pointer-events: none; }
+.header__bar {
+  pointer-events: auto; display: flex; align-items: center; gap: 18px; height: var(--header-h); padding: 0 10px 0 16px;
+  border-radius: 999px; background: var(--glass); border: 1px solid rgba(255, 255, 255, .6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 14px 34px -22px rgba(11, 19, 64, .45);
+  transition: background .4s, box-shadow .4s;
+}
+.is-scrolled .header__bar { background: var(--glass-strong); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 18px 40px -22px rgba(11, 19, 64, .5); }
+.brand { display: flex; align-items: center; gap: 11px; min-width: 0; color: var(--ink); text-decoration: none; }
+.brand__mark { width: 40px; height: 40px; transition: transform .8s var(--ease-spring); }
+.brand:hover .brand__mark { transform: rotate(-14deg) scale(1.08); }
+.brand__text { display: flex; flex-direction: column; min-width: 0; }
+.brand__name { font-family: var(--font-display); font-size: 1.22rem; line-height: 1.05; white-space: nowrap; }
+.brand__role { font-size: .7rem; letter-spacing: .08em; color: var(--royal); white-space: nowrap; }
+.nav { position: relative; display: flex; gap: 2px; margin-left: auto; margin-right: 6px; }
+.nav a {
+  position: relative; z-index: 1; padding: .55em 1em; border-radius: 999px; color: var(--ink-2); text-decoration: none;
+  font-size: .92rem; font-weight: 500; white-space: nowrap; transition: color .3s;
+}
+.nav a:hover, .nav a[aria-current] { color: var(--royal); }
+.nav__pill {
+  position: absolute; z-index: 0; left: 0; top: 0; height: 100%; width: 0; border-radius: 999px;
+  background: var(--peri-100); box-shadow: inset 0 0 0 1px rgba(153, 172, 255, .5); opacity: 0;
+  transition: transform .55s var(--ease-out), width .55s var(--ease-out), opacity .3s;
+}
+.nav.has-pill .nav__pill { opacity: 1; }
+.header__actions { display: flex; align-items: center; gap: 8px; }
+.header__phone {
+  display: inline-flex; align-items: center; gap: .5em; height: 44px; padding: 0 .9em; border-radius: 999px;
+  color: var(--royal); font-weight: 600; font-size: .9rem; text-decoration: none; white-space: nowrap; transition: background .3s;
+}
+.header__phone:hover { background: var(--peri-100); }
+.menu-btn {
+  display: none; place-items: center; width: 46px; height: 46px; border: 0; border-radius: 50%;
+  background: var(--royal); color: var(--cream-50); cursor: pointer;
+}
+.menu-btn .i { width: 22px; height: 22px; }
+
+/* =========================================================================
+   5. HERO 3D
+   ========================================================================= */
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: 100vh; min-height: 100svh; display: flex; align-items: center;
+  padding: calc(var(--topbar-h) + var(--header-gap) + var(--header-h) + 40px) 0 150px;
+  background:
+    radial-gradient(900px 640px at 78% 42%, rgba(255, 250, 242, .95) 0%, rgba(255, 250, 242, 0) 62%),
+    radial-gradient(700px 520px at 6% 96%, rgba(153, 172, 255, .26) 0%, rgba(153, 172, 255, 0) 70%),
+    radial-gradient(500px 400px at 100% 0%, rgba(153, 172, 255, .18) 0%, rgba(153, 172, 255, 0) 70%),
+    var(--cream);
+}
+.hero__canvas { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s ease; }
+.has-webgl .hero__canvas { opacity: 1; }
+.hero__fallback { position: absolute; inset: 0; z-index: 0; pointer-events: none; transition: opacity 1s ease; }
+.js .hero__fallback { opacity: 0; }
+.js .no-webgl .hero__fallback, .js-failed .hero__fallback { opacity: 1; }
+.fb { position: absolute; }
+.fb svg { width: 100%; height: auto; overflow: visible; }
+.fb--1 { width: min(30vw, 420px); right: 7%; top: 28%; rotate: -12deg; }
+.fb--2 { width: min(13vw, 170px); right: 3%; top: 15%; rotate: 150deg; --p-body: var(--peri-2); }
+.fb--3 { width: min(8vw, 110px); right: 34%; bottom: 17%; rotate: 30deg; --p-body: var(--royal); --p-inner: var(--peri); }
+.fb--4 { width: min(17vw, 230px); right: 22%; top: 10%; color: var(--royal); }
+.fb--1, .fb--2, .fb--3 { animation: fb-float 9s ease-in-out infinite; }
+.fb--2 { animation-delay: -3s; } .fb--3 { animation-delay: -6s; }
+@keyframes fb-float { 50% { translate: 0 -16px; } }
+.fb--4 path { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+
+.hero__inner { position: relative; z-index: 2; }
+.hero__content { max-width: 660px; }
+.hero__title { margin: 22px 0 0; font-size: clamp(3.1rem, 1.3rem + 5.6vw, 6.6rem); line-height: .94; letter-spacing: -.012em; }
+.hero__name { display: block; }
+.hero__name .line { display: block; }
+.hero__name .word { display: inline-block; white-space: nowrap; overflow: hidden; vertical-align: top; padding: .02em .02em .1em; margin: 0 -.02em -.1em; }
+.hero__name .ch { display: inline-block; }
+.hero__role { margin: .4em 0 0; font-family: var(--font-display); font-size: clamp(1.65rem, 1.15rem + 1.6vw, 2.6rem); line-height: 1.15; color: var(--royal); }
+.badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 0; padding: 0; list-style: none; }
+.badge {
+  display: inline-flex; align-items: center; gap: .55em; padding: .5em 1.15em .5em .5em; border-radius: 999px;
+  background: var(--peri); color: var(--royal); font-weight: 700; font-size: .95rem; text-decoration: none;
+  box-shadow: 0 12px 24px -14px rgba(3, 29, 140, .7), inset 0 1px 0 rgba(255, 255, 255, .55);
+  transition: translate .55s var(--ease-out), transform .6s var(--ease-spring), background .3s, box-shadow .4s;
+}
+.badge:hover { transform: translateY(-3px) rotate(-2deg); background: var(--peri-300); box-shadow: 0 18px 30px -16px rgba(3, 29, 140, .75), inset 0 1px 0 rgba(255, 255, 255, .6); }
+.badge__ico { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--cream-50); }
+.badge__ico svg { width: 18px; height: 18px; }
+.hero__lead { margin: 26px 0 0; max-width: 47ch; font-size: clamp(1.03rem, .96rem + .3vw, 1.18rem); color: var(--ink-2); }
+.hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.hero__meta { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 30px 0 0; padding: 0; list-style: none; font-size: .9rem; color: var(--ink-2); }
+.hero__meta li { display: inline-flex; align-items: center; gap: .55em; }
+.hero__meta .i { color: var(--royal); }
+.hero__meta a { text-decoration: none; border-bottom: 1px solid rgba(3, 29, 140, .25); transition: border-color .3s, color .3s; }
+.hero__meta a:hover { color: var(--royal); border-color: var(--royal); }
+.scroll-cue {
+  position: absolute; z-index: 3; left: 50%; bottom: 96px; translate: -50% 0;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  color: var(--ink-2); font-size: .68rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; text-decoration: none;
+}
+.scroll-cue__mouse { position: relative; width: 24px; height: 38px; border-radius: 14px; border: 1.6px solid rgba(11, 19, 64, .45); }
+.scroll-cue__mouse::after {
+  content: ""; position: absolute; left: 50%; top: 7px; width: 4px; height: 8px; margin-left: -2px; border-radius: 3px;
+  background: var(--royal); animation: cue 2.2s var(--ease-in-out) infinite;
+}
+@keyframes cue { 0% { opacity: 0; transform: translateY(-3px); } 30%, 60% { opacity: 1; } 100% { opacity: 0; transform: translateY(13px); } }
+.wave { position: absolute; left: 0; width: 100%; pointer-events: none; }
+.wave--hero { bottom: -1px; height: clamp(60px, 9vw, 130px); z-index: 2; }
+.wave--hero .w1 { fill: var(--peri); opacity: .35; }
+.wave--hero .w2 { fill: var(--cream-100); }
+
+/* Entrée du hero */
+.js .hero__name { visibility: hidden; }
+.js .hero__name.is-split { visibility: visible; }
+.js .hero__name .ch { transform: translateY(108%); transition: transform 1.15s var(--ease-out); transition-delay: var(--cd, 0s); }
+.js .hero.is-ready .hero__name .ch { transform: none; }
+.js [data-hero-in] { opacity: 0; translate: 0 26px; transition: opacity .9s ease, translate 1.1s var(--ease-out); transition-delay: calc(.55s + var(--i, 0) * .09s); }
+.js .hero.is-ready [data-hero-in] { opacity: 1; translate: 0 0; }
+
+/* =========================================================================
+   6. RUBANS DÉFILANTS
+   ========================================================================= */
+.ribbons { position: relative; z-index: 3; height: clamp(120px, 13vw, 170px); margin-top: -1px; overflow: hidden; background: var(--cream-100); }
+.ribbons__band { position: absolute; left: -6%; right: -6%; top: 50%; padding: 14px 0; }
+.ribbons__band--back { background: var(--peri); color: var(--royal); transform: translateY(-50%) rotate(2.2deg); }
+.ribbons__band--front { background: var(--royal); color: var(--cream); transform: translateY(-50%) rotate(-2.6deg); box-shadow: 0 20px 40px -24px rgba(3, 29, 140, .7); }
+.marquee { display: flex; width: max-content; animation: marquee 70s linear infinite; }
+.marquee--rev { animation-direction: reverse; animation-duration: 85s; }
+.marquee__group { display: flex; align-items: center; gap: 30px; padding-right: 30px; }
+.marquee__item { font-family: var(--font-display); font-size: clamp(1.25rem, 1rem + .9vw, 1.85rem); white-space: nowrap; }
+.marquee__sep { width: 16px; height: 22px; flex: none; }
+.ribbons__band--front .marquee__sep { --p-body: var(--peri); }
+.ribbons__band--back .marquee__sep { --p-body: var(--royal); }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* =========================================================================
+   7. SECTIONS — structure commune, révélations au défilement, décors
+   ========================================================================= */
+.section { position: relative; padding: clamp(84px, 10vw, 150px) 0; overflow: clip; }
+.section--light { background: var(--cream-100); }
+.section--cream { background: var(--cream); }
+.section > .container { position: relative; z-index: 1; }
+.section-head { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 22px 64px; align-items: end; margin-bottom: clamp(40px, 5vw, 72px); }
+.section-head h2 { margin-top: 16px; }
+.section-head__text { margin: 0; color: var(--ink-2); font-size: 1.04rem; }
+
+.js [data-reveal] { opacity: 0; translate: 0 34px; transition: opacity 1s ease, translate 1.2s var(--ease-out); transition-delay: var(--d, 0s); }
+.js [data-reveal="fade"] { translate: 0 0; }
+.js [data-reveal="scale"] { translate: 0 0; scale: .94; transition: opacity 1s ease, scale 1.3s var(--ease-out); transition-delay: var(--d, 0s); }
+.js [data-reveal].is-in { opacity: 1; translate: 0 0; scale: 1; }
+.js-failed [data-reveal], .js-failed [data-hero-in] { opacity: 1 !important; translate: 0 0 !important; scale: 1 !important; }
+.js-failed .hero__name { visibility: visible !important; }
+
+/* Vrilles bleu nuit (tracé identique à la carte), dessinées au défilement */
+.swirl { position: absolute; z-index: 0; pointer-events: none; overflow: visible; color: var(--royal); }
+.swirl path { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.js .swirl path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.4s var(--ease-in-out); }
+.js .swirl path + path { transition-delay: .55s; }
+.js .swirl.is-in path, .js-failed .swirl path { stroke-dashoffset: 0; }
+
+/* Gouttes « cachemire » en CSS 3D (deux couches décalées en profondeur) */
+.float3d { position: absolute; z-index: 0; pointer-events: none; perspective: 700px; }
+.float3d__inner { position: relative; width: 100%; aspect-ratio: 1; transform-style: preserve-3d; animation: float3d var(--dur, 16s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
+.float3d__layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.float3d__layer--back { filter: drop-shadow(0 22px 26px rgba(3, 29, 140, .2)); }
+.float3d__layer--front { transform: translateZ(34px); }
+@keyframes float3d {
+  0%, 100% { transform: rotateX(10deg) rotateY(-26deg) rotateZ(-4deg) translateY(0); }
+  50% { transform: rotateX(-8deg) rotateY(26deg) rotateZ(5deg) translateY(-16px); }
+}
+
+/* =========================================================================
+   8. GALERIE DU CABINET (carrousel)
+   ========================================================================= */
+.gallery { display: grid; grid-template-columns: minmax(0, 1.72fr) minmax(300px, 1fr); gap: clamp(20px, 2.6vw, 40px); align-items: stretch; }
+.stage {
+  position: relative; isolation: isolate; overflow: hidden; transform: translateZ(0);
+  aspect-ratio: 16 / 11; border-radius: 30px 150px 30px 150px; background: var(--peri-100);
+  box-shadow: 0 46px 90px -46px rgba(3, 29, 140, .55); touch-action: pan-y; cursor: zoom-in;
+  user-select: none; -webkit-user-select: none;
+}
+.slide { position: absolute; inset: 0; margin: 0; opacity: 0; visibility: hidden; transition: opacity 1.1s var(--ease-in-out), visibility 0s linear 1.1s; }
+.slide.is-active { z-index: 2; opacity: 1; visibility: visible; transition: opacity 1.1s var(--ease-in-out), visibility 0s; }
+.slide.is-leaving { z-index: 1; opacity: 1; visibility: visible; transition: none; }
+.slide img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); transform: scale(1.08); transition: transform 1.2s var(--ease-out); -webkit-user-drag: none; }
+.slide.is-prep img { transform: scale(1.15) translateX(var(--from, 3%)); transition: none; }
+.slide.is-active img { transform: scale(1); transition: transform 7.5s cubic-bezier(.16, .84, .3, 1); }
+.slide.is-leaving img { transform: scale(1.03) translateX(var(--to, -3%)); transition: transform 1.2s var(--ease-in-out); }
+.slide figcaption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.slide__ph {
+  position: absolute; inset: 0; display: none; place-content: center; justify-items: center; gap: 10px; padding: 24px; text-align: center;
+  background: radial-gradient(circle at 30% 20%, var(--peri-50), var(--peri-100) 60%, var(--peri-200)); color: var(--royal);
+}
+.slide__ph svg { width: 92px; height: 92px; }
+.slide__ph strong { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; }
+.slide__ph span { font-size: .82rem; color: var(--ink-2); }
+.slide__ph code { padding: .25em .6em; border-radius: 8px; background: rgba(255, 250, 242, .8); font-size: .8rem; }
+.slide.is-missing img { display: none; }
+.slide.is-missing .slide__ph { display: grid; }
+.stage__zoom {
+  position: absolute; z-index: 4; left: 18px; top: 18px; display: grid; place-items: center; width: 46px; height: 46px;
+  border: 1px solid rgba(255, 255, 255, .6); border-radius: 50%; background: rgba(255, 248, 236, .7); color: var(--royal); cursor: pointer;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: transform .5s var(--ease-spring), background .3s;
+}
+.stage__zoom:hover { transform: scale(1.08); background: var(--cream-50); }
+.dots { position: absolute; z-index: 4; left: 50%; bottom: 12px; translate: -50% 0; display: none; padding: 2px 6px; border-radius: 999px; background: rgba(255, 248, 236, .72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.dot { position: relative; width: 26px; height: 26px; padding: 0; border: 0; background: none; cursor: pointer; }
+.dot::before { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; translate: -50% -50%; border-radius: 99px; background: rgba(3, 29, 140, .3); transition: width .45s var(--ease-out), background .3s; }
+.dot.is-active::before { width: 20px; background: var(--royal); }
+.gallery__panel { display: flex; flex-direction: column; gap: 18px; padding: clamp(24px, 2.4vw, 34px); border-radius: 30px; background: var(--cream-50); box-shadow: var(--shadow-md); }
+.gallery__count { display: flex; align-items: baseline; gap: .3em; margin: 0; font-family: var(--font-display); font-size: clamp(3.2rem, 2.4rem + 2vw, 4.6rem); line-height: .9; color: var(--royal); }
+.gallery__count small { font-size: .3em; letter-spacing: .1em; color: var(--ink-3); }
+.gallery__caption { min-height: 8.2em; transition: opacity .26s ease, translate .3s var(--ease-out); }
+.gallery__caption.is-swapping { opacity: 0; translate: 0 10px; }
+.gallery__title { margin: 0 0 .45em; font-size: clamp(1.55rem, 1.25rem + .8vw, 2.05rem); }
+.gallery__text { margin: 0; color: var(--ink-2); }
+.gallery__controls { display: flex; align-items: center; gap: 10px; margin-top: auto; }
+.autoplay { position: relative; display: grid; place-items: center; width: 52px; height: 52px; margin-left: auto; border: 0; border-radius: 50%; background: var(--peri-100); color: var(--royal); cursor: pointer; transition: background .3s; }
+.autoplay:hover { background: var(--peri-200); }
+.autoplay .i { width: 18px; height: 18px; }
+.autoplay__ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.autoplay__ring circle { fill: none; stroke: var(--royal); stroke-width: 2.2; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.gallery.is-playing .autoplay__ring circle { animation: ring var(--slide-ms, 6500ms) linear forwards; }
+.gallery.is-paused .autoplay__ring circle { animation-play-state: paused; }
+@keyframes ring { to { stroke-dashoffset: 0; } }
+.autoplay .i--play, .autoplay.is-off .i--pause { display: none; }
+.autoplay.is-off .i--play { display: block; }
+.thumbs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.thumb { position: relative; aspect-ratio: 1; padding: 0; border: 0; border-radius: 14px 4px 14px 4px; overflow: hidden; background: var(--peri-100); cursor: pointer; opacity: .55; transition: opacity .35s, transform .5s var(--ease-spring), box-shadow .35s; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
+.thumb:hover { opacity: .9; transform: translateY(-3px); }
+.thumb.is-active { opacity: 1; box-shadow: 0 0 0 2px var(--cream-50), 0 0 0 4px var(--royal); }
+.thumb.is-missing img { display: none; }
+.cabinet-note { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 26px; margin-top: 30px; color: var(--ink-2); font-size: .95rem; }
+.cabinet-note span { display: inline-flex; align-items: center; gap: .55em; }
+.cabinet-note .i { color: var(--royal); }
+
+/* =========================================================================
+   9. ACCOMPAGNEMENT — cartes 3D (inclinaison + reflet + profondeur)
+   ========================================================================= */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2.2vw, 30px); align-items: stretch; }
+.card { position: relative; border-radius: 32px; transform-style: preserve-3d; scroll-margin-top: 140px; }
+.card__bg {
+  position: absolute; inset: 0; border-radius: inherit; overflow: hidden;
+  background: linear-gradient(155deg, #C6D0FF 0%, var(--peri) 52%, #8EA2FB 100%);
+  box-shadow: 0 34px 64px -36px rgba(3, 29, 140, .6), inset 0 1px 0 rgba(255, 255, 255, .6);
+  transition: box-shadow .6s var(--ease-out);
+}
+.card--b .card__bg { background: linear-gradient(155deg, #BCC8FF 0%, var(--peri-2) 50%, #8A9EF6 100%); }
+.card--c .card__bg { background: linear-gradient(155deg, #B2C0FF 0%, #94A8FD 52%, #7F94F2 100%); }
+.card.is-hover .card__bg { box-shadow: 0 50px 90px -40px rgba(3, 29, 140, .7), inset 0 1px 0 rgba(255, 255, 255, .7); }
+.card__motif { position: absolute; right: -16%; bottom: -12%; width: 70%; --p-body: rgba(255, 255, 255, .26); --p-inner: rgba(3, 29, 140, .14); rotate: -16deg; transition: rotate 1.4s var(--ease-out), scale 1.4s var(--ease-out); }
+.card.is-hover .card__motif { rotate: -4deg; scale: 1.08; }
+.card__glare { position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(440px circle at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, .5), rgba(255, 255, 255, 0) 60%); opacity: 0; transition: opacity .5s; }
+.card.is-hover .card__glare { opacity: 1; }
+.card__body { position: relative; display: flex; flex-direction: column; height: 100%; padding: clamp(26px, 2.4vw, 38px); transform-style: preserve-3d; }
+.card__body > * { transition: transform .7s var(--ease-out); }
+.card.is-hover .card__body > * { transform: translateZ(var(--z, 26px)); }
+.card__head { --z: 46px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
+.card__icon { display: grid; place-items: center; width: 68px; height: 68px; border-radius: 50%; background: var(--cream-50); box-shadow: 0 14px 26px -16px rgba(3, 29, 140, .7); }
+.card__icon svg { width: 40px; height: 40px; }
+.card__num { font-family: var(--font-display); font-size: 1.05rem; letter-spacing: .1em; color: var(--royal); opacity: .75; }
+.card__title { --z: 40px; font-size: clamp(2.1rem, 1.6rem + 1.2vw, 2.8rem); }
+.card__tag { --z: 32px; margin: .25em 0 .9em; font-family: var(--font-display); font-size: 1.22rem; color: var(--royal); }
+.card__text { color: #1D2556; font-size: .98rem; }
+.card__list { display: grid; gap: 10px; margin: 4px 0 30px; padding: 0; list-style: none; }
+.card__list li { display: flex; gap: 12px; align-items: flex-start; font-size: .95rem; line-height: 1.45; }
+.card__list li::before { content: ""; flex: none; width: 9px; height: 9px; margin-top: .42em; border-radius: 0 50% 50% 50%; background: var(--royal); rotate: 45deg; }
+.card__link {
+  --z: 50px; display: inline-flex; align-items: center; gap: .55em; align-self: flex-start; margin-top: auto; padding: .75em 1.2em; border-radius: 999px;
+  background: var(--cream-50); color: var(--royal); font-weight: 700; font-size: .93rem; text-decoration: none;
+  box-shadow: 0 12px 24px -14px rgba(3, 29, 140, .65); transition: background .3s, box-shadow .4s, transform .7s var(--ease-out);
+}
+.card__link .i { transition: transform .5s var(--ease-out); }
+.card__link:hover { background: #fff; }
+.card__link:hover .i { transform: translateX(4px); }
+.values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: clamp(36px, 4vw, 56px) 0 0; padding: 0; list-style: none; }
+.values li { display: flex; gap: 16px; align-items: flex-start; padding: 22px; border-radius: 24px; background: var(--cream-50); box-shadow: inset 0 0 0 1px rgba(3, 29, 140, .07); }
+.values__ico { display: grid; place-items: center; width: 46px; height: 46px; flex: none; border-radius: 15px; background: var(--peri); color: var(--royal); }
+.values strong { display: block; margin-bottom: 2px; font-family: var(--font-display); font-weight: 400; font-size: 1.25rem; }
+.values p { margin: 0; font-size: .92rem; color: var(--ink-2); }
+
+/* =========================================================================
+   10. TARIFS & HORAIRES
+   ========================================================================= */
+.practical { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(18px, 2.4vw, 32px); align-items: start; }
+.prices { display: grid; gap: 18px; }
+.price { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px 22px; padding: clamp(24px, 2.4vw, 32px); border-radius: 30px; background: var(--cream-50); box-shadow: var(--shadow-md); }
+.price--student { background: linear-gradient(155deg, #C6D0FF 0%, var(--peri) 60%, #8EA2FB 100%); box-shadow: var(--shadow-lg); }
+.price__label { display: inline-flex; align-items: center; gap: .55em; margin: 0; font-size: .74rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--royal); }
+.price__title { margin: .2em 0 .25em; font-size: clamp(1.5rem, 1.25rem + .7vw, 1.9rem); }
+.price__desc { margin: 0; font-size: .93rem; color: var(--ink-2); }
+.price--student .price__desc { color: #222A5C; }
+.price__amount { margin: 0; font-family: var(--font-display); font-size: clamp(3.4rem, 2.6rem + 2.6vw, 5rem); line-height: 1; color: var(--royal); white-space: nowrap; }
+.price__amount span { font-size: .5em; margin-left: .06em; vertical-align: .62em; }
+.note { display: flex; gap: 12px; align-items: flex-start; margin: 4px 0 0; padding: 16px 18px; border-radius: 20px; background: rgba(3, 29, 140, .05); font-size: .9rem; color: var(--ink-2); }
+.note .i { margin-top: .2em; color: var(--royal); }
+.hours {
+  position: relative; overflow: hidden; padding: clamp(24px, 2.6vw, 36px); border-radius: 30px; color: var(--cream-50);
+  background: radial-gradient(120% 90% at 100% 0%, #213DB5 0%, var(--royal) 52%, var(--royal-800) 100%);
+  box-shadow: 0 46px 90px -44px rgba(3, 29, 140, .8);
+}
+.hours__motif { position: absolute; right: -50px; top: -40px; width: 200px; --p-body: rgba(153, 172, 255, .14); --p-inner: rgba(255, 231, 194, .1); rotate: 150deg; pointer-events: none; }
+.hours__head { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
+.hours__title { font-size: clamp(1.65rem, 1.35rem + .8vw, 2.15rem); color: var(--cream-50); }
+.hours .status { padding: .5em .95em; border-radius: 999px; background: rgba(255, 231, 194, .12); font-size: .82rem; font-weight: 600; }
+.days { position: relative; display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.day { display: grid; grid-template-columns: 6.6em minmax(80px, 1fr) 14.2em; align-items: center; gap: 16px; padding: 11px 14px; border-radius: 16px; transition: background .3s; }
+.day.is-today { background: rgba(153, 172, 255, .17); box-shadow: inset 0 0 0 1px rgba(153, 172, 255, .4); }
+.day__name { font-weight: 600; }
+.day__today { display: none; margin-left: .55em; padding: .15em .5em; border-radius: 99px; background: var(--peri); color: var(--royal); font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; vertical-align: .15em; }
+.day.is-today .day__today { display: inline-block; }
+.day__track { position: relative; height: 8px; border-radius: 99px; background: rgba(255, 231, 194, .13); }
+.day__seg { position: absolute; top: 0; bottom: 0; left: var(--a); width: var(--w); border-radius: 99px; background: linear-gradient(90deg, #C5D0FF, var(--peri)); transform-origin: 0 50%; }
+.js .day__seg { transform: scaleX(0); transition: transform 1.3s var(--ease-out); transition-delay: calc(var(--d, 0s) + .35s); }
+.js .hours.is-in .day__seg, .js-failed .day__seg { transform: none; }
+.day__now { position: absolute; top: 50%; width: 3px; height: 20px; margin-left: -1.5px; border-radius: 3px; background: var(--cream-50); translate: 0 -50%; box-shadow: 0 0 0 3px rgba(255, 231, 194, .25); }
+.day__time { text-align: right; font-size: .86rem; font-variant-numeric: tabular-nums; color: rgba(255, 250, 242, .88); white-space: nowrap; }
+.day--off .day__time { color: rgba(255, 250, 242, .5); }
+.hours__scale { position: relative; display: grid; grid-template-columns: 6.6em minmax(80px, 1fr) 14.2em; gap: 16px; padding: 4px 14px 0; font-size: .7rem; color: rgba(255, 250, 242, .55); }
+.hours__scale > span { position: relative; height: 1.2em; }
+.hours__scale i { position: absolute; font-style: normal; translate: -50% 0; }
+.hours__foot { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 24px; padding-top: 22px; border-top: 1px solid rgba(255, 231, 194, .16); font-size: .92rem; color: rgba(255, 250, 242, .85); }
+.hours__foot p { display: inline-flex; align-items: center; gap: .6em; margin: 0; }
+
+/* =========================================================================
+   11. CONTACT & MENTIONS
+   ========================================================================= */
+.contact { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: clamp(28px, 4.5vw, 72px); align-items: start; }
+.contact__intro { margin: 18px 0 0; max-width: 54ch; color: var(--ink-2); font-size: 1.04rem; }
+.tiles { display: grid; gap: 14px; margin: 34px 0 0; padding: 0; list-style: none; }
+.tile-row { position: relative; }
+.tile {
+  position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 18px;
+  padding: 18px 70px 18px 18px; border-radius: 26px; background: var(--cream-50); color: var(--ink); text-decoration: none;
+  box-shadow: var(--shadow-md); transform-style: preserve-3d; transition: box-shadow .5s var(--ease-out), background .3s;
+}
+.tile:hover { box-shadow: 0 30px 60px -32px rgba(3, 29, 140, .55); }
+.tile__ico { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 19px; background: var(--peri); color: var(--royal); transition: transform .6s var(--ease-spring), background .3s; }
+.tile:hover .tile__ico { transform: rotate(-8deg) scale(1.06); background: var(--peri-300); }
+.tile__ico .i { width: 24px; height: 24px; }
+.tile__label { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
+.tile__value { display: block; margin-top: 2px; font-family: var(--font-display); font-size: clamp(1.3rem, 1.05rem + .8vw, 1.72rem); line-height: 1.2; overflow-wrap: anywhere; }
+.tile__hint { display: inline-flex; align-items: center; gap: .4em; margin-top: 6px; font-size: .85rem; font-weight: 600; color: var(--royal); }
+.tile__hint .i { width: 1em; height: 1em; transition: transform .5s var(--ease-out); }
+.tile:hover .tile__hint .i { transform: translate(3px, -1px); }
+.copy-btn {
+  position: absolute; z-index: 2; right: 16px; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 42px; height: 42px;
+  border: 0; border-radius: 14px; background: var(--peri-100); color: var(--royal); cursor: pointer; transition: background .3s, transform .4s var(--ease-spring);
+}
+.copy-btn:hover { background: var(--peri-200); transform: scale(1.06); }
+.copy-btn .i { width: 18px; height: 18px; }
+.copy-btn .i--check, .copy-btn.is-copied .i--copy { display: none; }
+.copy-btn.is-copied .i--check { display: block; }
+.urgent { display: flex; gap: 14px; align-items: flex-start; margin: 22px 0 0; padding: 18px 20px; border-radius: 22px; background: rgba(3, 29, 140, .06); font-size: .9rem; color: var(--ink-2); }
+.urgent .i { margin-top: .15em; color: var(--royal); }
+.urgent a { font-weight: 700; color: var(--royal); }
+.contact__side { display: grid; gap: 18px; }
+.access { position: relative; margin: 0; border-radius: 30px; overflow: hidden; background: var(--cream-50); box-shadow: var(--shadow-lg); }
+.access__img { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--peri-100); }
+.access__img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 72%; transform-origin: 61.5% 72.9%; transition: transform 1.6s var(--ease-out); }
+.access:hover .access__img img { transform: scale(1.04); }
+.access__marker { position: absolute; left: 61.5%; top: 72.9%; width: 27%; aspect-ratio: 1.6; translate: -50% -50%; border-radius: 50%; border: 2.5px solid var(--peri); box-shadow: 0 0 0 5px rgba(153, 172, 255, .3), 0 10px 30px rgba(3, 29, 140, .35); animation: marker 2.6s var(--ease-in-out) infinite; }
+.access__marker span { position: absolute; left: 50%; bottom: calc(100% + 10px); translate: -50% 0; padding: .35em .8em; border-radius: 999px; background: var(--royal); color: var(--cream-50); font-size: .74rem; font-weight: 700; white-space: nowrap; box-shadow: var(--shadow-sm); }
+.access__marker span::after { content: ""; position: absolute; left: 50%; top: 100%; width: 8px; height: 8px; margin: -4px 0 0 -4px; background: inherit; rotate: 45deg; }
+@keyframes marker { 50% { box-shadow: 0 0 0 11px rgba(153, 172, 255, .12), 0 10px 30px rgba(3, 29, 140, .35); } }
+.access.is-missing .access__img img, .access.is-missing .access__marker { display: none; }
+.access__ph { position: absolute; inset: 0; display: none; place-content: center; justify-items: center; gap: 8px; text-align: center; color: var(--royal); }
+.access__ph svg { width: 80px; height: 80px; }
+.access.is-missing .access__ph { display: grid; }
+.access figcaption { padding: 20px 24px 24px; font-size: .92rem; color: var(--ink-2); }
+.access figcaption strong { display: block; margin-bottom: 4px; font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; color: var(--ink); }
+.ids { position: relative; overflow: hidden; padding: 26px 26px 22px; border-radius: 30px; background: linear-gradient(155deg, #C6D0FF 0%, var(--peri) 60%, #8EA2FB 100%); box-shadow: var(--shadow-md); }
+.ids h3 { display: flex; align-items: center; gap: .5em; font-size: 1.45rem; }
+.ids dl { display: grid; gap: 10px; margin: 16px 0; }
+.ids dl div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; padding: 12px 16px; border-radius: 16px; background: rgba(255, 250, 242, .66); }
+.ids dt { font-size: .76rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--royal); }
+.ids dd { margin: 0; font-family: var(--font-display); font-size: 1.22rem; letter-spacing: .03em; white-space: nowrap; }
+.ids p { margin: 0; font-size: .84rem; line-height: 1.55; color: #222A5C; }
+
+/* =========================================================================
+   12. PIED DE PAGE
+   ========================================================================= */
+.footer { position: relative; overflow: hidden; padding: clamp(120px, 12vw, 170px) 0 40px; background: radial-gradient(120% 80% at 85% 0%, #142FA6 0%, var(--royal) 45%, var(--royal-800) 100%); color: rgba(255, 242, 222, .86); }
+.footer .wave { top: -1px; height: clamp(60px, 8vw, 110px); rotate: 180deg; }
+.footer .wave .w1 { fill: var(--peri); opacity: .35; }
+.footer .wave .w2 { fill: var(--cream); }
+.footer__grid { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr)); gap: 36px; }
+.footer__brand .brand__mark { width: 54px; height: 54px; }
+.footer__name { margin: 16px 0 4px; font-family: var(--font-display); font-size: clamp(1.9rem, 1.5rem + 1.2vw, 2.6rem); line-height: 1.05; color: var(--cream); }
+.footer__role { margin: 0; font-family: var(--font-display); font-size: 1.25rem; color: var(--peri); }
+.footer__publics { margin: 10px 0 0; font-size: .9rem; letter-spacing: .06em; }
+.footer h4 { margin-bottom: 14px; font-family: var(--font-body); font-size: .74rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--peri); }
+.footer ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: .95rem; }
+.footer a { text-decoration: none; transition: color .3s; }
+.footer a:hover { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
+.footer__legal { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 28px; margin-top: clamp(48px, 6vw, 80px); padding-top: 26px; border-top: 1px solid rgba(255, 231, 194, .15); font-size: .84rem; color: rgba(255, 242, 222, .66); }
+.footer__legal p { margin: 0; }
+.footer__links { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.link-btn { padding: 0; border: 0; background: none; color: inherit; font-size: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.link-btn:hover { color: var(--cream); }
+.footer__motif { position: absolute; z-index: 0; pointer-events: none; }
+.footer__motif--1 { right: -70px; bottom: -60px; width: 330px; rotate: -20deg; --p-body: rgba(153, 172, 255, .12); --p-inner: rgba(255, 231, 194, .08); }
+.footer .swirl { right: 26%; top: 40px; width: 200px; color: rgba(153, 172, 255, .22); rotate: 25deg; }
+
+/* =========================================================================
+   13. BARRE D'ACCÈS RAPIDE (mobile) · TOAST
+   ========================================================================= */
+.dock {
+  position: fixed; z-index: 60; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  display: none; align-items: center; gap: 8px; padding: 7px; border-radius: 24px;
+  background: rgba(255, 248, 236, .86); border: 1px solid rgba(255, 255, 255, .7);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow: 0 20px 44px -18px rgba(11, 19, 64, .5);
+}
+.dock__addr { display: flex; flex: 1; align-items: center; gap: 10px; min-width: 0; padding: 4px 6px; color: var(--ink); text-decoration: none; }
+.dock__pin { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 14px; background: var(--peri-100); color: var(--royal); }
+.dock__txt { min-width: 0; line-height: 1.25; }
+.dock__txt strong { display: -webkit-box; overflow: hidden; font-size: .8rem; line-height: 1.2; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.dock__txt small { display: block; margin-top: 1px; font-size: .7rem; font-weight: 600; color: var(--royal); }
+.dock__btn { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 17px; background: var(--peri); color: var(--royal); text-decoration: none; }
+.dock__btn--rdv { width: auto; padding: 0 16px; background: var(--royal); color: var(--cream-50); font-weight: 700; font-size: .9rem; }
+.toast {
+  position: fixed; z-index: 200; left: 50%; bottom: calc(28px + var(--dock-space, 0px)); translate: -50% 16px; opacity: 0;
+  display: inline-flex; align-items: center; gap: .6em; padding: 12px 18px; border-radius: 16px; background: var(--ink); color: var(--cream-50);
+  font-size: .9rem; font-weight: 500; box-shadow: 0 18px 40px -16px rgba(11, 19, 64, .6); pointer-events: none;
+  transition: opacity .35s ease, translate .5s var(--ease-out);
+}
+.toast.is-on { opacity: 1; translate: -50% 0; }
+
+/* =========================================================================
+   14. FENÊTRES (rendez-vous, mentions légales, menu mobile, visionneuse)
+   ========================================================================= */
+dialog { max-width: none; max-height: none; padding: 0; border: 0; background: transparent; color: inherit; }
+dialog::backdrop { background: rgba(11, 19, 64, .5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+dialog[open]::backdrop { animation: fade-in .4s ease; }
+dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes fade-out { to { opacity: 0; } }
+.modal { width: 100%; height: 100%; margin: 0; inset: 0; }
+.modal[open] { display: grid; place-items: center; padding: 18px; }
+.modal__card { position: relative; width: min(580px, 100%); max-height: calc(100dvh - 36px); overflow: auto; overscroll-behavior: contain; padding: clamp(26px, 4vw, 42px); border-radius: 32px; background: var(--cream-50); box-shadow: 0 50px 100px -40px rgba(3, 29, 140, .6); }
+.modal__card--wide { width: min(760px, 100%); }
+.modal[open] .modal__card { animation: modal-in .6s var(--ease-out); }
+.modal.is-closing .modal__card { animation: modal-out .32s ease-in forwards; }
+@keyframes modal-in { from { opacity: 0; transform: translateY(26px) scale(.96); } }
+@keyframes modal-out { to { opacity: 0; transform: translateY(16px) scale(.97); } }
+.modal__close { position: absolute; right: 16px; top: 16px; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--peri-100); color: var(--royal); cursor: pointer; transition: background .3s, rotate .5s var(--ease-out); }
+.modal__close:hover { background: var(--peri-200); rotate: 90deg; }
+.modal h2 { margin: 12px 0 12px; font-size: clamp(2rem, 1.6rem + 1.4vw, 2.7rem); }
+.modal__lead { color: var(--ink-2); }
+.options { display: grid; gap: 12px; margin: 22px 0; }
+.option { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 16px 18px; border-radius: 22px; background: var(--peri); color: var(--ink); text-decoration: none; box-shadow: 0 16px 30px -20px rgba(3, 29, 140, .7); transition: transform .5s var(--ease-spring), background .3s; }
+.option:hover { transform: translateY(-2px); background: var(--peri-300); }
+.option--alt { background: var(--cream-100); box-shadow: inset 0 0 0 1px rgba(3, 29, 140, .1); }
+.option--alt:hover { background: var(--cream); }
+.option__ico { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 16px; background: var(--cream-50); color: var(--royal); }
+.option strong { display: block; font-size: 1.02rem; }
+.option span span { display: block; font-family: var(--font-display); font-size: 1.25rem; color: var(--royal); overflow-wrap: anywhere; }
+.option > .i { color: var(--royal); transition: transform .5s var(--ease-out); }
+.option:hover > .i { transform: translateX(4px); }
+.modal__infos { display: grid; gap: 10px; margin: 0; padding: 18px 0 0; border-top: 1px solid rgba(3, 29, 140, .1); list-style: none; font-size: .92rem; color: var(--ink-2); }
+.modal__infos li { display: flex; gap: 10px; align-items: flex-start; }
+.modal__infos .i { margin-top: .2em; color: var(--royal); }
+.legal h3 { margin: 24px 0 8px; font-family: var(--font-body); font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--royal); }
+.legal p { font-size: .94rem; color: var(--ink-2); }
+.legal .todo { padding: .1em .45em; border-radius: 6px; background: var(--cream); color: var(--ink); }
+
+.menu { width: 100%; height: 100%; margin: 0; inset: 0; background: var(--cream); }
+.menu::backdrop { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.menu[open] { display: flex; animation: menu-in .7s var(--ease-out); }
+.menu.is-closing { animation: menu-out .34s ease-in forwards; }
+@keyframes menu-in { from { clip-path: circle(0% at calc(100% - 52px) 52px); } to { clip-path: circle(150% at calc(100% - 52px) 52px); } }
+@keyframes menu-out { from { clip-path: circle(150% at calc(100% - 52px) 52px); } to { clip-path: circle(0% at calc(100% - 52px) 52px); } }
+.menu__inner { position: relative; display: flex; flex-direction: column; width: 100%; min-height: 100%; overflow: auto; padding: 16px var(--gutter) calc(24px + env(safe-area-inset-bottom, 0px)); }
+.menu__top { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 72px; }
+.menu__nav { position: relative; z-index: 1; display: grid; gap: 4px; margin: auto 0; padding: 30px 0; }
+.menu__nav a { display: flex; align-items: baseline; gap: 14px; padding: .12em 0; font-family: var(--font-display); font-size: clamp(2.3rem, 9vw, 3.4rem); line-height: 1.15; color: var(--ink); text-decoration: none; }
+.menu__nav a small { font-family: var(--font-body); font-size: .8rem; color: var(--royal); letter-spacing: .1em; }
+.menu[open] .menu__nav a { animation: menu-link .8s var(--ease-out) both; animation-delay: calc(.18s + var(--i) * .07s); }
+@keyframes menu-link { from { opacity: 0; transform: translateY(26px); } }
+.menu__contact { position: relative; z-index: 1; display: grid; gap: 10px; padding-top: 20px; border-top: 1px solid rgba(3, 29, 140, .14); }
+.menu__contact a:not(.btn) { display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; font-weight: 500; }
+.menu__contact .i { color: var(--royal); }
+.menu__motif { position: absolute; z-index: 0; right: -70px; top: 16%; width: 210px; rotate: 150deg; opacity: .35; pointer-events: none; }
+
+.lightbox { width: 100%; height: 100%; margin: 0; inset: 0; background: rgba(8, 14, 48, .94); color: var(--cream-50); }
+.lightbox::backdrop { background: transparent; }
+.lightbox[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto; animation: fade-in .4s ease; }
+.lightbox.is-closing { animation: fade-out .32s ease forwards; }
+.lightbox__fig { display: grid; place-items: center; min-height: 0; overflow: hidden; margin: 0; padding: 70px 70px 10px; }
+.lightbox__fig img { width: auto; height: auto; max-width: 100%; max-height: calc(100vh - 190px); max-height: calc(100dvh - 190px); object-fit: contain; border-radius: 18px; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .7); }
+.lightbox.is-missing .lightbox__fig img { display: none; }
+.lightbox__bar { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 16px 20px calc(22px + env(safe-area-inset-bottom, 0px)); }
+.lightbox__cap { min-width: 0; text-align: center; }
+.lightbox__cap strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; }
+.lightbox__cap span { font-size: .8rem; letter-spacing: .14em; color: rgba(255, 250, 242, .65); }
+.lightbox .icon-btn { background: rgba(255, 250, 242, .12); }
+.lightbox .icon-btn:hover { background: rgba(255, 250, 242, .24); }
+.lightbox__close { position: absolute; right: 18px; top: 18px; }
+
+/* =========================================================================
+   15. RESPONSIVE
+   ========================================================================= */
+@media (max-width: 1180px) {
+  .topbar .topbar__mail { display: none; }
+  .header__phone span { display: none; }
+  .header__phone { width: 44px; padding: 0; justify-content: center; }
+  .nav a { padding: .55em .8em; }
+}
+@media (max-width: 1099px) {
+  .nav { display: none; }
+  .header__actions { margin-left: auto; }
+  .menu-btn { display: grid; }
+}
+@media (max-width: 1099px), (max-height: 820px) {
+  .scroll-cue { display: none; }
+}
+@media (max-width: 1023px) {
+  .section-head { grid-template-columns: 1fr; align-items: start; }
+  .gallery { grid-template-columns: 1fr; }
+  .thumbs { display: none; }
+  .dots { display: flex; }
+  .gallery__caption { min-height: 0; }
+  .cards { grid-template-columns: 1fr; max-width: 640px; margin-inline: auto; }
+  .values { grid-template-columns: 1fr; max-width: 640px; margin-inline: auto; }
+  .practical, .contact { grid-template-columns: 1fr; }
+  .contact__side { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__brand { grid-column: 1 / -1; }
+}
+@media (max-width: 759px) {
+  :root { --topbar-h: 0px; --header-gap: 10px; --header-h: 60px; --dock-space: 84px; }
+  html { scroll-padding-top: 90px; }
+  body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+  .topbar { display: none; }
+  .progress { top: 0; }
+  .header__bar { gap: 10px; padding: 0 8px 0 12px; }
+  .brand__mark { width: 34px; height: 34px; }
+  .brand__name { font-size: 1.08rem; }
+  .header__phone, .header__cta { display: none; }
+  .dock { display: flex; }
+  .hero { align-items: flex-start; padding: calc(var(--header-gap) + var(--header-h) + 128px) 0 130px; text-align: center; }
+  .badges { gap: 6px; }
+  .badge { gap: .4em; padding: .4em .8em .4em .4em; font-size: .8rem; }
+  .badge__ico { width: 24px; height: 24px; }
+  .badge__ico svg { width: 14px; height: 14px; }
+  .hero__content { margin-inline: auto; }
+  .hero .eyebrow { justify-content: center; }
+  .badges, .hero__cta, .hero__meta { justify-content: center; }
+  .hero__cta .btn { flex: 1 1 100%; }
+  .hero__meta { flex-direction: column; align-items: center; gap: 8px; }
+  .hero__lead { margin-inline: auto; }
+  .scroll-cue { display: none; }
+  .fb--1 { width: 46vw; right: -10vw; top: 9%; }
+  .fb--2 { width: 26vw; right: auto; left: -8vw; top: auto; bottom: 8%; }
+  .fb--3 { width: 16vw; right: 8vw; bottom: 5%; }
+  .fb--4 { width: 34vw; right: auto; left: -6vw; top: 8%; }
+  .stage { aspect-ratio: 4 / 3; border-radius: 22px 80px 22px 80px; }
+  .stage__zoom { left: 12px; top: 12px; width: 42px; height: 42px; }
+  .day { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name time" "track track"; gap: 8px 12px; }
+  .day__name { grid-area: name; }
+  .day__time { grid-area: time; }
+  .day__track { grid-area: track; }
+  .hours__scale { display: none; }
+  .contact__side { grid-template-columns: 1fr; }
+  .tile { gap: 14px; padding: 16px 62px 16px 14px; }
+  .tile__ico { width: 48px; height: 48px; border-radius: 16px; }
+  .tile__value { font-size: 1.18rem; }
+  .copy-btn { right: 12px; }
+  .float3d { display: none; }
+  .section .swirl { opacity: .4; }
+  .footer__grid { grid-template-columns: 1fr; gap: 28px; }
+  .footer__legal { flex-direction: column; align-items: flex-start; }
+  .lightbox__fig { padding: 70px 12px 10px; }
+}
+@media (max-width: 420px) {
+  .price { grid-template-columns: 1fr; }
+  .price__amount { order: -1; }
+}
+
+/* =========================================================================
+   16. MOUVEMENT RÉDUIT
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+  .marquee { animation: none; }
+}
+</style>
+</head>
+<body>
+<!-- ======================= Bibliothèque de symboles SVG ======================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <!-- Motifs de la carte de visite -->
+  <symbol id="m-pb" viewBox="0 0 120 120"><path style="fill:var(--p-body,#99ACFF)" d="M112 104C80 104 36 98 18 78C2 60 4 30 24 16C44 2 72 10 78 34C84 58 96 86 112 104Z"/></symbol>
+  <symbol id="m-pi" viewBox="0 0 120 120"><path style="fill:var(--p-inner,#031D8C)" d="M76 80C60 76 34 68 26 54C18 40 26 24 42 26C58 28 60 46 64 58C67 67 71 75 76 80Z"/></symbol>
+  <symbol id="m-paisley" viewBox="0 0 120 120"><use href="#m-pb"/><use href="#m-pi"/></symbol>
+  <symbol id="m-drop" viewBox="0 0 60 100"><path style="fill:var(--p-body,#99ACFF)" d="M10 4C30 12 54 40 52 64C50 86 30 96 18 88C6 80 8 60 14 44C18 32 16 16 10 4Z"/></symbol>
+  <!-- Icônes -->
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-9 5.7a2 2 0 0 1-2 0L2 7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-arrow-ur" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="13" height="13" x="9" y="9" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8h16M4 16h11"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z" fill="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2.5 9 2.5 12 0v-5"/></symbol>
+  <symbol id="i-id" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 14h4M6.5 16c.5-1.3 1.4-2 2.5-2s2 .7 2.5 2"/></symbol>
+  <symbol id="i-lifebuoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 9.2l4.3-4.3M14.8 14.8l4.3 4.3M9.2 14.8l-4.3 4.3"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.8-.8L3 21l1.9-5.2A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+</svg>
+
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="progress" aria-hidden="true"></div>
+
+<!-- ======================= Bandeau d'adresse (toujours visible) ======================= -->
+<div class="topbar on-dark">
+  <div class="container topbar__in">
+    <a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" aria-label="Itinéraire Google Maps vers le 132 rue François de Sourdis, 33000 Bordeaux">
+      <svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>
+      <span>132 rue François de Sourdis, 33000 Bordeaux</span>
+      <b class="topbar__go">Itinéraire <svg class="i" aria-hidden="true"><use href="#i-arrow-ur"/></svg></b>
+    </a>
+    <div class="topbar__right">
+      <a href="tel:0601685312"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg><span>06 01 68 53 12</span></a>
+      <a class="topbar__mail" href="mailto:sanchez.psy@proton.me"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><span>sanchez.psy@proton.me</span></a>
+      <span class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Lun – Ven · 8h – 19h</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= En-tête fixe ======================= -->
+<header class="header">
+  <div class="container">
+    <div class="header__bar">
+      <a class="brand" href="#top" aria-label="Marie-Claude SANCHEZ, psychologue clinicienne — haut de page">
+        <svg class="brand__mark" viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg>
+        <span class="brand__text"><span class="brand__name">Marie-Claude SANCHEZ</span><span class="brand__role">Psychologue clinicienne</span></span>
+      </a>
+      <nav class="nav" aria-label="Navigation principale">
+        <span class="nav__pill" aria-hidden="true"></span>
+        <a href="#cabinet">Le cabinet</a>
+        <a href="#accompagnement">Accompagnement</a>
+        <a href="#tarifs">Tarifs &amp; horaires</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="header__actions">
+        <a class="header__phone" href="tel:0601685312" aria-label="Appeler le 06 01 68 53 12"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg><span>06 01 68 53 12</span></a>
+        <a class="btn btn--sm header__cta" href="#contact" data-open="rdv" data-magnetic="0.18">Prendre RDV</a>
+        <button class="menu-btn" type="button" data-open="menu" aria-haspopup="dialog" aria-label="Ouvrir le menu"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+
+  <!-- ======================= HERO 3D ======================= -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+    <!-- Décor de secours (sans WebGL) -->
+    <div class="hero__fallback" aria-hidden="true">
+      <div class="fb fb--1"><svg viewBox="0 0 120 120"><use href="#m-paisley"/></svg></div>
+      <div class="fb fb--2"><svg viewBox="0 0 120 120"><use href="#m-paisley"/></svg></div>
+      <div class="fb fb--3"><svg viewBox="0 0 120 120"><use href="#m-paisley"/></svg></div>
+      <div class="fb fb--4"><svg viewBox="0 0 240 230"><path d="M0 2C30 30 60 52 88 68C112 82 140 92 160 90C182 88 196 70 192 52C188 36 170 30 158 38C148 46 152 62 166 62"/><path d="M88 68C106 88 112 120 120 150C128 182 140 210 172 214C204 218 224 196 222 170C220 146 198 132 180 140C164 148 164 172 180 176C190 178 198 170 196 162"/></svg></div>
+    </div>
+
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <p class="eyebrow" data-hero-in style="--i:0">Cabinet de psychologie · Bordeaux</p>
+        <h1 class="hero__title" id="hero-title">
+          <span class="sr-only">Marie-Claude SANCHEZ, psychologue clinicienne à Bordeaux</span>
+          <span class="hero__name" aria-hidden="true"><span class="line">Marie-Claude</span><span class="line">SANCHEZ</span></span>
+        </h1>
+        <p class="hero__role" data-hero-in style="--i:1" aria-hidden="true">Psychologue clinicienne</p>
+        <ul class="badges" data-hero-in style="--i:2" aria-label="Publics accompagnés">
+          <li><a class="badge" href="#enfants" data-magnetic="0.15"><span class="badge__ico"><svg viewBox="0 0 60 100" aria-hidden="true" style="width:12px"><use href="#m-drop"/></svg></span>Enfants</a></li>
+          <li><a class="badge" href="#adolescents" data-magnetic="0.15"><span class="badge__ico"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#m-pb"/></svg></span>Adolescents</a></li>
+          <li><a class="badge" href="#adultes" data-magnetic="0.15"><span class="badge__ico"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg></span>Adultes</a></li>
+        </ul>
+        <p class="hero__lead" data-hero-in style="--i:3">Un espace d’écoute bienveillant et confidentiel pour déposer ce qui pèse, comprendre ce qui se joue et retrouver un mieux-être, à chaque âge de la vie.</p>
+        <div class="hero__cta" data-hero-in style="--i:4">
+          <a class="btn" href="#contact" data-open="rdv" data-magnetic>Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--ghost" href="#cabinet" data-magnetic>Découvrir le cabinet</a>
+        </div>
+        <ul class="hero__meta" data-hero-in style="--i:5">
+          <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">132 rue François de Sourdis, Bordeaux</a></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Lun – Ven · 8h – 12h / 13h – 19h</li>
+        </ul>
+      </div>
+    </div>
+
+    <a class="scroll-cue" href="#cabinet"><span class="scroll-cue__mouse" aria-hidden="true"></span><span>Défiler</span></a>
+    <svg class="wave wave--hero" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+      <path class="w1" d="M0 58C180 98 380 102 620 70C860 38 1060 18 1260 44C1340 54 1400 70 1440 80V120H0Z"/>
+      <path class="w2" d="M0 82C220 112 420 116 660 86C900 56 1080 44 1260 64C1340 72 1400 86 1440 96V120H0Z"/>
+    </svg>
+  </section>
+
+  <!-- ======================= Rubans défilants ======================= -->
+  <div class="ribbons" aria-hidden="true">
+    <div class="ribbons__band ribbons__band--back">
+      <div class="marquee marquee--rev">
+        <div class="marquee__group"><span class="marquee__item">Prendre soin de soi</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Un temps pour parler</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Sur rendez-vous</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Centre de Santé Sourdis</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Bordeaux</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg></div>
+        <div class="marquee__group"><span class="marquee__item">Prendre soin de soi</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Un temps pour parler</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Sur rendez-vous</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Centre de Santé Sourdis</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Bordeaux</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg></div>
+      </div>
+    </div>
+    <div class="ribbons__band ribbons__band--front">
+      <div class="marquee">
+        <div class="marquee__group"><span class="marquee__item">Écoute</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Bienveillance</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Confidentialité</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Enfants</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Adolescents</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Adultes</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg></div>
+        <div class="marquee__group"><span class="marquee__item">Écoute</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Bienveillance</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Confidentialité</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Enfants</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Adolescents</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Adultes</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= LE CABINET (galerie) ======================= -->
+  <section class="section section--light" id="cabinet" aria-labelledby="cabinet-title">
+    <svg class="swirl" viewBox="0 0 240 230" aria-hidden="true" style="right:-40px;top:40px;width:clamp(150px,18vw,250px);rotate:90deg"><path pathLength="1" d="M0 2C30 30 60 52 88 68C112 82 140 92 160 90C182 88 196 70 192 52C188 36 170 30 158 38C148 46 152 62 166 62"/><path pathLength="1" d="M88 68C106 88 112 120 120 150C128 182 140 210 172 214C204 218 224 196 222 170C220 146 198 132 180 140C164 148 164 172 180 176C190 178 198 170 196 162"/></svg>
+    <div class="float3d" data-parallax="0.12" aria-hidden="true" style="left:-60px;bottom:8%;width:clamp(120px,14vw,190px);--dur:17s">
+      <div class="float3d__inner"><svg class="float3d__layer float3d__layer--back" viewBox="0 0 120 120"><use href="#m-pb"/></svg><svg class="float3d__layer float3d__layer--front" viewBox="0 0 120 120"><use href="#m-pi"/></svg></div>
+    </div>
+
+    <div class="container">
+      <header class="section-head">
+        <div data-reveal>
+          <p class="eyebrow">Le cabinet</p>
+          <h2 id="cabinet-title">Un lieu calme et lumineux, <em>pensé pour se sentir en confiance</em></h2>
+        </div>
+        <p class="section-head__text" data-reveal style="--d:.12s">Le cabinet se situe au sein du Centre de Santé Sourdis, à Bordeaux. Lumière douce, matières naturelles et coin réservé aux plus jeunes&nbsp;: tout a été pensé pour que chacun, petit ou grand, se sente accueilli.</p>
+      </header>
+
+      <div class="gallery" data-gallery role="region" aria-roledescription="carrousel" aria-label="Photos du cabinet">
+        <div data-reveal="scale">
+          <div class="stage" data-g-stage>
+            <!-- ✏️ PHOTOS DU CABINET
+                 Pour changer une photo : remplacez le fichier dans le dossier « images/ » (même nom),
+                 ou modifiez le chemin « src ». « --pos » règle le cadrage (horizontal vertical).
+                 Titre et légende du panneau : attributs data-title et data-text. -->
+            <figure class="slide is-active" role="group" aria-roledescription="diapositive" aria-label="1 sur 5"
+                    data-title="L’espace de consultation"
+                    data-text="Canapé, fauteuil et lumière du jour tamisée par les voilages : un cadre apaisant pour prendre la parole à son rythme.">
+              <img src="images/cabinet-espace-consultation.jpg" width="1600" height="1200" style="--pos:50% 62%" draggable="false" decoding="async"
+                   alt="Salle de consultation lumineuse : canapé clair, fauteuil en bois, petite table et chaises pour enfants sur un tapis moelleux, devant de grands voilages.">
+              <div class="slide__ph" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#m-paisley"/></svg><strong>Photo du cabinet</strong><span>Ajoutez votre image&nbsp;: <code>images/cabinet-espace-consultation.jpg</code></span></div>
+              <figcaption>L’espace de consultation</figcaption>
+            </figure>
+            <figure class="slide" role="group" aria-roledescription="diapositive" aria-label="2 sur 5"
+                    data-title="Le coin des enfants"
+                    data-text="Une petite table pour dessiner, jouer et s’exprimer autrement : chez l’enfant, la parole passe aussi par le jeu.">
+              <img src="images/cabinet-coin-enfants.jpg" width="1600" height="1200" style="--pos:60% 38%" draggable="false" decoding="async" loading="lazy"
+                   alt="Marie-Claude Sanchez assise dans un fauteuil, près de la petite table et des chaises vertes réservées aux enfants.">
+              <div class="slide__ph" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#m-paisley"/></svg><strong>Photo du cabinet</strong><span>Ajoutez votre image&nbsp;: <code>images/cabinet-coin-enfants.jpg</code></span></div>
+              <figcaption>Le coin des enfants</figcaption>
+            </figure>
+            <figure class="slide" role="group" aria-roledescription="diapositive" aria-label="3 sur 5"
+                    data-title="Un accueil chaleureux"
+                    data-text="Un bureau en bois, des murs clairs et une ambiance sereine : un lieu simple et chaleureux pour vous accueillir.">
+              <img src="images/cabinet-bureau.jpg" width="1200" height="1600" style="--pos:50% 40%" draggable="false" decoding="async" loading="lazy"
+                   alt="Marie-Claude Sanchez assise à son bureau en bois, dans le cabinet aux murs blancs.">
+              <div class="slide__ph" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#m-paisley"/></svg><strong>Photo du cabinet</strong><span>Ajoutez votre image&nbsp;: <code>images/cabinet-bureau.jpg</code></span></div>
+              <figcaption>Un accueil chaleureux</figcaption>
+            </figure>
+            <figure class="slide" role="group" aria-roledescription="diapositive" aria-label="4 sur 5"
+                    data-title="Un cocon de lumière"
+                    data-text="De grands voilages laissent entrer une lumière douce tout en préservant l’intimité des séances.">
+              <img src="images/cabinet-salon-lumiere.jpg" width="1600" height="1200" style="--pos:50% 55%" draggable="false" decoding="async" loading="lazy"
+                   alt="Canapé, fauteuil et table d’appoint devant de grands voilages qui diffusent la lumière du jour.">
+              <div class="slide__ph" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#m-paisley"/></svg><strong>Photo du cabinet</strong><span>Ajoutez votre image&nbsp;: <code>images/cabinet-salon-lumiere.jpg</code></span></div>
+              <figcaption>Un cocon de lumière</figcaption>
+            </figure>
+            <figure class="slide" role="group" aria-roledescription="diapositive" aria-label="5 sur 5"
+                    data-title="La salle d’attente"
+                    data-text="Une salle d’attente claire et paisible, partagée avec les autres praticiens du Centre de Santé Sourdis.">
+              <img src="images/cabinet-salle-attente.jpg" width="1600" height="1200" style="--pos:50% 50%" draggable="false" decoding="async" loading="lazy"
+                   alt="Salle d’attente du Centre de Santé Sourdis : chaises blanches, murs vert d’eau et affiches graphiques.">
+              <div class="slide__ph" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#m-paisley"/></svg><strong>Photo du cabinet</strong><span>Ajoutez votre image&nbsp;: <code>images/cabinet-salle-attente.jpg</code></span></div>
+              <figcaption>La salle d’attente</figcaption>
+            </figure>
+
+            <button class="stage__zoom" type="button" data-g-zoom aria-label="Agrandir la photo"><svg class="i" aria-hidden="true"><use href="#i-expand"/></svg></button>
+            <div class="dots" data-g-dots></div>
+          </div>
+        </div>
+
+        <div class="gallery__panel" data-reveal style="--d:.14s">
+          <p class="gallery__count" aria-hidden="true"><span data-g-count>01</span><small>/ <span data-g-total>05</span></small></p>
+          <div class="gallery__caption" data-g-caption aria-live="off">
+            <h3 class="gallery__title" data-g-title>L’espace de consultation</h3>
+            <p class="gallery__text" data-g-text>Canapé, fauteuil et lumière du jour tamisée par les voilages : un cadre apaisant pour prendre la parole à son rythme.</p>
+          </div>
+          <div class="gallery__controls">
+            <button class="icon-btn" type="button" data-g-prev data-magnetic="0.3" aria-label="Photo précédente"><svg class="i" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+            <button class="icon-btn" type="button" data-g-next data-magnetic="0.3" aria-label="Photo suivante"><svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+            <button class="autoplay" type="button" data-g-play aria-label="Mettre le diaporama en pause">
+              <svg class="autoplay__ring" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" pathLength="1"/></svg>
+              <svg class="i i--pause" aria-hidden="true"><use href="#i-pause"/></svg>
+              <svg class="i i--play" aria-hidden="true"><use href="#i-play"/></svg>
+            </button>
+          </div>
+          <div class="thumbs" data-g-thumbs></div>
+        </div>
+      </div>
+
+      <div class="cabinet-note" data-reveal>
+        <span><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Au sein du Centre de Santé Sourdis</span>
+        <span><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Consultations sur rendez-vous</span>
+        <span><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Cadre confidentiel</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= ACCOMPAGNEMENT ======================= -->
+  <section class="section section--cream" id="accompagnement" aria-labelledby="accompagnement-title">
+    <div class="float3d" data-parallax="0.16" aria-hidden="true" style="right:-40px;top:9%;width:clamp(110px,12vw,170px);--dur:19s;--delay:-6s">
+      <div class="float3d__inner"><svg class="float3d__layer float3d__layer--back" viewBox="0 0 120 120" style="--p-body:var(--royal)"><use href="#m-pb"/></svg><svg class="float3d__layer float3d__layer--front" viewBox="0 0 120 120" style="--p-inner:var(--peri)"><use href="#m-pi"/></svg></div>
+    </div>
+    <svg class="swirl" viewBox="0 0 240 230" aria-hidden="true" style="left:-30px;bottom:6%;width:clamp(150px,16vw,230px);rotate:180deg;scale:-1 1"><path pathLength="1" d="M0 2C30 30 60 52 88 68C112 82 140 92 160 90C182 88 196 70 192 52C188 36 170 30 158 38C148 46 152 62 166 62"/><path pathLength="1" d="M88 68C106 88 112 120 120 150C128 182 140 210 172 214C204 218 224 196 222 170C220 146 198 132 180 140C164 148 164 172 180 176C190 178 198 170 196 162"/></svg>
+
+    <div class="container">
+      <header class="section-head">
+        <div data-reveal>
+          <p class="eyebrow">Accompagnement</p>
+          <h2 id="accompagnement-title">Une écoute adaptée <em>à chaque âge de la vie</em></h2>
+        </div>
+        <p class="section-head__text" data-reveal style="--d:.12s">Chaque histoire est singulière. Les consultations offrent un temps de parole bienveillant, confidentiel et sans jugement, pour comprendre ce qui fait souffrir et retrouver un équilibre.</p>
+      </header>
+
+      <div class="cards" data-stagger>
+        <article class="card card--a" id="enfants" data-tilt="9" data-reveal>
+          <div class="card__bg" aria-hidden="true"><svg class="card__motif" viewBox="0 0 120 120"><use href="#m-paisley"/></svg><span class="card__glare"></span></div>
+          <div class="card__body">
+            <div class="card__head"><span class="card__icon"><svg viewBox="0 0 60 100" aria-hidden="true" style="width:22px"><use href="#m-drop"/></svg></span><span class="card__num">01</span></div>
+            <h3 class="card__title">Enfants</h3>
+            <p class="card__tag">Grandir en confiance</p>
+            <p class="card__text">Avec des mots, des jeux ou des dessins, l’enfant trouve un espace pour exprimer ce qui le préoccupe. Le travail se fait en lien avec les parents.</p>
+            <ul class="card__list">
+              <li>Peurs, anxiété, troubles du sommeil</li>
+              <li>Difficultés à l’école ou avec les autres</li>
+              <li>Colère, tristesse, repli sur soi</li>
+              <li>Séparation, deuil, changements familiaux</li>
+            </ul>
+            <a class="card__link" href="#contact" data-open="rdv">Prendre rendez-vous <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </article>
+
+        <article class="card card--b" id="adolescents" data-tilt="9" data-reveal>
+          <div class="card__bg" aria-hidden="true"><svg class="card__motif" viewBox="0 0 120 120"><use href="#m-paisley"/></svg><span class="card__glare"></span></div>
+          <div class="card__body">
+            <div class="card__head"><span class="card__icon"><svg viewBox="0 0 120 120" aria-hidden="true" style="--p-body:var(--peri)"><use href="#m-pb"/></svg></span><span class="card__num">02</span></div>
+            <h3 class="card__title">Adolescents</h3>
+            <p class="card__tag">Un espace rien qu’à soi</p>
+            <p class="card__text">Un lieu confidentiel pour déposer ce qui pèse, être écouté sans jugement et traverser les remaniements de l’adolescence.</p>
+            <ul class="card__list">
+              <li>Mal-être, anxiété, estime de soi</li>
+              <li>Relations familiales et amicales</li>
+              <li>Pression scolaire, orientation</li>
+              <li>Harcèlement, isolement, conduites à risque</li>
+            </ul>
+            <a class="card__link" href="#contact" data-open="rdv">Prendre rendez-vous <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </article>
+
+        <article class="card card--c" id="adultes" data-tilt="9" data-reveal>
+          <div class="card__bg" aria-hidden="true"><svg class="card__motif" viewBox="0 0 120 120"><use href="#m-paisley"/></svg><span class="card__glare"></span></div>
+          <div class="card__body">
+            <div class="card__head"><span class="card__icon"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg></span><span class="card__num">03</span></div>
+            <h3 class="card__title">Adultes</h3>
+            <p class="card__tag">Prendre soin de soi</p>
+            <p class="card__text">Un temps pour soi, pour mettre des mots sur ce qui fait souffrir, comprendre ce qui se répète et retrouver de l’élan.</p>
+            <ul class="card__list">
+              <li>Stress, anxiété, épuisement</li>
+              <li>Tristesse, perte d’élan, deuil</li>
+              <li>Difficultés relationnelles ou familiales</li>
+              <li>Transitions et questionnements de vie</li>
+            </ul>
+            <a class="card__link" href="#contact" data-open="rdv">Prendre rendez-vous <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </article>
+      </div>
+
+      <ul class="values" data-stagger>
+        <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></span><div><strong>Une écoute bienveillante</strong><p>Un accueil chaleureux et sans jugement, à votre rythme.</p></div></li>
+        <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg></span><div><strong>La confidentialité</strong><p>Le secret professionnel encadre chacun des échanges.</p></div></li>
+        <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg></span><div><strong>Des horaires étendus</strong><p>Du lundi au vendredi, de 8h à 19h, sur rendez-vous.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ======================= TARIFS & HORAIRES ======================= -->
+  <section class="section section--light" id="tarifs" aria-labelledby="tarifs-title">
+    <svg class="swirl" viewBox="0 0 240 230" aria-hidden="true" style="left:-40px;bottom:30px;width:clamp(140px,15vw,220px);rotate:-90deg"><path pathLength="1" d="M0 2C30 30 60 52 88 68C112 82 140 92 160 90C182 88 196 70 192 52C188 36 170 30 158 38C148 46 152 62 166 62"/><path pathLength="1" d="M88 68C106 88 112 120 120 150C128 182 140 210 172 214C204 218 224 196 222 170C220 146 198 132 180 140C164 148 164 172 180 176C190 178 198 170 196 162"/></svg>
+    <div class="container">
+      <header class="section-head">
+        <div data-reveal>
+          <p class="eyebrow">Infos pratiques</p>
+          <h2 id="tarifs-title">Tarifs <em>&amp;</em> horaires</h2>
+        </div>
+        <p class="section-head__text" data-reveal style="--d:.12s">Les consultations ont lieu au cabinet, sur rendez-vous, du lundi au vendredi.</p>
+      </header>
+
+      <div class="practical">
+        <div class="prices" data-stagger>
+          <!-- ✏️ TARIFS -->
+          <article class="price" data-tilt="5" data-reveal>
+            <div>
+              <p class="price__label"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Séance individuelle</p>
+              <h3 class="price__title">Consultation</h3>
+              <p class="price__desc">Enfant, adolescent ou adulte</p>
+            </div>
+            <p class="price__amount">60<span>&nbsp;€</span></p>
+          </article>
+          <article class="price price--student" data-tilt="5" data-reveal>
+            <div>
+              <p class="price__label"><svg class="i" aria-hidden="true"><use href="#i-cap"/></svg>Étudiants</p>
+              <h3 class="price__title">Tarif étudiant</h3>
+              <p class="price__desc">Sur présentation de la carte étudiante</p>
+            </div>
+            <p class="price__amount">50<span>&nbsp;€</span></p>
+          </article>
+          <p class="note" data-reveal><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span>Certaines mutuelles prennent en charge tout ou partie des séances de psychologue&nbsp;: pensez à vous renseigner auprès de la vôtre.</span></p>
+        </div>
+
+        <!-- ✏️ HORAIRES (pensez aussi à modifier la constante HOURS dans le script) -->
+        <article class="hours on-dark" data-tilt="3" data-reveal style="--d:.1s">
+          <svg class="hours__motif" viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg>
+          <header class="hours__head">
+            <h3 class="hours__title">Horaires du cabinet</h3>
+            <span class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Sur rendez-vous</span></span>
+          </header>
+          <ol class="days">
+            <li class="day" data-day="1"><span class="day__name">Lundi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.12s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
+            <li class="day" data-day="2"><span class="day__name">Mardi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.06s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.18s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
+            <li class="day" data-day="3"><span class="day__name">Mercredi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.12s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.24s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
+            <li class="day" data-day="4"><span class="day__name">Jeudi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.18s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.3s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
+            <li class="day" data-day="5"><span class="day__name">Vendredi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.24s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.36s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
+            <li class="day day--off" data-day="6"><span class="day__name">Samedi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"></span><span class="day__time">Fermé</span></li>
+            <li class="day day--off" data-day="0"><span class="day__name">Dimanche<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"></span><span class="day__time">Fermé</span></li>
+          </ol>
+          <div class="hours__scale" aria-hidden="true"><span></span><span><i style="left:0%">8h</i><i style="left:36.36%">12h</i><i style="left:45.45%">13h</i><i style="left:100%">19h</i></span><span></span></div>
+          <footer class="hours__foot">
+            <p><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Consultations sur rendez-vous uniquement</p>
+            <a class="btn btn--light btn--sm" href="#contact" data-open="rdv" data-magnetic="0.2">Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </footer>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= CONTACT & MENTIONS ======================= -->
+  <section class="section section--cream" id="contact" aria-labelledby="contact-title">
+    <div class="float3d" data-parallax="0.1" aria-hidden="true" style="right:3%;top:4%;width:clamp(70px,7vw,110px);--dur:15s;--delay:-3s">
+      <div class="float3d__inner"><svg class="float3d__layer float3d__layer--back" viewBox="0 0 120 120"><use href="#m-pb"/></svg><svg class="float3d__layer float3d__layer--front" viewBox="0 0 120 120"><use href="#m-pi"/></svg></div>
+    </div>
+    <div class="container contact">
+      <div class="contact__main">
+        <div data-reveal>
+          <p class="eyebrow">Contact</p>
+          <h2 id="contact-title">Prendre <em>rendez-vous</em></h2>
+          <p class="contact__intro">Pour toute demande de rendez-vous ou d’information, le plus simple est d’appeler. Si la ligne ne répond pas — une consultation est peut-être en cours — n’hésitez pas à laisser un message ou à écrire un e-mail.</p>
+        </div>
+        <ul class="tiles" data-stagger>
+          <li class="tile-row" data-reveal>
+            <a class="tile" href="tel:0601685312" data-tilt="6">
+              <span class="tile__ico"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg></span>
+              <span><span class="tile__label">Téléphone</span><span class="tile__value nowrap">06 01 68 53 12</span><span class="tile__hint">Appeler <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></span>
+            </a>
+            <button class="copy-btn" type="button" data-copy="06 01 68 53 12" data-copy-label="Numéro" aria-label="Copier le numéro de téléphone"><svg class="i i--copy" aria-hidden="true"><use href="#i-copy"/></svg><svg class="i i--check" aria-hidden="true"><use href="#i-check"/></svg></button>
+          </li>
+          <li class="tile-row" data-reveal>
+            <a class="tile" href="mailto:sanchez.psy@proton.me" data-tilt="6">
+              <span class="tile__ico"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span>
+              <span><span class="tile__label">E-mail</span><span class="tile__value">sanchez.psy@proton.me</span><span class="tile__hint">Écrire un message <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></span>
+            </a>
+            <button class="copy-btn" type="button" data-copy="sanchez.psy@proton.me" data-copy-label="Adresse e-mail" aria-label="Copier l’adresse e-mail"><svg class="i i--copy" aria-hidden="true"><use href="#i-copy"/></svg><svg class="i i--check" aria-hidden="true"><use href="#i-check"/></svg></button>
+          </li>
+          <li class="tile-row" data-reveal>
+            <a class="tile" href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" data-tilt="6">
+              <span class="tile__ico"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg></span>
+              <span><span class="tile__label">Adresse · Centre de Santé Sourdis</span><span class="tile__value">132 rue François de Sourdis<br>33000 Bordeaux</span><span class="tile__hint">Itinéraire Google Maps <svg class="i" aria-hidden="true"><use href="#i-arrow-ur"/></svg></span></span>
+            </a>
+            <button class="copy-btn" type="button" data-copy="132 rue François de Sourdis, 33000 Bordeaux" data-copy-label="Adresse" aria-label="Copier l’adresse postale"><svg class="i i--copy" aria-hidden="true"><use href="#i-copy"/></svg><svg class="i i--check" aria-hidden="true"><use href="#i-check"/></svg></button>
+          </li>
+        </ul>
+        <p class="urgent" data-reveal><svg class="i" aria-hidden="true"><use href="#i-lifebuoy"/></svg><span>En cas d’urgence, composez le <a href="tel:15">15</a> (SAMU) ou le <a href="tel:112">112</a>. Si vous avez des idées suicidaires ou êtes inquiet pour un proche, le <a href="tel:3114">3114</a> répond gratuitement, 24h/24 et 7j/7.</span></p>
+      </div>
+
+      <aside class="contact__side" aria-label="Accès et identifiants professionnels">
+        <figure class="access" data-tilt="4" data-reveal style="--d:.1s">
+          <div class="access__img">
+            <!-- ✏️ Photo de l’entrée : remplacez images/acces-plaque-centre-sante-sourdis.jpg -->
+            <img src="images/acces-plaque-centre-sante-sourdis.jpg" width="900" height="1200" loading="lazy" decoding="async"
+                 alt="Plaques professionnelles à l’entrée du Centre de Santé Sourdis ; celle de Marie-Claude Sanchez, psychologue, se trouve en bas à droite.">
+            <span class="access__marker" aria-hidden="true"><span>Ici</span></span>
+            <div class="access__ph" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#m-paisley"/></svg><span>Photo de l’entrée</span></div>
+          </div>
+          <figcaption><strong>Centre de Santé Sourdis</strong>Repérez la plaque « Marie-Claude SANCHEZ » à l’entrée du 132 rue François de Sourdis.</figcaption>
+        </figure>
+
+        <div class="ids" data-tilt="5" data-reveal style="--d:.18s">
+          <h3><svg class="i" aria-hidden="true"><use href="#i-id"/></svg>Identifiants professionnels</h3>
+          <dl>
+            <div><dt>N° ADELI</dt><dd>33 93 11 54 0</dd></div>
+            <div><dt>N° RPPS</dt><dd>1000 96 06 392</dd></div>
+          </dl>
+          <p>Psychologue clinicienne — titre protégé par la loi n° 85-772 du 25 juillet 1985. Exercice dans le respect du code de déontologie des psychologues et du secret professionnel.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<!-- ======================= PIED DE PAGE ======================= -->
+<footer class="footer on-dark">
+  <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path class="w1" d="M0 58C180 98 380 102 620 70C860 38 1060 18 1260 44C1340 54 1400 70 1440 80V120H0Z"/>
+    <path class="w2" d="M0 82C220 112 420 116 660 86C900 56 1080 44 1260 64C1340 72 1400 86 1440 96V120H0Z"/>
+  </svg>
+  <svg class="footer__motif footer__motif--1" viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg>
+  <svg class="swirl" viewBox="0 0 240 230" aria-hidden="true"><path pathLength="1" d="M0 2C30 30 60 52 88 68C112 82 140 92 160 90C182 88 196 70 192 52C188 36 170 30 158 38C148 46 152 62 166 62"/><path pathLength="1" d="M88 68C106 88 112 120 120 150C128 182 140 210 172 214C204 218 224 196 222 170C220 146 198 132 180 140C164 148 164 172 180 176C190 178 198 170 196 162"/></svg>
+
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <svg class="brand__mark" viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg>
+      <p class="footer__name">Marie-Claude SANCHEZ</p>
+      <p class="footer__role">Psychologue clinicienne</p>
+      <p class="footer__publics">Enfants · Adolescents · Adultes</p>
+    </div>
+    <div>
+      <h4>Le cabinet</h4>
+      <ul>
+        <li><address>Centre de Santé Sourdis<br>132 rue François de Sourdis<br>33000 Bordeaux</address></li>
+        <li><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">Itinéraire Google Maps ↗</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:0601685312">06 01 68 53 12</a></li>
+        <li><a href="mailto:sanchez.psy@proton.me">sanchez.psy@proton.me</a></li>
+        <li><a href="#contact" data-open="rdv">Prendre rendez-vous</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Horaires</h4>
+      <ul>
+        <li>Du lundi au vendredi</li>
+        <li>08h00 – 12h00</li>
+        <li>13h00 – 19h00</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__legal">
+    <p>© <span data-year>2026</span> Marie-Claude SANCHEZ · Psychologue clinicienne · N° ADELI 33 93 11 54 0 · N° RPPS 1000 96 06 392</p>
+    <p class="footer__links"><button class="link-btn" type="button" data-open="legal">Mentions légales</button><a href="#top">Haut de page ↑</a></p>
+  </div>
+</footer>
+
+<!-- ======================= Barre d'accès rapide (mobile) ======================= -->
+<nav class="dock" aria-label="Accès rapide">
+  <a class="dock__addr" href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">
+    <span class="dock__pin"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg></span>
+    <span class="dock__txt"><strong>132 rue François de Sourdis</strong><small>33000 Bordeaux</small></span>
+  </a>
+  <a class="dock__btn" href="tel:0601685312" aria-label="Appeler le 06 01 68 53 12"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg></a>
+  <a class="dock__btn dock__btn--rdv" href="#contact" data-open="rdv">RDV</a>
+</nav>
+
+<div class="toast" role="status" aria-live="polite"></div>
+
+<!-- ======================= Fenêtre « Prendre rendez-vous » ======================= -->
+<dialog class="modal" id="dlg-rdv" aria-labelledby="rdv-title">
+  <div class="modal__card">
+    <button class="modal__close" type="button" data-close aria-label="Fermer"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+    <p class="eyebrow">Consultations sur rendez-vous</p>
+    <h2 id="rdv-title">Prendre rendez-vous</h2>
+    <p class="modal__lead">Le plus simple est d’appeler. Si la ligne ne répond pas, laissez un message ou écrivez un e-mail en indiquant vos disponibilités.</p>
+    <div class="options">
+      <a class="option" href="tel:0601685312">
+        <span class="option__ico"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg></span>
+        <span><strong>Appeler</strong><span class="nowrap">06 01 68 53 12</span></span>
+        <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+      </a>
+      <a class="option option--alt" href="mailto:sanchez.psy@proton.me?subject=Demande%20de%20rendez-vous&amp;body=Bonjour%20Madame%20Sanchez%2C%0D%0A%0D%0AJe%20souhaiterais%20prendre%20rendez-vous%20pour%20%28moi-m%C3%AAme%20%2F%20mon%20enfant%20%2F%20mon%20adolescent%29.%0D%0AMes%20disponibilit%C3%A9s%20%3A%20%0D%0AMon%20num%C3%A9ro%20de%20t%C3%A9l%C3%A9phone%20%3A%20%0D%0A%0D%0ABien%20cordialement%2C%0D%0A">
+        <span class="option__ico"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span>
+        <span><strong>Écrire un e-mail</strong><span>sanchez.psy@proton.me</span></span>
+        <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
+    <ul class="modal__infos">
+      <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span>Du lundi au vendredi · 08h00 – 12h00 / 13h00 – 19h00 · <span data-status><span data-status-text></span></span></span></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">132 rue François de Sourdis, 33000 Bordeaux (Centre de Santé Sourdis)</a></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-cap"/></svg><span>Consultation 60&nbsp;€ · Tarif étudiant 50&nbsp;€</span></li>
+    </ul>
+  </div>
+</dialog>
+
+<!-- ======================= Fenêtre « Mentions légales » ======================= -->
+<dialog class="modal" id="dlg-legal" aria-labelledby="legal-title">
+  <div class="modal__card modal__card--wide">
+    <button class="modal__close" type="button" data-close aria-label="Fermer"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+    <p class="eyebrow">Informations légales</p>
+    <h2 id="legal-title">Mentions légales</h2>
+    <div class="legal">
+      <h3>Éditrice du site</h3>
+      <p>Marie-Claude SANCHEZ, psychologue clinicienne<br>132 rue François de Sourdis, 33000 Bordeaux<br>Tél. <a href="tel:0601685312">06 01 68 53 12</a> · <a href="mailto:sanchez.psy@proton.me">sanchez.psy@proton.me</a></p>
+      <p>N° ADELI&nbsp;: 33 93 11 54 0 · N° RPPS&nbsp;: 1000 96 06 392<br>Directrice de la publication&nbsp;: Marie-Claude SANCHEZ</p>
+      <h3>Profession réglementée</h3>
+      <p>L’usage du titre de psychologue est protégé par l’article 44 de la loi n° 85-772 du 25 juillet 1985. L’exercice s’inscrit dans le respect du code de déontologie des psychologues et du secret professionnel.</p>
+      <h3>Hébergement</h3>
+      <!-- ✏️ À compléter lors de la mise en ligne -->
+      <p><span class="todo">[À compléter : nom, adresse et téléphone de l’hébergeur du site]</span></p>
+      <h3>Données personnelles &amp; cookies</h3>
+      <p>Ce site ne comporte ni formulaire, ni outil de mesure d’audience, ni cookie publicitaire : aucune donnée personnelle n’y est collectée. Les polices de caractères (Google Fonts) et la bibliothèque d’animation 3D (cdnjs) sont chargées depuis des serveurs tiers, ce qui implique la transmission technique de votre adresse IP à ces prestataires. Les échanges par téléphone ou par e-mail restent strictement confidentiels.</p>
+      <h3>Propriété intellectuelle</h3>
+      <p>Textes, photographies et éléments graphiques : tous droits réservés.</p>
+    </div>
+  </div>
+</dialog>
+
+<!-- ======================= Menu mobile ======================= -->
+<dialog class="menu" id="dlg-menu" aria-label="Menu">
+  <div class="menu__inner">
+    <div class="menu__top">
+      <a class="brand" href="#top"><svg class="brand__mark" viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg><span class="brand__text"><span class="brand__name">Marie-Claude SANCHEZ</span><span class="brand__role">Psychologue clinicienne</span></span></a>
+      <button class="menu-btn" type="button" data-close aria-label="Fermer le menu" style="display:grid"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <nav class="menu__nav" aria-label="Menu principal">
+      <a href="#cabinet" style="--i:0"><small>01</small>Le cabinet</a>
+      <a href="#accompagnement" style="--i:1"><small>02</small>Accompagnement</a>
+      <a href="#tarifs" style="--i:2"><small>03</small>Tarifs &amp; horaires</a>
+      <a href="#contact" style="--i:3"><small>04</small>Contact</a>
+    </nav>
+    <div class="menu__contact">
+      <a href="tel:0601685312"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>06 01 68 53 12</a>
+      <a href="mailto:sanchez.psy@proton.me"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg>sanchez.psy@proton.me</a>
+      <a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>132 rue François de Sourdis, 33000 Bordeaux</a>
+      <a class="btn" href="#contact" data-open="rdv" style="margin-top:8px">Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+    <svg class="menu__motif" viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg>
+  </div>
+</dialog>
+
+<!-- ======================= Visionneuse photo ======================= -->
+<dialog class="lightbox on-dark" id="dlg-lightbox" aria-label="Photo du cabinet en grand">
+  <figure class="lightbox__fig"><img alt="" data-lb-img></figure>
+  <div class="lightbox__bar">
+    <button class="icon-btn" type="button" data-lb-prev aria-label="Photo précédente"><svg class="i" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+    <p class="lightbox__cap" aria-live="polite"><strong data-lb-title></strong><span data-lb-count></span></p>
+    <button class="icon-btn" type="button" data-lb-next aria-label="Photo suivante"><svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+  </div>
+  <button class="icon-btn lightbox__close" type="button" data-close aria-label="Fermer la visionneuse"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+</dialog>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ==========================================================================
+     ✏️ RÉGLAGES DU CABINET
+     ========================================================================== */
+  // Horaires (heure de Paris) en minutes depuis minuit — 1 = lundi … 5 = vendredi
+  const HOURS = {
+    1: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
+    2: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
+    3: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
+    4: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
+    5: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]]
+  };
+  const SLIDE_MS = 6500; // durée d'affichage de chaque photo du carrousel
+  const THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+  const THREE_SRI = 'sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==';
+
+  /* ==========================================================================
+     Outils
+     ========================================================================== */
+  const $ = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+  const html = document.documentElement;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const safe = (name, fn) => { try { fn(); } catch (err) { console.warn('[site] ' + name, err); } };
+  html.style.scrollBehavior = 'auto'; // le défilement fluide est géré en JS
+
+  const scrollHooks = [];
+  let ticking = false;
+  const runScrollHooks = () => { ticking = false; scrollHooks.forEach((fn) => fn()); };
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(runScrollHooks); } };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+
+  /* ==========================================================================
+     Fenêtres modales (rendez-vous, mentions légales, menu, visionneuse)
+     ========================================================================== */
+  function openDialog(dlg, opener) {
+    if (!dlg || typeof dlg.showModal !== 'function') return false;
+    if (dlg.open) return true;
+    dlg._opener = opener || document.activeElement;
+    dlg.classList.remove('is-closing');
+    try { dlg.showModal(); } catch (err) { return false; }
+    html.classList.add('has-modal');
+    return true;
+  }
+  function closeDialog(dlg, immediate) {
+    if (!dlg || !dlg.open) return;
+    if (immediate || reduceMotion) { dlg.classList.remove('is-closing'); dlg.close(); return; }
+    if (dlg.classList.contains('is-closing')) return;
+    dlg.classList.add('is-closing');
+    setTimeout(() => { dlg.classList.remove('is-closing'); if (dlg.open) dlg.close(); }, 330);
+  }
+  safe('dialogs', () => {
+    $$('dialog').forEach((dlg) => {
+      dlg.addEventListener('cancel', (e) => { e.preventDefault(); closeDialog(dlg); });
+      dlg.addEventListener('click', (e) => {
+        if (e.target === dlg || e.target.closest('[data-close]')) closeDialog(dlg);
+      });
+      dlg.addEventListener('close', () => {
+        if (!$('dialog[open]')) html.classList.remove('has-modal');
+        const o = dlg._opener;
+        if (o && document.contains(o) && typeof o.focus === 'function') o.focus({ preventScroll: true });
+      });
+    });
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-open]');
+      if (!t) return;
+      const dlg = document.getElementById('dlg-' + t.dataset.open);
+      const current = t.closest('dialog[open]');
+      if (current && current !== dlg) closeDialog(current, true);
+      if (openDialog(dlg, t)) e.preventDefault();
+    });
+  });
+
+  /* ==========================================================================
+     Défilement fluide vers les ancres (compense l'en-tête fixe)
+     ========================================================================== */
+  let scrollRaf = 0;
+  const headerOffset = () => { const bar = $('.header__bar'); return bar ? bar.getBoundingClientRect().bottom + 18 : 0; };
+  function scrollToY(y) {
+    cancelAnimationFrame(scrollRaf);
+    const start = window.scrollY, dist = y - start;
+    if (reduceMotion || Math.abs(dist) < 2) { window.scrollTo(0, y); return; }
+    const dur = clamp(Math.abs(dist) * 0.42, 520, 1300), t0 = performance.now();
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const step = (now) => {
+      const p = clamp((now - t0) / dur, 0, 1);
+      window.scrollTo(0, start + dist * ease(p));
+      if (p < 1) scrollRaf = requestAnimationFrame(step);
+    };
+    scrollRaf = requestAnimationFrame(step);
+  }
+  safe('anchors', () => {
+    ['wheel', 'touchstart'].forEach((ev) => window.addEventListener(ev, () => cancelAnimationFrame(scrollRaf), { passive: true }));
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || a.hasAttribute('data-open')) return;
+      const id = decodeURIComponent(a.getAttribute('href').slice(1));
+      const target = id ? document.getElementById(id) : null;
+      if (id && !target) return;
+      e.preventDefault();
+      const dlg = a.closest('dialog[open]');
+      if (dlg) closeDialog(dlg, true);
+      const top = !target || id === 'top' ? 0 : target.getBoundingClientRect().top + window.scrollY - headerOffset();
+      scrollToY(Math.max(0, top));
+      if (target && id !== 'top') {
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
+      try { history.replaceState(null, '', '#' + (id || 'top')); } catch (err) { /* iframe / bac à sable */ }
+    });
+  });
+
+  /* ==========================================================================
+     En-tête : état au défilement, barre de progression, navigation active
+     ========================================================================== */
+  safe('header', () => {
+    const progress = $('.progress');
+    scrollHooks.push(() => {
+      const y = window.scrollY;
+      html.classList.toggle('is-scrolled', y > 30);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (progress) progress.style.transform = 'scaleX(' + (max > 0 ? clamp(y / max, 0, 1) : 0).toFixed(4) + ')';
+    });
+    const nav = $('.nav'), pill = $('.nav__pill');
+    if (!nav || !pill) return;
+    const links = $$('a[href^="#"]', nav);
+    let active = null;
+    const movePill = (link) => {
+      if (!link || !link.offsetWidth) { nav.classList.remove('has-pill'); return; }
+      pill.style.width = link.offsetWidth + 'px';
+      pill.style.transform = 'translateX(' + link.offsetLeft + 'px)';
+      nav.classList.add('has-pill');
+    };
+    const setActive = (id) => {
+      active = links.find((a) => a.getAttribute('href') === '#' + id) || null;
+      links.forEach((a) => (a === active ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+      movePill(active);
+    };
+    links.forEach((a) => a.addEventListener('pointerenter', () => movePill(a)));
+    nav.addEventListener('pointerleave', () => movePill(active));
+    window.addEventListener('resize', () => movePill(active), { passive: true });
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((en) => { if (en.isIntersecting) setActive(en.target.id); });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    ['top', 'cabinet', 'accompagnement', 'tarifs', 'contact'].forEach((id) => { const el = document.getElementById(id); if (el) spy.observe(el); });
+  });
+
+  /* ==========================================================================
+     Apparitions au défilement (fondu + glissé), vrilles dessinées
+     ========================================================================== */
+  safe('reveal', () => {
+    $$('[data-stagger]').forEach((g) => Array.from(g.children).forEach((c, i) => {
+      if (!c.style.getPropertyValue('--d')) c.style.setProperty('--d', (i * 0.11).toFixed(2) + 's');
+    }));
+    const targets = $$('[data-reveal], .swirl');
+    if (!('IntersectionObserver' in window)) { targets.forEach((el) => el.classList.add('is-in')); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    targets.forEach((el) => io.observe(el));
+  });
+
+  /* ==========================================================================
+     Hero : titre animé lettre par lettre
+     ========================================================================== */
+  safe('hero-title', () => {
+    const hero = $('#top'), name = $('.hero__name');
+    if (name) {
+      let n = 0;
+      $$('.line', name).forEach((line) => {
+        const words = line.textContent.trim().split(/\s+/);
+        line.textContent = '';
+        words.forEach((w, wi) => {
+          const word = document.createElement('span');
+          word.className = 'word';
+          Array.from(w).forEach((ch) => {
+            const s = document.createElement('span');
+            s.className = 'ch';
+            s.textContent = ch;
+            s.style.setProperty('--cd', (0.2 + n++ * 0.034).toFixed(3) + 's');
+            word.appendChild(s);
+          });
+          line.appendChild(word);
+          if (wi < words.length - 1) line.appendChild(document.createTextNode(' '));
+        });
+      });
+      name.classList.add('is-split');
+    }
+    const go = () => requestAnimationFrame(() => requestAnimationFrame(() => hero && hero.classList.add('is-ready')));
+    if (document.fonts && document.fonts.ready) Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1200))]).then(go, go);
+    else go();
+  });
+
+  /* ==========================================================================
+     Cartes 3D : inclinaison + reflet qui suit le curseur (souris uniquement)
+     ========================================================================== */
+  safe('tilt', () => {
+    if (reduceMotion || !finePointer) return;
+    $$('[data-tilt]').forEach((el) => {
+      const max = parseFloat(el.dataset.tilt) || 8;
+      const cur = { rx: 0, ry: 0, gx: 50, gy: 0, s: 1 }, tgt = { rx: 0, ry: 0, gx: 50, gy: 0, s: 1 };
+      let raf = 0, hovering = false, rect = null, rectY = 0;
+      const frame = () => {
+        let moving = false;
+        for (const k in cur) {
+          const d = tgt[k] - cur[k];
+          if (Math.abs(d) > 0.005) { cur[k] += d * 0.12; moving = true; } else cur[k] = tgt[k];
+        }
+        if (!moving && !hovering) { el.style.transform = ''; raf = 0; return; }
+        el.style.transform = 'perspective(1100px) rotateX(' + cur.rx.toFixed(3) + 'deg) rotateY(' + cur.ry.toFixed(3) + 'deg) scale(' + cur.s.toFixed(4) + ')';
+        el.style.setProperty('--gx', cur.gx.toFixed(1) + '%');
+        el.style.setProperty('--gy', cur.gy.toFixed(1) + '%');
+        raf = requestAnimationFrame(frame);
+      };
+      const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
+      el.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        hovering = true; rect = el.getBoundingClientRect(); rectY = window.scrollY;
+        el.classList.add('is-hover'); tgt.s = 1.015; kick();
+      });
+      el.addEventListener('pointermove', (e) => {
+        if (!hovering) return;
+        if (!rect || rectY !== window.scrollY) { el.style.transform = ''; rect = el.getBoundingClientRect(); rectY = window.scrollY; }
+        const px = clamp((e.clientX - rect.left) / rect.width, 0, 1), py = clamp((e.clientY - rect.top) / rect.height, 0, 1);
+        tgt.ry = (px - 0.5) * 2 * max; tgt.rx = -(py - 0.5) * 2 * max;
+        tgt.gx = px * 100; tgt.gy = py * 100;
+        kick();
+      });
+      el.addEventListener('pointerleave', () => {
+        hovering = false; el.classList.remove('is-hover');
+        tgt.rx = 0; tgt.ry = 0; tgt.s = 1; tgt.gx = 50; tgt.gy = 0; kick();
+      });
+    });
+  });
+
+  /* ==========================================================================
+     Boutons : effet magnétique + remplissage depuis le point d'entrée
+     ========================================================================== */
+  safe('buttons', () => {
+    if (!finePointer) return;
+    $$('.btn').forEach((b) => {
+      const setOrigin = (e) => { const r = b.getBoundingClientRect(); b.style.setProperty('--x', (e.clientX - r.left) + 'px'); b.style.setProperty('--y', (e.clientY - r.top) + 'px'); };
+      b.addEventListener('pointerenter', setOrigin);
+      b.addEventListener('pointerleave', setOrigin);
+    });
+    if (reduceMotion) return;
+    $$('[data-magnetic]').forEach((el) => {
+      const k = parseFloat(el.dataset.magnetic) || 0.25;
+      el.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        const r = el.getBoundingClientRect();
+        el.style.translate = ((e.clientX - (r.left + r.width / 2)) * k).toFixed(1) + 'px ' + ((e.clientY - (r.top + r.height / 2)) * k).toFixed(1) + 'px';
+      });
+      el.addEventListener('pointerleave', () => { el.style.translate = ''; });
+    });
+  });
+
+  /* ==========================================================================
+     Horaires : statut « ouvert / fermé » en direct (heure de Paris)
+     ========================================================================== */
+  safe('hours', () => {
+    const DAYS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+    const fmt = (m) => String(Math.floor(m / 60)).padStart(2, '0') + 'h' + String(m % 60).padStart(2, '0');
+    const parisNow = () => {
+      try {
+        const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Paris', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+        const get = (t) => (parts.find((p) => p.type === t) || {}).value;
+        return { day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday')), min: parseInt(get('hour'), 10) * 60 + parseInt(get('minute'), 10) };
+      } catch (err) { const d = new Date(); return { day: d.getDay(), min: d.getHours() * 60 + d.getMinutes() }; }
+    };
+    const status = (now) => {
+      const slots = HOURS[now.day] || [];
+      const cur = slots.find(([a, b]) => now.min >= a && now.min < b);
+      if (cur) return { open: true, text: 'Ouvert · jusqu’à ' + fmt(cur[1]) };
+      const next = slots.find(([a]) => now.min < a);
+      if (next) return { open: false, text: (slots[0][0] < now.min ? 'Pause · reprise à ' : 'Fermé · ouvre à ') + fmt(next[0]) };
+      for (let i = 1; i <= 7; i++) {
+        const d = (now.day + i) % 7;
+        if (HOURS[d]) return { open: false, text: 'Fermé · ouvre ' + (i === 1 ? 'demain' : DAYS[d]) + ' à ' + fmt(HOURS[d][0][0]) };
+      }
+      return { open: false, text: 'Fermé' };
+    };
+    const render = () => {
+      const now = parisNow(), st = status(now);
+      $$('[data-status]').forEach((el) => {
+        el.classList.toggle('is-open', st.open);
+        const t = $('[data-status-text]', el);
+        if (t) t.textContent = st.text;
+      });
+      const all = Object.values(HOURS).flat(), first = Math.min(...all.map((s) => s[0])), last = Math.max(...all.map((s) => s[1]));
+      $$('.day').forEach((li) => {
+        const today = Number(li.dataset.day) === now.day;
+        li.classList.toggle('is-today', today);
+        const mark = $('.day__now', li);
+        if (!mark) return;
+        const show = today && now.min >= first && now.min <= last;
+        mark.hidden = !show;
+        if (show) mark.style.left = ((now.min - first) / (last - first) * 100).toFixed(2) + '%';
+      });
+    };
+    render();
+    setInterval(render, 30000);
+  });
+
+  /* ==========================================================================
+     Copier dans le presse-papiers + notification
+     ========================================================================== */
+  const toastEl = $('.toast');
+  let toastTimer = 0;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 2600);
+  }
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; } catch (err) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta); ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      return ok;
+    }
+  }
+  safe('copy', () => {
+    $$('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+      const ok = await copyText(b.dataset.copy);
+      toast(ok ? (b.dataset.copyLabel || 'Texte') + ' copié' + (/^(Adresse e-mail|Adresse)$/.test(b.dataset.copyLabel) ? 'e' : '') : 'Copie impossible : sélectionnez le texte');
+      if (ok) { b.classList.add('is-copied'); setTimeout(() => b.classList.remove('is-copied'), 1800); }
+    }));
+  });
+
+  /* ==========================================================================
+     Carrousel du cabinet + visionneuse plein écran
+     ========================================================================== */
+  safe('gallery', () => {
+    const root = $('[data-gallery]');
+    if (!root) return;
+    const stage = $('[data-g-stage]', root);
+    const slides = $$('.slide', stage);
+    const n = slides.length;
+    if (!n) return;
+    const caption = $('[data-g-caption]', root), titleEl = $('[data-g-title]', root), textEl = $('[data-g-text]', root);
+    const countEl = $('[data-g-count]', root), totalEl = $('[data-g-total]', root);
+    const thumbsWrap = $('[data-g-thumbs]', root), dotsWrap = $('[data-g-dots]', stage);
+    const playBtn = $('[data-g-play]', root), ring = $('.autoplay__ring circle', root);
+    let index = Math.max(0, slides.findIndex((s) => s.classList.contains('is-active')));
+    root.style.setProperty('--slide-ms', SLIDE_MS + 'ms');
+    if (totalEl) totalEl.textContent = String(n).padStart(2, '0');
+
+    // Image absente → visuel de remplacement élégant
+    slides.forEach((s) => {
+      const img = $('img', s);
+      if (!img) { s.classList.add('is-missing'); return; }
+      const miss = () => s.classList.add('is-missing');
+      if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) miss();
+      img.addEventListener('error', miss);
+      img.addEventListener('load', () => s.classList.remove('is-missing'));
+    });
+
+    // Vignettes (bureau) et points (mobile), générés depuis les diapositives
+    const thumbs = [], dots = [];
+    slides.forEach((s, i) => {
+      const label = 'Photo ' + (i + 1) + ' : ' + s.dataset.title;
+      const img = $('img', s);
+      if (thumbsWrap) {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'thumb'; b.setAttribute('aria-label', label);
+        if (img) {
+          const t = document.createElement('img');
+          t.src = img.getAttribute('src'); t.alt = ''; t.loading = 'lazy'; t.decoding = 'async';
+          t.style.setProperty('--pos', img.style.getPropertyValue('--pos') || '50% 50%');
+          t.addEventListener('error', () => b.classList.add('is-missing'));
+          b.appendChild(t);
+        }
+        b.addEventListener('click', () => go(i));
+        thumbsWrap.appendChild(b); thumbs.push(b);
+      }
+      if (dotsWrap) {
+        const d = document.createElement('button');
+        d.type = 'button'; d.className = 'dot'; d.setAttribute('aria-label', label);
+        d.addEventListener('click', () => go(i));
+        dotsWrap.appendChild(d); dots.push(d);
+      }
+    });
+
+    const restartRing = () => { if (!ring) return; ring.style.animation = 'none'; void ring.getBoundingClientRect(); ring.style.animation = ''; };
+    let swapTimer = 0;
+    function render(prev, dir) {
+      slides.forEach((s, k) => {
+        if (k === index) return;
+        s.classList.remove('is-active', 'is-prep');
+        s.setAttribute('aria-hidden', 'true');
+        if (k !== prev) s.classList.remove('is-leaving');
+      });
+      const inc = slides[index];
+      if (prev !== index && prev != null) {
+        const out = slides[prev];
+        out.style.setProperty('--to', (dir > 0 ? -3 : 3) + '%');
+        out.classList.add('is-leaving');
+        setTimeout(() => out.classList.remove('is-leaving'), 1150);
+        inc.style.setProperty('--from', (dir > 0 ? 4 : -4) + '%');
+        inc.classList.add('is-prep');
+        void inc.offsetWidth;
+        inc.classList.remove('is-prep');
+      }
+      inc.classList.add('is-active');
+      inc.removeAttribute('aria-hidden');
+      thumbs.forEach((b, k) => { b.classList.toggle('is-active', k === index); b.setAttribute('aria-current', String(k === index)); });
+      dots.forEach((b, k) => { b.classList.toggle('is-active', k === index); b.setAttribute('aria-current', String(k === index)); });
+      const apply = () => {
+        titleEl.textContent = inc.dataset.title || '';
+        textEl.textContent = inc.dataset.text || '';
+        countEl.textContent = String(index + 1).padStart(2, '0');
+        caption.classList.remove('is-swapping');
+      };
+      clearTimeout(swapTimer);
+      if (reduceMotion || prev == null) apply(); else { caption.classList.add('is-swapping'); swapTimer = setTimeout(apply, 260); }
+      restartRing();
+    }
+    function go(i, dir) {
+      const next = ((i % n) + n) % n;
+      if (next === index) return;
+      const prev = index;
+      index = next;
+      render(prev, dir || (next > prev ? 1 : -1));
+    }
+    const nextSlide = () => go(index + 1, 1), prevSlide = () => go(index - 1, -1);
+    $('[data-g-next]', root).addEventListener('click', nextSlide);
+    $('[data-g-prev]', root).addEventListener('click', prevSlide);
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+
+    // Lecture automatique (pause au survol, au focus clavier, hors écran ou à la demande)
+    const reasons = new Set();
+    let userPaused = reduceMotion;
+    const sync = () => {
+      root.classList.toggle('is-playing', !userPaused);
+      root.classList.toggle('is-paused', userPaused || reasons.size > 0);
+      if (playBtn) {
+        playBtn.classList.toggle('is-off', userPaused);
+        playBtn.setAttribute('aria-label', userPaused ? 'Lancer le diaporama' : 'Mettre le diaporama en pause');
+      }
+      caption.setAttribute('aria-live', userPaused ? 'polite' : 'off');
+    };
+    if (ring) ring.addEventListener('animationend', () => { if (!userPaused) nextSlide(); });
+    if (playBtn) playBtn.addEventListener('click', () => { userPaused = !userPaused; if (!userPaused) restartRing(); sync(); });
+    root.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { reasons.add('hover'); sync(); } });
+    root.addEventListener('pointerleave', () => { reasons.delete('hover'); sync(); });
+    root.addEventListener('focusin', (e) => { if (e.target.matches(':focus-visible')) { reasons.add('focus'); sync(); } });
+    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) { reasons.delete('focus'); sync(); } });
+    new IntersectionObserver(([en]) => { if (en.isIntersecting) reasons.delete('offscreen'); else reasons.add('offscreen'); sync(); }, { threshold: 0.3 }).observe(root);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) reasons.add('hidden'); else reasons.delete('hidden'); sync(); });
+
+    // Visionneuse
+    const lb = $('#dlg-lightbox');
+    const lbImg = lb && $('[data-lb-img]', lb), lbTitle = lb && $('[data-lb-title]', lb), lbCount = lb && $('[data-lb-count]', lb);
+    let lbIndex = 0;
+    const lbRender = () => {
+      const s = slides[lbIndex], im = $('img', s);
+      lb.classList.toggle('is-missing', s.classList.contains('is-missing'));
+      if (im) { lbImg.src = im.getAttribute('src'); lbImg.alt = im.alt; }
+      lbTitle.textContent = s.dataset.title || '';
+      lbCount.textContent = (lbIndex + 1) + ' / ' + n;
+    };
+    const openLightbox = () => {
+      if (!lb || slides[index].classList.contains('is-missing')) return;
+      lbIndex = index; lbRender();
+      if (openDialog(lb, document.activeElement)) { reasons.add('lightbox'); sync(); }
+    };
+    if (lb) {
+      $('[data-lb-prev]', lb).addEventListener('click', () => { lbIndex = (lbIndex - 1 + n) % n; lbRender(); });
+      $('[data-lb-next]', lb).addEventListener('click', () => { lbIndex = (lbIndex + 1) % n; lbRender(); });
+      lb.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % n; lbRender(); }
+        if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + n) % n; lbRender(); }
+      });
+      lb.addEventListener('click', (e) => { if (e.target.closest('.lightbox__fig') && e.target.tagName !== 'IMG') closeDialog(lb); });
+      lb.addEventListener('close', () => { reasons.delete('lightbox'); if (lbIndex !== index) go(lbIndex, 1); sync(); });
+    }
+    const zoomBtn = $('[data-g-zoom]', stage);
+    if (zoomBtn) zoomBtn.addEventListener('click', openLightbox);
+
+    // Glisser (tactile) pour changer de photo, clic pour agrandir
+    let sx = 0, sy = 0, down = false, moved = false;
+    stage.addEventListener('pointerdown', (e) => { if (e.button !== 0 || e.target.closest('button')) return; down = true; moved = false; sx = e.clientX; sy = e.clientY; });
+    stage.addEventListener('pointermove', (e) => { if (down && (Math.abs(e.clientX - sx) > 8 || Math.abs(e.clientY - sy) > 8)) moved = true; });
+    stage.addEventListener('pointerup', (e) => {
+      if (!down) return;
+      down = false;
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.2) { if (dx < 0) nextSlide(); else prevSlide(); }
+      else if (!moved) openLightbox();
+    });
+    stage.addEventListener('pointercancel', () => { down = false; });
+
+    render(null, 1);
+    sync();
+  });
+
+  /* ==========================================================================
+     Photo d'accès absente → visuel de remplacement
+     ========================================================================== */
+  safe('access', () => {
+    const fig = $('.access'), img = fig && $('img', fig);
+    if (!img) return;
+    const miss = () => fig.classList.add('is-missing');
+    if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) miss();
+    img.addEventListener('error', miss);
+  });
+
+  /* ==========================================================================
+     Parallaxe douce des éléments décoratifs
+     ========================================================================== */
+  safe('parallax', () => {
+    if (reduceMotion) return;
+    const items = $$('[data-parallax]').map((el) => ({ el, k: parseFloat(el.dataset.parallax) || 0.1, on: false }));
+    if (!items.length) return;
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      const it = items.find((x) => x.el === en.target);
+      if (it) it.on = en.isIntersecting;
+    }), { rootMargin: '25% 0px' });
+    items.forEach((it) => io.observe(it.el));
+    scrollHooks.push(() => {
+      const vh = window.innerHeight;
+      const reads = items.map((it) => {
+        if (!it.on) return null;
+        const r = it.el.parentElement.getBoundingClientRect();
+        return (r.top + r.height / 2 - vh / 2) * -it.k;
+      });
+      items.forEach((it, i) => { if (reads[i] !== null) it.el.style.translate = '0 ' + reads[i].toFixed(1) + 'px'; });
+    });
+  });
+
+  safe('year', () => $$('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); }));
+
+  /* ==========================================================================
+     SCÈNE 3D DU HERO (Three.js) — gouttes « cachemire », vrilles et ruban
+     ========================================================================== */
+  function hasWebGL() {
+    try {
+      const c = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl')));
+    } catch (err) { return false; }
+  }
+  function loadThree() {
+    return new Promise((resolve, reject) => {
+      if (window.THREE) { resolve(window.THREE); return; }
+      const s = document.createElement('script');
+      s.src = THREE_URL;
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      s.integrity = THREE_SRI;
+      s.referrerPolicy = 'no-referrer';
+      s.onload = () => (window.THREE ? resolve(window.THREE) : reject(new Error('THREE indisponible')));
+      s.onerror = () => reject(new Error('Chargement de Three.js impossible'));
+      document.head.appendChild(s);
+    });
+  }
+
+  function createHeroScene(THREE, canvas, host) {
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: (window.devicePixelRatio || 1) < 2, alpha: true, powerPreference: 'default' });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 80);
+    camera.position.set(0, 0, 16);
+    const world = new THREE.Group();
+    scene.add(world);
+
+    // Rendu « argile douce » : lumière enveloppante, reflet léger, liseré crème ; motif de goutte peint dans la matière
+    const VERT = [
+      'varying vec3 vN; varying vec3 vV; varying vec3 vP;',
+      '#ifdef RIBBON',
+      '  attribute float aMix; varying float vMix;',
+      '#endif',
+      'void main(){',
+      '  vP = position;',
+      '  #ifdef RIBBON',
+      '    vMix = aMix;',
+      '  #endif',
+      '  vec4 mv = modelViewMatrix * vec4(position, 1.0);',
+      '  vV = -mv.xyz;',
+      '  vN = normalize(normalMatrix * normal);',
+      '  gl_Position = projectionMatrix * mv;',
+      '}'
+    ].join('\n');
+    const FRAG = [
+      'uniform vec3 uBase; uniform vec3 uBase2; uniform vec3 uShade; uniform vec3 uRim; uniform vec3 uDecal;',
+      'uniform float uRimAmt; uniform float uSpec; uniform float uDecalOn; uniform float uBend; uniform float uAlpha;',
+      'uniform vec4 uDecalA; uniform vec3 uDecalB;',
+      'varying vec3 vN; varying vec3 vV; varying vec3 vP;',
+      '#ifdef RIBBON',
+      '  varying float vMix;',
+      '#endif',
+      'float sdUnevenCapsule(vec2 p, float r1, float r2, float h){',
+      '  p.x = abs(p.x);',
+      '  float b = (r1 - r2) / h; float a = sqrt(1.0 - b * b); float k = dot(p, vec2(-b, a));',
+      '  if (k < 0.0) return length(p) - r1;',
+      '  if (k > a * h) return length(p - vec2(0.0, h)) - r2;',
+      '  return dot(p, vec2(a, b)) - r1;',
+      '}',
+      'void main(){',
+      '  vec3 n = normalize(vN); if (!gl_FrontFacing) n = -n;',
+      '  vec3 v = normalize(vV);',
+      '  vec3 base = uBase;',
+      '  #ifdef RIBBON',
+      '    base = mix(uBase, uBase2, vMix);',
+      '  #endif',
+      '  if (uDecalOn > 0.5) {',
+      '    vec2 p = vP.xy - uDecalA.xy; float c = cos(uDecalA.z), s = sin(uDecalA.z);',
+      '    vec2 q = vec2(p.x * c - p.y * s, p.x * s + p.y * c) / uDecalA.w;',
+      '    q.x -= uBend * q.y * q.y;',
+      '    float d = sdUnevenCapsule(q, uDecalB.x, uDecalB.y, uDecalB.z) * uDecalA.w;',
+      '    float aa = max(fwidth(d), 1e-4) * 1.3;',
+      '    base = mix(base, uDecal, 1.0 - smoothstep(-aa, aa, d));',
+      '  }',
+      '  vec3 L = normalize(vec3(-0.5, 0.8, 0.65));',
+      '  float dif = clamp((dot(n, L) + 0.6) / 1.6, 0.0, 1.0); dif = dif * dif * (3.0 - 2.0 * dif);',
+      '  vec3 col = mix(base * uShade, base, dif);',
+      '  col += base * 0.12 * max(dot(n, normalize(vec3(0.75, -0.35, 0.45))), 0.0);',
+      '  col += vec3(1.0, 0.98, 0.94) * pow(max(dot(n, normalize(L + v)), 0.0), 38.0) * uSpec;',
+      '  float fr = pow(1.0 - clamp(dot(n, v), 0.0, 1.0), 2.4);',
+      '  col = mix(col, uRim, fr * uRimAmt);',
+      '  gl_FragColor = vec4(col, uAlpha);',
+      '}'
+    ].join('\n');
+    const C = (hex) => new THREE.Color(hex);
+    const material = (o) => new THREE.ShaderMaterial({
+      vertexShader: VERT, fragmentShader: FRAG, side: THREE.DoubleSide,
+      extensions: { derivatives: true }, defines: o.ribbon ? { RIBBON: '' } : {},
+      uniforms: {
+        uBase: { value: C(o.base) }, uBase2: { value: C(o.base2 || o.base) }, uShade: { value: C(o.shade) }, uRim: { value: C(o.rim) },
+        uDecal: { value: C(o.decal || '#031D8C') }, uRimAmt: { value: o.rimAmt != null ? o.rimAmt : 0.5 }, uSpec: { value: o.spec != null ? o.spec : 0.25 },
+        uDecalOn: { value: o.decalA ? 1 : 0 }, uBend: { value: o.decalBend || 0 },
+        uDecalA: { value: new THREE.Vector4().fromArray(o.decalA || [0, 0, 0, 1]) },
+        uDecalB: { value: new THREE.Vector3().fromArray(o.decalB || [0.3, 0.02, 0.7]) },
+        uAlpha: { value: 1 }
+      }
+    });
+
+    // Goutte en révolution, aplatie puis courbée : la forme « cachemire » de la carte
+    function dropGeometry({ tail = 0.8, bend = 0.5, curl = 0.5, flat = 0.55, m = 1, radial = 56, steps = 64 }) {
+      const pts = [];
+      for (let i = 0; i <= steps; i++) {
+        const t = Math.PI * (1 - i / steps);
+        let y = Math.cos(t);
+        const r = Math.sin(t) * Math.pow(Math.sin(t / 2), m);
+        if (y > 0) y += tail * y * y;
+        pts.push(new THREE.Vector2(Math.max(r, 0), y));
+      }
+      const geo = new THREE.LatheGeometry(pts, radial);
+      const P = pts.length, pos = geo.attributes.position;
+      const yMax = 1 + tail, N = 256, du = yMax / N;
+      const cx = new Float32Array(N + 1), cy = new Float32Array(N + 1), ph = new Float32Array(N + 1);
+      let X = 0, Y = 0;
+      for (let k = 0; k <= N; k++) {
+        const u = k * du, phi = bend * u + curl * u * u;
+        ph[k] = phi; cx[k] = X; cy[k] = Y;
+        X += Math.sin(phi) * du; Y += Math.cos(phi) * du;
+      }
+      for (let i = 0; i < pos.count; i++) {
+        let x = pos.getX(i), y = pos.getY(i);
+        const z = pos.getZ(i) * flat;
+        if (y > 0) {
+          const f = Math.min(y / yMax, 1) * N, k = Math.min(N - 1, Math.floor(f)), a = f - k;
+          const phi = ph[k] + (ph[k + 1] - ph[k]) * a;
+          const Cx = cx[k] + (cx[k + 1] - cx[k]) * a, Cy = cy[k] + (cy[k + 1] - cy[k]) * a;
+          const nx = x * Math.cos(phi), ny = -x * Math.sin(phi);
+          x = Cx + nx; y = Cy + ny;
+        }
+        pos.setXYZ(i, x, y, z);
+      }
+      geo.computeVertexNormals();
+      const nrm = geo.attributes.normal;
+      const avg = (ids) => {
+        let x = 0, y = 0, z = 0;
+        ids.forEach((k) => { x += nrm.getX(k); y += nrm.getY(k); z += nrm.getZ(k); });
+        const l = Math.hypot(x, y, z) || 1;
+        ids.forEach((k) => nrm.setXYZ(k, x / l, y / l, z / l));
+      };
+      for (let j = 0; j < P; j++) avg([j, radial * P + j]);
+      [0, P - 1].forEach((j) => { const ids = []; for (let i = 0; i <= radial; i++) ids.push(i * P + j); avg(ids); });
+      nrm.needsUpdate = true;
+      geo.computeBoundingBox();
+      const c = new THREE.Vector3();
+      geo.boundingBox.getCenter(c);
+      geo.translate(-c.x, -c.y, -c.z);
+      geo.computeBoundingSphere();
+      const r = geo.boundingSphere.radius;
+      geo.scale(1 / r, 1 / r, 1 / r);
+      geo.computeBoundingSphere();
+      let best = 0, bestY = 0;
+      pts.forEach((p) => { if (p.y <= 0 && p.x > best) { best = p.x; bestY = p.y; } });
+      return { geo, head: { x: -c.x / r, y: (bestY - c.y) / r, r: best / r } };
+    }
+
+    // Vrilles : même tracé que celles de la carte, converties en tubes 3D
+    const SWIRL = [
+      'M0 2C30 30 60 52 88 68C112 82 140 92 160 90C182 88 196 70 192 52C188 36 170 30 158 38C148 46 152 62 166 62',
+      'M88 68C106 88 112 120 120 150C128 182 140 210 172 214C204 218 224 196 222 170C220 146 198 132 180 140C164 148 164 172 180 176C190 178 198 170 196 162'
+    ];
+    function svgPoints(d, seg) {
+      const v = d.match(/-?\d*\.?\d+/g).map(Number);
+      let x = v[0], y = v[1];
+      const out = [[x, y]];
+      for (let i = 2; i + 5 < v.length; i += 6) {
+        const [x1, y1, x2, y2, x3, y3] = v.slice(i, i + 6);
+        for (let s = 1; s <= seg; s++) {
+          const t = s / seg, u = 1 - t;
+          out.push([u * u * u * x + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * x3, u * u * u * y + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * y3]);
+        }
+        x = x3; y = y3;
+      }
+      return out;
+    }
+    function swirlGroup(mat) {
+      const g = new THREE.Group();
+      SWIRL.forEach((d, k) => {
+        const pts = svgPoints(d, 16).map(([x, y], i) => new THREE.Vector3((x - 115) / 115, -(y - 115) / 115, Math.sin(i * 0.09 + k) * 0.07));
+        g.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 360, 0.016, 10, false), mat));
+      });
+      return g;
+    }
+
+    // Ruban torsadé qui ondule (recalculé à chaque image, très léger)
+    function ribbonMesh(mat, segs) {
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array((segs + 1) * 6), nor = new Float32Array((segs + 1) * 6), mix = new Float32Array((segs + 1) * 2);
+      const idx = [];
+      for (let i = 0; i <= segs; i++) {
+        mix[i * 2] = mix[i * 2 + 1] = i / segs;
+        if (i < segs) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
+      geo.setAttribute('aMix', new THREE.BufferAttribute(mix, 1));
+      geo.setIndex(idx);
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.frustumCulled = false;
+      const T = new THREE.Vector3(), S = new THREE.Vector3(), B = new THREE.Vector3(), Nn = new THREE.Vector3(), Z = new THREE.Vector3(0, 0, 1);
+      const P0 = new THREE.Vector3(), P1 = new THREE.Vector3();
+      const center = (s, t, out) => out.set(-1 + 2 * s, 0.32 * Math.sin(s * 5.2 + t * 0.55) + 0.12 * Math.sin(s * 11 - t * 0.8), 0.35 * Math.cos(s * 4.1 + t * 0.4));
+      mesh.userData.update = (t) => {
+        const width = 0.04;
+        for (let i = 0; i <= segs; i++) {
+          const s = i / segs;
+          center(Math.max(0, s - 0.002), t, P0); center(Math.min(1, s + 0.002), t, P1);
+          T.subVectors(P1, P0).normalize();
+          center(s, t, P0);
+          S.crossVectors(T, Z).normalize();
+          B.crossVectors(T, S);
+          const th = s * Math.PI * 2.4 + t * 0.35, c = Math.cos(th), sn = Math.sin(th);
+          const wx = S.x * c + B.x * sn, wy = S.y * c + B.y * sn, wz = S.z * c + B.z * sn;
+          const hw = width * (Math.sin(Math.PI * s) * 0.85 + 0.15);
+          Nn.set(wx, wy, wz).cross(T).normalize();
+          const k = i * 6;
+          pos[k] = P0.x + wx * hw; pos[k + 1] = P0.y + wy * hw; pos[k + 2] = P0.z + wz * hw;
+          pos[k + 3] = P0.x - wx * hw; pos[k + 4] = P0.y - wy * hw; pos[k + 5] = P0.z - wz * hw;
+          nor[k] = nor[k + 3] = Nn.x; nor[k + 1] = nor[k + 4] = Nn.y; nor[k + 2] = nor[k + 5] = Nn.z;
+        }
+        geo.attributes.position.needsUpdate = true;
+        geo.attributes.normal.needsUpdate = true;
+      };
+      return mesh;
+    }
+
+    // Matières — palette de la carte de visite
+    const PERI = '#99ACFF', ROYAL = '#031D8C', CREAM = '#FFE7C2';
+    const paisleyBig = dropGeometry({ tail: 1.3, bend: 0.4, curl: 0.2, flat: 0.5, m: 1.25 });
+    const paisleySmall = dropGeometry({ tail: 1.25, bend: 0.42, curl: 0.22, flat: 0.52, m: 1.2, radial: 44, steps: 52 });
+    const dropG = dropGeometry({ tail: 0.35, bend: 0.25, curl: 0.25, flat: 0.75, m: 1, radial: 36, steps: 40 });
+    const decal = (g, color) => ({
+      decal: color,
+      decalA: [g.head.x - 0.06 * g.head.r, g.head.y - 0.1 * g.head.r, 0.75, 1],
+      decalB: [0.33 * g.head.r, 0.01, 0.9 * g.head.r],
+      decalBend: 0.35 / g.head.r
+    });
+    const mPeriDecal = material(Object.assign({ base: PERI, shade: '#7E89CF', rim: CREAM, rimAmt: 0.55, spec: 0.22 }, decal(paisleyBig, ROYAL)));
+    const mPeriDecal2 = material(Object.assign({ base: '#A0B0FA', shade: '#7E89CF', rim: CREAM, rimAmt: 0.55, spec: 0.22 }, decal(paisleySmall, ROYAL)));
+    const mRoyalDecal = material(Object.assign({ base: '#0B2496', shade: '#8E97CF', rim: PERI, rimAmt: 0.45, spec: 0.3 }, decal(paisleySmall, PERI)));
+    const mRoyal = material({ base: '#0B2496', shade: '#8E97CF', rim: PERI, rimAmt: 0.45, spec: 0.35 });
+    const mPeri = material({ base: PERI, shade: '#7E89CF', rim: CREAM, rimAmt: 0.5, spec: 0.25 });
+    const mCream = material({ base: '#FFF4E2', shade: '#E6CBB3', rim: '#FFFFFF', rimAmt: 0.35, spec: 0.3 });
+    const mSwirl = material({ base: '#0B2496', shade: '#8E97CF', rim: PERI, rimAmt: 0.3, spec: 0.4 });
+    const mRibbon = material({ ribbon: true, base: '#B5C3FF', base2: '#FFF4E2', shade: '#8C93CC', rim: '#FFFFFF', rimAmt: 0.35, spec: 0.25 });
+
+    const objs = [];
+    const add = (id, mesh, cfg) => {
+      world.add(mesh);
+      objs.push(Object.assign({ id, mesh, base: new THREE.Vector3(), off: new THREE.Vector3(), hover: 0, size: 1,
+        ph: Math.random() * Math.PI * 2, fa: 0.12, fs: 0.6, spin: 0, rx: 0, ry: 0, rz: 0, delay: 0, interactive: true }, cfg));
+    };
+    add('p1', new THREE.Mesh(paisleyBig.geo, mPeriDecal), { rz: -1.45, ry: 0.15, delay: 0.1 });
+    add('p2', new THREE.Mesh(paisleySmall.geo, mPeriDecal2), { rz: -2.5, ry: -0.2, delay: 0.25, mirror: true });
+    add('p3', new THREE.Mesh(paisleySmall.geo, mRoyalDecal), { rz: 0.5, ry: 0.3, delay: 0.4 });
+    add('d1', new THREE.Mesh(dropG.geo, mRoyal), { rz: -2.6, delay: 0.5, fa: 0.18, fs: 0.8, spin: 0.06 });
+    add('d2', new THREE.Mesh(dropG.geo, mPeri), { rz: 0.6, delay: 0.55, fa: 0.2, fs: 0.7, spin: -0.05 });
+    add('d3', new THREE.Mesh(dropG.geo, mCream), { rz: 2.2, delay: 0.6, fa: 0.16, fs: 0.9, spin: 0.05 });
+    add('s1', swirlGroup(mSwirl), { delay: 0.3, fa: 0.06, interactive: false });
+    add('s2', swirlGroup(mSwirl), { rz: Math.PI, delay: 0.45, fa: 0.06, interactive: false, mirror: true });
+    add('r1', ribbonMesh(mRibbon, 180), { delay: 0.2, fa: 0.04, interactive: false, ribbon: true });
+
+    // Positions en fractions de la demi-largeur / demi-hauteur visibles : [x, y, z, taille, visible]
+    const LAYOUTS = {
+      wide: {
+        p1: [0.54, 0.0, 0, 0.27], p2: [0.9, 0.56, -1, 0.14], p3: [0.32, -0.66, 1, 0.1],
+        d1: [0.76, -0.6, 1.5, 0.055], d2: [0.2, 0.6, -0.5, 0.042], d3: [0.97, -0.08, 0.5, 0.055],
+        s1: [0.42, 0.74, -0.5, 0.18], s2: [0.98, -0.76, -0.5, 0.22], r1: [0.74, -0.34, -2.5, 0.5]
+      },
+      mid: {
+        p1: [0.6, 0.02, 0, 0.24], p2: [0.92, 0.6, -1, 0.12], p3: [0.44, -0.72, 1, 0.09],
+        d1: [0.82, -0.62, 1.5, 0.05], d2: [0.34, 0.68, -0.5, 0.04], d3: [0.98, -0.1, 0.5, 0.05],
+        s1: [0.52, 0.76, -0.5, 0.16], s2: [0.98, -0.78, -0.5, 0.2], r1: [0.8, -0.36, -2.5, 0.42]
+      },
+      narrow: {
+        p1: [0.6, 0.73, 0, 0.15], p2: [-0.8, -0.84, -1, 0.11], p3: [0.72, -0.86, 1, 0.08],
+        d1: [0.02, 0.83, 1.5, 0.028], d2: [0.1, -0.95, -0.5, 0.03], d3: [-0.93, 0.62, 0.5, 0.035],
+        s1: [-0.72, 0.76, -0.5, 0.12], s2: [0.95, -0.55, -0.5, 0, false], r1: [0.15, -0.9, -1.5, 0.5]
+      },
+      tall: {
+        p1: [0.58, 0.64, 0, 0.19], p2: [-0.78, -0.74, -1, 0.12], p3: [0.66, -0.8, 1, 0.08],
+        d1: [-0.3, 0.8, 1.5, 0.035], d2: [0.12, -0.92, -0.5, 0.03], d3: [-0.9, 0.48, 0.5, 0.04],
+        s1: [-0.82, 0.84, -0.5, 0.15], s2: [0.95, -0.55, -0.5, 0, false], r1: [0.2, -0.88, -1.5, 0.55]
+      }
+    };
+    let halfW = 1, halfH = 1;
+    function layout() {
+      const w = host.clientWidth, h = host.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      halfH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
+      halfW = halfH * camera.aspect;
+      const a = camera.aspect;
+      const L = a >= 1.5 ? LAYOUTS.wide : a >= 1.1 ? LAYOUTS.mid : a >= 0.62 ? LAYOUTS.tall : LAYOUTS.narrow;
+      const unit = Math.min(halfH, halfW * 0.9);
+      objs.forEach((o) => {
+        const l = L[o.id];
+        o.base.set(l[0] * halfW, l[1] * halfH, l[2]);
+        o.size = l[3] * unit * 2;
+        o.mesh.visible = l[4] !== false && l[3] > 0;
+      });
+    }
+
+    // Interaction : inclinaison de l'ensemble, répulsion douce, survol des formes
+    const ptr = { x: 0, y: 0, tx: 0, ty: 0, active: false, moved: false };
+    const ndc = new THREE.Vector2(), cursor = new THREE.Vector3(), ray = new THREE.Raycaster(), tmp = new THREE.Vector3();
+    const interactive = objs.filter((o) => o.interactive).map((o) => o.mesh);
+    window.addEventListener('pointermove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      if (e.clientY < r.top || e.clientY > r.bottom) { ptr.active = false; ptr.tx = 0; ptr.ty = 0; return; }
+      ptr.tx = ((e.clientX - r.left) / r.width) * 2 - 1;
+      ptr.ty = -(((e.clientY - r.top) / r.height) * 2 - 1);
+      ndc.set(ptr.tx, ptr.ty);
+      ptr.active = true; ptr.moved = true;
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', () => { ptr.active = false; ptr.tx = 0; ptr.ty = 0; });
+
+    let scrollP = 0, t = 0, last = 0, raf = 0, running = false, hovered = null;
+    const easeBack = (x) => 1 + 2.2 * Math.pow(x - 1, 3) + 1.2 * Math.pow(x - 1, 2);
+    function update(dt) {
+      t += dt;
+      const k = Math.min(1, dt * 3);
+      ptr.x += (ptr.tx - ptr.x) * k;
+      ptr.y += (ptr.ty - ptr.y) * k;
+      world.rotation.y = ptr.x * 0.16;
+      world.rotation.x = -ptr.y * 0.1;
+      world.position.y = scrollP * halfH * 0.55;
+      if (ptr.active) {
+        ray.setFromCamera(ndc, camera);
+        const o = ray.ray.origin, dir = ray.ray.direction, s = -o.z / dir.z;
+        cursor.set(o.x + dir.x * s, o.y + dir.y * s - world.position.y, 0);
+        if (ptr.moved) {
+          const hits = ray.intersectObjects(interactive.filter((m) => m.visible), false);
+          hovered = hits.length ? hits[0].object : null;
+          ptr.moved = false;
+        }
+      } else hovered = null;
+      for (const ob of objs) {
+        const a = clamp((t - ob.delay) / 1.5, 0, 1);
+        const e = a <= 0 ? 0 : easeBack(a);
+        let fx = 0, fy = 0;
+        if (ptr.active && ob.interactive) {
+          tmp.set(ob.base.x - cursor.x, ob.base.y - cursor.y, 0);
+          const dist = tmp.length(), R = Math.max(ob.size * 1.6, halfH * 0.5);
+          if (dist < R) { const f = Math.pow(1 - dist / R, 2) * halfH * 0.12; fx = (tmp.x / (dist || 1)) * f; fy = (tmp.y / (dist || 1)) * f; }
+        }
+        const kk = Math.min(1, dt * 2.5);
+        ob.off.x += (fx - ob.off.x) * kk;
+        ob.off.y += (fy - ob.off.y) * kk;
+        ob.hover += ((hovered === ob.mesh ? 1 : 0) - ob.hover) * Math.min(1, dt * 5);
+        const float = Math.sin(t * ob.fs + ob.ph) * ob.fa * halfH * 0.18;
+        ob.mesh.position.set(ob.base.x + ob.off.x, ob.base.y + float + ob.off.y - (1 - e) * halfH * 0.25, ob.base.z);
+        if (ob.ribbon) {
+          ob.mesh.userData.update(t);
+          ob.mesh.rotation.set(0.2, 0.1, -0.18 + Math.sin(t * 0.2) * 0.04);
+        } else {
+          ob.mesh.rotation.set(
+            ob.rx + Math.sin(t * 0.37 + ob.ph) * 0.32,
+            ob.ry + Math.sin(t * 0.29 + ob.ph * 1.3) * 0.55 + t * ob.spin + ob.hover * 0.6,
+            ob.rz + Math.sin(t * 0.23 + ob.ph) * 0.12
+          );
+        }
+        const sc = ob.size * Math.max(0, e) * (1 + ob.hover * 0.08);
+        ob.mesh.scale.set(ob.mirror ? -sc : sc, sc, sc);
+      }
+    }
+    const render = () => renderer.render(scene, camera);
+    function loop(now) {
+      raf = requestAnimationFrame(loop);
+      const dt = Math.min((now - last) / 1000, 1 / 20);
+      last = now;
+      update(dt);
+      render();
+    }
+    layout();
+    return {
+      start() { if (running) return; running = true; last = performance.now(); raf = requestAnimationFrame(loop); },
+      stop() { running = false; cancelAnimationFrame(raf); },
+      still() { t = 6; update(0); render(); },
+      layout() { layout(); if (!running) { update(0); render(); } },
+      setScroll(p) { scrollP = p; },
+      dispose() { cancelAnimationFrame(raf); renderer.dispose(); }
+    };
+  }
+
+  safe('hero-3d', () => {
+    const hero = $('#top'), canvas = $('#hero-canvas');
+    if (!hero || !canvas) return;
+    const fallback = () => { hero.classList.remove('has-webgl'); hero.classList.add('no-webgl'); };
+    const saveData = navigator.connection && navigator.connection.saveData;
+    if (saveData || !hasWebGL()) { fallback(); return; }
+    loadThree().then((THREE) => {
+      let api;
+      try { api = createHeroScene(THREE, canvas, hero); } catch (err) { console.warn('[site] WebGL', err); fallback(); return; }
+      hero.classList.add('has-webgl');
+      if (reduceMotion) { api.still(); window.addEventListener('resize', () => { api.layout(); api.still(); }); return; }
+      let inView = true;
+      const sync = () => { if (inView && !document.hidden) api.start(); else api.stop(); };
+      new IntersectionObserver(([en]) => { inView = en.isIntersecting; sync(); }).observe(hero);
+      document.addEventListener('visibilitychange', sync);
+      let rt = 0;
+      const relayout = () => { clearTimeout(rt); rt = setTimeout(() => api.layout(), 80); };
+      if ('ResizeObserver' in window) new ResizeObserver(relayout).observe(hero); else window.addEventListener('resize', relayout);
+      scrollHooks.push(() => { const r = hero.getBoundingClientRect(); api.setScroll(clamp(-r.top / Math.max(r.height, 1), 0, 1)); });
+      canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); api.stop(); fallback(); });
+      sync();
+    }).catch(fallback);
+  });
+
+  runScrollHooks();
+  window.__siteReady = true;
+})();
+</script>
+</body>
+</html>
