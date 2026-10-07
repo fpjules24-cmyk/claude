@@ -21,6 +21,8 @@
   document.documentElement.classList.add('js');
   setTimeout(function () { if (!window.__siteReady) document.documentElement.classList.add('js-failed'); }, 4000);
 </script>
+<!-- Mesure d'audience Umami (sans cookie) -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="d2c567d4-0ebf-45fc-a42a-cb2a3460e0df"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -837,14 +839,14 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
 <!-- ======================= Bandeau d'adresse (toujours visible) ======================= -->
 <div class="topbar on-dark">
   <div class="container topbar__in">
-    <a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" aria-label="Itinéraire Google Maps vers le 132 rue François de Sourdis, 33000 Bordeaux">
+    <a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" aria-label="Itinéraire Google Maps vers le 132 rue François de Sourdis, 33000 Bordeaux" data-umami-event="Itinéraire">
       <svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>
       <span>132 rue François de Sourdis, 33000 Bordeaux</span>
       <b class="topbar__go">Itinéraire <svg class="i" aria-hidden="true"><use href="#i-arrow-ur"/></svg></b>
     </a>
     <div class="topbar__right">
-      <a href="tel:0601685312"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg><span>06 01 68 53 12</span></a>
-      <a class="topbar__mail" href="mailto:sanchez.psy@proton.me"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><span>sanchez.psy@proton.me</span></a>
+      <a href="tel:0601685312" data-umami-event="Appeler"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg><span>06 01 68 53 12</span></a>
+      <a class="topbar__mail" href="mailto:sanchez.psy@proton.me" data-umami-event="E-mail"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><span>sanchez.psy@proton.me</span></a>
       <span class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Le samedi · sur rendez-vous</span></span>
     </div>
   </div>
@@ -866,8 +868,8 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
         <a href="#contact">Contact</a>
       </nav>
       <div class="header__actions">
-        <a class="header__phone" href="tel:0601685312" aria-label="Appeler le 06 01 68 53 12"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg><span>06 01 68 53 12</span></a>
-        <a class="btn btn--sm header__cta" href="#contact" data-open="rdv" data-magnetic="0.18">Prendre RDV</a>
+        <a class="header__phone" href="tel:0601685312" aria-label="Appeler le 06 01 68 53 12" data-umami-event="Appeler"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg><span>06 01 68 53 12</span></a>
+        <a class="btn btn--sm header__cta" href="#contact" data-open="rdv" data-magnetic="0.18" data-umami-event="Prendre RDV">Prendre RDV</a>
         <button class="menu-btn" type="button" data-open="menu" aria-haspopup="dialog" aria-label="Ouvrir le menu"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
       </div>
     </div>
@@ -902,11 +904,11 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
         </ul>
         <p class="hero__lead" data-hero-in style="--i:3">Un espace d’écoute bienveillant et confidentiel pour déposer ce qui pèse, comprendre ce qui se joue et retrouver un mieux-être, à chaque âge de la vie.</p>
         <div class="hero__cta" data-hero-in style="--i:4">
-          <a class="btn" href="#contact" data-open="rdv" data-magnetic>Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn" href="#contact" data-open="rdv" data-magnetic data-umami-event="Prendre RDV">Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           <a class="btn btn--ghost" href="#cabinet" data-magnetic>Découvrir le cabinet</a>
         </div>
         <ul class="hero__meta" data-hero-in style="--i:5">
-          <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">132 rue François de Sourdis, Bordeaux</a></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" data-umami-event="Itinéraire">132 rue François de Sourdis, Bordeaux</a></li>
           <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Le samedi, sur rendez-vous</li>
         </ul>
       </div>
@@ -1061,7 +1063,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
               <li>Colère, tristesse, repli sur soi</li>
               <li>Séparation, deuil, changements familiaux</li>
             </ul>
-            <a class="card__link" href="#contact" data-open="rdv">Prendre rendez-vous <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="card__link" href="#contact" data-open="rdv" data-umami-event="Prendre RDV">Prendre rendez-vous <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </article>
 
@@ -1078,7 +1080,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
               <li>Pression scolaire, orientation</li>
               <li>Harcèlement, isolement, conduites à risque</li>
             </ul>
-            <a class="card__link" href="#contact" data-open="rdv">Prendre rendez-vous <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="card__link" href="#contact" data-open="rdv" data-umami-event="Prendre RDV">Prendre rendez-vous <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </article>
 
@@ -1095,7 +1097,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
               <li>Difficultés relationnelles ou familiales</li>
               <li>Transitions et questionnements de vie</li>
             </ul>
-            <a class="card__link" href="#contact" data-open="rdv">Prendre rendez-vous <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="card__link" href="#contact" data-open="rdv" data-umami-event="Prendre RDV">Prendre rendez-vous <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </article>
       </div>
@@ -1173,7 +1175,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
           </div>
           <footer class="hours__foot">
             <p><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Consultations sur rendez-vous uniquement</p>
-            <a class="btn btn--light btn--sm" href="#contact" data-open="rdv" data-magnetic="0.2">Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn--light btn--sm" href="#contact" data-open="rdv" data-magnetic="0.2" data-umami-event="Prendre RDV">Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </footer>
         </article>
       </div>
@@ -1194,21 +1196,21 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
         </div>
         <ul class="tiles" data-stagger>
           <li class="tile-row" data-reveal>
-            <a class="tile" href="tel:0601685312" data-tilt="6">
+            <a class="tile" href="tel:0601685312" data-tilt="6" data-umami-event="Appeler">
               <span class="tile__ico"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg></span>
               <span><span class="tile__label">Téléphone</span><span class="tile__value nowrap">06 01 68 53 12</span><span class="tile__hint">Appeler <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></span>
             </a>
             <button class="copy-btn" type="button" data-copy="06 01 68 53 12" data-copy-label="Numéro" aria-label="Copier le numéro de téléphone"><svg class="i i--copy" aria-hidden="true"><use href="#i-copy"/></svg><svg class="i i--check" aria-hidden="true"><use href="#i-check"/></svg></button>
           </li>
           <li class="tile-row" data-reveal>
-            <a class="tile" href="mailto:sanchez.psy@proton.me" data-tilt="6">
+            <a class="tile" href="mailto:sanchez.psy@proton.me" data-tilt="6" data-umami-event="E-mail">
               <span class="tile__ico"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span>
               <span><span class="tile__label">E-mail</span><span class="tile__value">sanchez.psy@proton.me</span><span class="tile__hint">Écrire un message <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></span>
             </a>
             <button class="copy-btn" type="button" data-copy="sanchez.psy@proton.me" data-copy-label="Adresse e-mail" aria-label="Copier l’adresse e-mail"><svg class="i i--copy" aria-hidden="true"><use href="#i-copy"/></svg><svg class="i i--check" aria-hidden="true"><use href="#i-check"/></svg></button>
           </li>
           <li class="tile-row" data-reveal>
-            <a class="tile" href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" data-tilt="6">
+            <a class="tile" href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" data-tilt="6" data-umami-event="Itinéraire">
               <span class="tile__ico"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg></span>
               <span><span class="tile__label">Adresse · Centre de Santé Sourdis</span><span class="tile__value">132 rue François de Sourdis<br>33000 Bordeaux</span><span class="tile__hint">Itinéraire Google Maps <svg class="i" aria-hidden="true"><use href="#i-arrow-ur"/></svg></span></span>
             </a>
@@ -1263,15 +1265,15 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       <h4>Le cabinet</h4>
       <ul>
         <li><address>Centre de Santé Sourdis<br>132 rue François de Sourdis<br>33000 Bordeaux</address></li>
-        <li><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">Itinéraire Google Maps ↗</a></li>
+        <li><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" data-umami-event="Itinéraire">Itinéraire Google Maps ↗</a></li>
       </ul>
     </div>
     <div>
       <h4>Contact</h4>
       <ul>
-        <li><a href="tel:0601685312">06 01 68 53 12</a></li>
-        <li><a href="mailto:sanchez.psy@proton.me">sanchez.psy@proton.me</a></li>
-        <li><a href="#contact" data-open="rdv">Prendre rendez-vous</a></li>
+        <li><a href="tel:0601685312" data-umami-event="Appeler">06 01 68 53 12</a></li>
+        <li><a href="mailto:sanchez.psy@proton.me" data-umami-event="E-mail">sanchez.psy@proton.me</a></li>
+        <li><a href="#contact" data-open="rdv" data-umami-event="Prendre RDV">Prendre rendez-vous</a></li>
       </ul>
     </div>
     <div>
@@ -1289,12 +1291,12 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
 
 <!-- ======================= Barre d'accès rapide (mobile) ======================= -->
 <nav class="dock" aria-label="Accès rapide">
-  <a class="dock__addr" href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">
+  <a class="dock__addr" href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" data-umami-event="Itinéraire">
     <span class="dock__pin"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg></span>
     <span class="dock__txt"><strong>132 rue François de Sourdis</strong><small>33000 Bordeaux</small></span>
   </a>
-  <a class="dock__btn" href="tel:0601685312" aria-label="Appeler le 06 01 68 53 12"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg></a>
-  <a class="dock__btn dock__btn--rdv" href="#contact" data-open="rdv">RDV</a>
+  <a class="dock__btn" href="tel:0601685312" aria-label="Appeler le 06 01 68 53 12" data-umami-event="Appeler"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg></a>
+  <a class="dock__btn dock__btn--rdv" href="#contact" data-open="rdv" data-umami-event="Prendre RDV">RDV</a>
 </nav>
 
 <div class="toast" role="status" aria-live="polite"></div>
@@ -1307,12 +1309,12 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
     <h2 id="rdv-title">Prendre rendez-vous</h2>
     <p class="modal__lead">Le plus simple est d’appeler. Si la ligne ne répond pas, laissez un message ou écrivez un e-mail en indiquant vos disponibilités.</p>
     <div class="options">
-      <a class="option" href="tel:0601685312">
+      <a class="option" href="tel:0601685312" data-umami-event="Appeler">
         <span class="option__ico"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg></span>
         <span><strong>Appeler</strong><span class="nowrap">06 01 68 53 12</span></span>
         <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
       </a>
-      <a class="option option--alt" href="mailto:sanchez.psy@proton.me?subject=Demande%20de%20rendez-vous&amp;body=Bonjour%20Madame%20Sanchez%2C%0D%0A%0D%0AJe%20souhaiterais%20prendre%20rendez-vous%20pour%20%28moi-m%C3%AAme%20%2F%20mon%20enfant%20%2F%20mon%20adolescent%29.%0D%0AMes%20disponibilit%C3%A9s%20%3A%20%0D%0AMon%20num%C3%A9ro%20de%20t%C3%A9l%C3%A9phone%20%3A%20%0D%0A%0D%0ABien%20cordialement%2C%0D%0A">
+      <a class="option option--alt" href="mailto:sanchez.psy@proton.me?subject=Demande%20de%20rendez-vous&amp;body=Bonjour%20Madame%20Sanchez%2C%0D%0A%0D%0AJe%20souhaiterais%20prendre%20rendez-vous%20pour%20%28moi-m%C3%AAme%20%2F%20mon%20enfant%20%2F%20mon%20adolescent%29.%0D%0AMes%20disponibilit%C3%A9s%20%3A%20%0D%0AMon%20num%C3%A9ro%20de%20t%C3%A9l%C3%A9phone%20%3A%20%0D%0A%0D%0ABien%20cordialement%2C%0D%0A" data-umami-event="E-mail">
         <span class="option__ico"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span>
         <span><strong>Écrire un e-mail</strong><span>sanchez.psy@proton.me</span></span>
         <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
@@ -1320,7 +1322,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
     </div>
     <ul class="modal__infos">
       <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span>Le samedi : 08h00 – 12h00 / 13h00 – 18h00 (dernier rendez-vous à&nbsp;18h00)<br><span class="modal__status" data-status><span data-status-text></span></span></span></li>
-      <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">132 rue François de Sourdis, 33000 Bordeaux (Centre de Santé Sourdis)</a></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" data-umami-event="Itinéraire">132 rue François de Sourdis, 33000 Bordeaux (Centre de Santé Sourdis)</a></li>
       <li><svg class="i" aria-hidden="true"><use href="#i-cap"/></svg><span>Consultation 60&nbsp;€ · Tarif étudiant 50&nbsp;€</span></li>
     </ul>
   </div>
@@ -1334,7 +1336,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
     <h2 id="legal-title">Mentions légales</h2>
     <div class="legal">
       <h3>Éditrice du site</h3>
-      <p>Marie-Claude SANCHEZ, psychologue clinicienne<br>132 rue François de Sourdis, 33000 Bordeaux<br>Tél. <a href="tel:0601685312">06 01 68 53 12</a> · <a href="mailto:sanchez.psy@proton.me">sanchez.psy@proton.me</a></p>
+      <p>Marie-Claude SANCHEZ, psychologue clinicienne<br>132 rue François de Sourdis, 33000 Bordeaux<br>Tél. <a href="tel:0601685312" data-umami-event="Appeler">06 01 68 53 12</a> · <a href="mailto:sanchez.psy@proton.me" data-umami-event="E-mail">sanchez.psy@proton.me</a></p>
       <p>N° ADELI&nbsp;: 33 93 11 54 0 · N° RPPS&nbsp;: 1000 96 06 392<br>Directrice de la publication&nbsp;: Marie-Claude SANCHEZ</p>
       <h3>Profession réglementée</h3>
       <p>L’usage du titre de psychologue est protégé par l’article 44 de la loi n° 85-772 du 25 juillet 1985. L’exercice s’inscrit dans le respect du code de déontologie des psychologues et du secret professionnel.</p>
@@ -1342,7 +1344,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       <!-- ✏️ Hébergeur : à modifier si le site est publié ailleurs que sur Cloudflare Pages -->
       <p>Cloudflare, Inc. (service Cloudflare Pages) — 101 Townsend St, San Francisco, CA 94107, États-Unis — Tél. +1 (650) 319-8930 — <a href="https://www.cloudflare.com" target="_blank" rel="noopener">cloudflare.com</a></p>
       <h3>Données personnelles &amp; cookies</h3>
-      <p>Ce site ne comporte ni formulaire, ni outil de mesure d’audience, ni cookie publicitaire : aucune donnée personnelle n’y est collectée. Pour afficher le site, l’hébergeur (Cloudflare), le service de polices de caractères (Google Fonts) et la bibliothèque d’animation 3D (cdnjs) reçoivent techniquement votre adresse IP. Les échanges par téléphone ou par e-mail restent strictement confidentiels.</p>
+      <p>Ce site ne comporte ni formulaire ni cookie. La fréquentation est mesurée avec Umami, un outil sans cookie qui ne collecte aucune donnée permettant de vous identifier (pages vues et clics sur les boutons de contact, de façon anonyme). Pour afficher le site, l’hébergeur (Cloudflare), le service de polices de caractères (Google Fonts) et la bibliothèque d’animation 3D (cdnjs) reçoivent techniquement votre adresse IP. Les échanges par téléphone ou par e-mail restent strictement confidentiels.</p>
       <h3>Propriété intellectuelle</h3>
       <p>Textes, photographies et éléments graphiques : tous droits réservés.</p>
     </div>
@@ -1363,10 +1365,10 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       <a href="#contact" style="--i:3"><small>04</small>Contact</a>
     </nav>
     <div class="menu__contact">
-      <a href="tel:0601685312"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>06 01 68 53 12</a>
-      <a href="mailto:sanchez.psy@proton.me"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg>sanchez.psy@proton.me</a>
-      <a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>132 rue François de Sourdis, 33000 Bordeaux</a>
-      <a class="btn" href="#contact" data-open="rdv" style="margin-top:8px">Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="tel:0601685312" data-umami-event="Appeler"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>06 01 68 53 12</a>
+      <a href="mailto:sanchez.psy@proton.me" data-umami-event="E-mail"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg>sanchez.psy@proton.me</a>
+      <a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener" data-umami-event="Itinéraire"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>132 rue François de Sourdis, 33000 Bordeaux</a>
+      <a class="btn" href="#contact" data-open="rdv" style="margin-top:8px" data-umami-event="Prendre RDV">Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
     <svg class="menu__motif" viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg>
   </div>
