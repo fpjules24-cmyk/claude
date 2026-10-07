@@ -421,9 +421,6 @@ address { font-style: normal; }
 .autoplay .i { width: 18px; height: 18px; }
 .autoplay__ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
 .autoplay__ring circle { fill: none; stroke: var(--royal); stroke-width: 2.2; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
-.gallery.is-playing .autoplay__ring circle { animation: ring var(--slide-ms, 6500ms) linear forwards; }
-.gallery.is-paused .autoplay__ring circle { animation-play-state: paused; }
-@keyframes ring { to { stroke-dashoffset: 0; } }
 .autoplay .i--play, .autoplay.is-off .i--pause { display: none; }
 .autoplay.is-off .i--play { display: block; }
 .thumbs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
@@ -1741,7 +1738,6 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
     const thumbsWrap = $('[data-g-thumbs]', root), dotsWrap = $('[data-g-dots]', stage);
     const playBtn = $('[data-g-play]', root), ring = $('.autoplay__ring circle', root);
     let index = Math.max(0, slides.findIndex((s) => s.classList.contains('is-active')));
-    root.style.setProperty('--slide-ms', SLIDE_MS + 'ms');
     if (totalEl) totalEl.textContent = String(n).padStart(2, '0');
 
     // Image absente → visuel de remplacement élégant
@@ -1780,21 +1776,30 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       }
     });
 
-    const restartRing = () => { if (!ring) return; ring.style.animation = 'none'; void ring.getBoundingClientRect(); ring.style.animation = ''; };
+    // Minuterie du diaporama : temps écoulé compté image par image, pour des pauses et reprises sans à-coup
+    let elapsed = 0, lastTs = 0, timerRaf = 0;
+    const setRing = (p) => { if (ring) ring.style.strokeDashoffset = (1 - p).toFixed(4); };
+    function resetTimer() { elapsed = 0; lastTs = 0; setRing(0); }
     let swapTimer = 0;
+    const leaveTimers = new Map();
     function render(prev, dir) {
       slides.forEach((s, k) => {
-        if (k === index) return;
-        s.classList.remove('is-active', 'is-prep');
+        if (k === index || k === prev) return;
+        s.classList.remove('is-active', 'is-prep', 'is-leaving');
         s.setAttribute('aria-hidden', 'true');
-        if (k !== prev) s.classList.remove('is-leaving');
       });
       const inc = slides[index];
+      // une photo revenue à l'écran avant la fin de sa sortie ne doit pas garder l'état « sortante »
+      clearTimeout(leaveTimers.get(inc));
+      inc.classList.remove('is-leaving');
       if (prev !== index && prev != null) {
         const out = slides[prev];
+        out.classList.remove('is-active', 'is-prep');
+        out.setAttribute('aria-hidden', 'true');
         out.style.setProperty('--to', (dir > 0 ? -3 : 3) + '%');
         out.classList.add('is-leaving');
-        setTimeout(() => out.classList.remove('is-leaving'), 1150);
+        clearTimeout(leaveTimers.get(out));
+        leaveTimers.set(out, setTimeout(() => out.classList.remove('is-leaving'), 1150));
         inc.style.setProperty('--from', (dir > 0 ? 4 : -4) + '%');
         inc.classList.add('is-prep');
         void inc.offsetWidth;
@@ -1812,7 +1817,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       };
       clearTimeout(swapTimer);
       if (reduceMotion || prev == null) apply(); else { caption.classList.add('is-swapping'); swapTimer = setTimeout(apply, 260); }
-      restartRing();
+      resetTimer(); // chaque nouvelle photo reçoit sa durée d'affichage complète
     }
     function go(i, dir) {
       const next = ((i % n) + n) % n;
@@ -1829,25 +1834,41 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
     });
 
-    // Lecture automatique (pause au survol, au focus clavier, hors écran ou à la demande)
+    // Lecture automatique : rythme régulier, sans pause au survol de la souris.
+    // Pause seulement : bouton pause, focus clavier dans le carrousel, visionneuse ouverte,
+    // carrousel hors de l'écran ou onglet masqué (le temps déjà écoulé est conservé).
     const reasons = new Set();
     let userPaused = reduceMotion;
+    const running = () => !userPaused && reasons.size === 0;
+    function tick(ts) {
+      timerRaf = 0;
+      if (!running()) return;
+      if (lastTs) elapsed += Math.min(ts - lastTs, 100); // pas de saut après un ralentissement du navigateur
+      lastTs = ts;
+      if (elapsed >= SLIDE_MS) { if (n > 1) nextSlide(); else elapsed = 0; } // nextSlide remet le compteur à zéro
+      setRing(Math.min(elapsed / SLIDE_MS, 1));
+      timerRaf = requestAnimationFrame(tick);
+    }
     const sync = () => {
+      const on = running();
       root.classList.toggle('is-playing', !userPaused);
-      root.classList.toggle('is-paused', userPaused || reasons.size > 0);
+      root.classList.toggle('is-paused', !on);
       if (playBtn) {
         playBtn.classList.toggle('is-off', userPaused);
         playBtn.setAttribute('aria-label', userPaused ? 'Lancer le diaporama' : 'Mettre le diaporama en pause');
       }
       caption.setAttribute('aria-live', userPaused ? 'polite' : 'off');
+      if (on && !timerRaf) { lastTs = 0; timerRaf = requestAnimationFrame(tick); }
+      else if (!on && timerRaf) { cancelAnimationFrame(timerRaf); timerRaf = 0; }
     };
-    if (ring) ring.addEventListener('animationend', () => { if (!userPaused) nextSlide(); });
-    if (playBtn) playBtn.addEventListener('click', () => { userPaused = !userPaused; if (!userPaused) restartRing(); sync(); });
-    root.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { reasons.add('hover'); sync(); } });
-    root.addEventListener('pointerleave', () => { reasons.delete('hover'); sync(); });
-    root.addEventListener('focusin', (e) => { if (e.target.matches(':focus-visible')) { reasons.add('focus'); sync(); } });
+    if (playBtn) playBtn.addEventListener('click', () => { userPaused = !userPaused; sync(); });
+    root.addEventListener('focusin', (e) => {
+      let keyboard = false;
+      try { keyboard = e.target.matches(':focus-visible'); } catch (err) { /* navigateur ancien */ }
+      if (keyboard) { reasons.add('focus'); sync(); }
+    });
     root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) { reasons.delete('focus'); sync(); } });
-    new IntersectionObserver(([en]) => { if (en.isIntersecting) reasons.delete('offscreen'); else reasons.add('offscreen'); sync(); }, { threshold: 0.3 }).observe(root);
+    new IntersectionObserver(([en]) => { if (en.isIntersecting) reasons.delete('offscreen'); else reasons.add('offscreen'); sync(); }).observe(root);
     document.addEventListener('visibilitychange', () => { if (document.hidden) reasons.add('hidden'); else reasons.delete('hidden'); sync(); });
 
     // Visionneuse
