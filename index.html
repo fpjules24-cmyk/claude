@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Marie-Claude Sanchez · Psychologue clinicienne à Bordeaux</title>
-<meta name="description" content="Marie-Claude Sanchez, psychologue clinicienne à Bordeaux (132 rue François de Sourdis). Consultations sur rendez-vous pour enfants, adolescents et adultes, du lundi au samedi.">
+<meta name="description" content="Marie-Claude Sanchez, psychologue clinicienne à Bordeaux (132 rue François de Sourdis). Consultations sur rendez-vous le samedi, pour enfants, adolescents et adultes.">
 <meta name="theme-color" content="#FFE7C2">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
@@ -37,8 +37,6 @@
     "addressCountry": "FR"
   },
   "openingHoursSpecification": [
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "12:00" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "13:00", "closes": "19:00" },
     { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "12:00" },
     { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "13:00", "closes": "18:00", "description": "Dernier rendez-vous à 18h00" }
   ],
@@ -496,7 +494,7 @@ address { font-style: normal; }
 .price--student .price__desc { color: #222A5C; }
 .price__amount { margin: 0; font-family: var(--font-display); font-size: clamp(3.4rem, 2.6rem + 2.6vw, 5rem); line-height: 1; color: var(--royal); white-space: nowrap; }
 .price__amount span { font-size: .5em; margin-left: .06em; vertical-align: .62em; }
-.note { display: flex; gap: 12px; align-items: flex-start; margin: 4px 0 0; padding: 16px 18px; border-radius: 20px; background: rgba(3, 29, 140, .05); font-size: .9rem; color: var(--ink-2); }
+.note { position: relative; display: flex; gap: 12px; align-items: flex-start; margin: 4px 0 0; padding: 16px 18px; border-radius: 20px; background: #F3E8DA; font-size: .9rem; color: var(--ink-2); }
 .note .i { margin-top: .2em; color: var(--royal); }
 .hours {
   position: relative; overflow: hidden; padding: clamp(24px, 2.6vw, 36px); border-radius: 30px; color: var(--cream-50);
@@ -507,23 +505,31 @@ address { font-style: normal; }
 .hours__head { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
 .hours__title { font-size: clamp(1.65rem, 1.35rem + .8vw, 2.15rem); color: var(--cream-50); }
 .hours .status { padding: .5em .95em; border-radius: 999px; background: rgba(255, 231, 194, .12); font-size: .82rem; font-weight: 600; }
-.days { position: relative; display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
-.day { display: grid; grid-template-columns: 6.6em minmax(80px, 1fr) 14.2em; align-items: center; gap: 16px; padding: 11px 14px; border-radius: 16px; transition: background .3s; }
-.day.is-today { background: rgba(153, 172, 255, .17); box-shadow: inset 0 0 0 1px rgba(153, 172, 255, .4); }
-.day__name { font-weight: 600; }
-.day__today { display: none; margin-left: .55em; padding: .15em .5em; border-radius: 99px; background: var(--peri); color: var(--royal); font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; vertical-align: .15em; }
-.day.is-today .day__today { display: inline-block; }
-.day__track { position: relative; height: 8px; border-radius: 99px; background: rgba(255, 231, 194, .13); }
+.week { position: relative; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin: 0 0 16px; padding: 0; list-style: none; }
+.week__day { position: relative; display: grid; place-items: center; height: 46px; border-radius: 14px; font-size: .8rem; font-weight: 600; color: rgba(255, 250, 242, .42); background: rgba(255, 231, 194, .05); box-shadow: inset 0 0 0 1px rgba(255, 231, 194, .1); }
+.week__day.is-open { color: var(--royal); font-weight: 800; background: var(--peri); box-shadow: 0 12px 24px -14px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .5); }
+.week__day.is-today::after { content: ""; position: absolute; left: 50%; bottom: 6px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: currentColor; }
+.sat { position: relative; padding: 18px 18px 12px; border-radius: 20px; background: rgba(153, 172, 255, .12); box-shadow: inset 0 0 0 1px rgba(153, 172, 255, .3); transition: background .3s; }
+.sat.is-today { background: rgba(153, 172, 255, .2); box-shadow: inset 0 0 0 1px rgba(153, 172, 255, .5); }
+.sat__title { display: flex; flex-wrap: wrap; align-items: center; gap: .55em; margin: 0 0 14px; font-family: var(--font-display); font-size: clamp(1.45rem, 1.25rem + .6vw, 1.8rem); line-height: 1.1; color: var(--cream-50); }
+.day__today { display: none; padding: .2em .55em; border-radius: 99px; background: var(--peri); color: var(--royal); font-family: var(--font-body); font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.is-today .day__today { display: inline-block; }
+.slots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 0 18px; }
+.slot { padding: 12px 14px; border-radius: 14px; background: rgba(255, 231, 194, .08); }
+.slot dt { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--peri); }
+.slot dd { margin: 4px 0 0; font-family: var(--font-display); font-size: clamp(1.2rem, 1.05rem + .5vw, 1.45rem); color: var(--cream-50); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.slot dd small { display: block; margin-top: 3px; font-family: var(--font-body); font-size: .74rem; color: var(--peri); white-space: normal; }
+.day__track { position: relative; display: block; height: 8px; border-radius: 99px; background: rgba(255, 231, 194, .13); }
 .day__seg { position: absolute; top: 0; bottom: 0; left: var(--a); width: var(--w); border-radius: 99px; background: linear-gradient(90deg, #C5D0FF, var(--peri)); transform-origin: 0 50%; }
+/* après le dernier rendez-vous de 18h, la séance se poursuit : fondu au lieu d'une fin nette */
+.day__seg--last { border-radius: 99px 0 0 99px; }
+.day__seg--last::after { content: ""; position: absolute; left: 100%; top: 0; bottom: 0; width: 15%; border-radius: 0 99px 99px 0; background: linear-gradient(90deg, var(--peri), rgba(153, 172, 255, 0)); }
 .js .day__seg { transform: scaleX(0); transition: transform 1.3s var(--ease-out); transition-delay: calc(var(--d, 0s) + .35s); }
 .js .hours.is-in .day__seg, .js-failed .day__seg { transform: none; }
 .day__now { position: absolute; top: 50%; width: 3px; height: 20px; margin-left: -1.5px; border-radius: 3px; background: var(--cream-50); translate: 0 -50%; box-shadow: 0 0 0 3px rgba(255, 231, 194, .25); }
-.day__time { text-align: right; font-size: .86rem; font-variant-numeric: tabular-nums; color: rgba(255, 250, 242, .88); white-space: nowrap; }
-.day--off .day__time { color: rgba(255, 250, 242, .5); }
-.day__time small { display: block; margin-top: 2px; font-size: .74rem; color: var(--peri); }
-.hours__scale { position: relative; display: grid; grid-template-columns: 6.6em minmax(80px, 1fr) 14.2em; gap: 16px; padding: 4px 14px 0; font-size: .7rem; color: rgba(255, 250, 242, .55); }
-.hours__scale > span { position: relative; height: 1.2em; }
-.hours__scale i { position: absolute; font-style: normal; translate: -50% 0; }
+.sat__scale { position: relative; height: 1.3em; margin-top: 6px; font-size: .7rem; color: rgba(255, 250, 242, .55); }
+.sat__scale i { position: absolute; font-style: normal; translate: -50% 0; }
+.sat__scale i:first-child { translate: 0 0; }
 .hours__foot { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 24px; padding-top: 22px; border-top: 1px solid rgba(255, 231, 194, .16); font-size: .92rem; color: rgba(255, 250, 242, .85); }
 .hours__foot p { display: inline-flex; align-items: center; gap: .6em; margin: 0; }
 
@@ -765,11 +771,8 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
   .fb--4 { width: 34vw; right: auto; left: -6vw; top: 8%; }
   .stage { aspect-ratio: 4 / 3; border-radius: 22px 80px 22px 80px; }
   .stage__zoom { left: 12px; top: 12px; width: 42px; height: 42px; }
-  .day { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name time" "track track"; gap: 8px 12px; }
-  .day__name { grid-area: name; }
-  .day__time { grid-area: time; }
-  .day__track { grid-area: track; }
-  .hours__scale { display: none; }
+  .week { gap: 4px; }
+  .week__day { height: 40px; border-radius: 12px; font-size: .72rem; }
   .contact__side { grid-template-columns: 1fr; }
   .tile { gap: 14px; padding: 16px 62px 16px 14px; }
   .tile__ico { width: 48px; height: 48px; border-radius: 16px; }
@@ -782,6 +785,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
   .lightbox__fig { padding: 70px 12px 10px; }
 }
 @media (max-width: 420px) {
+  .slots { grid-template-columns: 1fr; }
   .price { grid-template-columns: 1fr; }
   .price__amount { order: -1; }
 }
@@ -844,7 +848,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
     <div class="topbar__right">
       <a href="tel:0601685312"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg><span>06 01 68 53 12</span></a>
       <a class="topbar__mail" href="mailto:sanchez.psy@proton.me"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><span>sanchez.psy@proton.me</span></a>
-      <span class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Lun – Sam · sur rendez-vous</span></span>
+      <span class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Le samedi · sur rendez-vous</span></span>
     </div>
   </div>
 </div>
@@ -906,7 +910,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
         </div>
         <ul class="hero__meta" data-hero-in style="--i:5">
           <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">132 rue François de Sourdis, Bordeaux</a></li>
-          <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Du lundi au samedi · sur rendez-vous</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Le samedi, sur rendez-vous</li>
         </ul>
       </div>
     </div>
@@ -922,8 +926,8 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
   <div class="ribbons" aria-hidden="true">
     <div class="ribbons__band ribbons__band--back">
       <div class="marquee marquee--rev">
-        <div class="marquee__group"><span class="marquee__item">Prendre soin de soi</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Un temps pour parler</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Sur rendez-vous</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Centre de Santé Sourdis</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Bordeaux</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg></div>
-        <div class="marquee__group"><span class="marquee__item">Prendre soin de soi</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Un temps pour parler</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Sur rendez-vous</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Centre de Santé Sourdis</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Bordeaux</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg></div>
+        <div class="marquee__group"><span class="marquee__item">Prendre soin de soi</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Un temps pour parler</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Le samedi, sur rendez-vous</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Centre de Santé Sourdis</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Bordeaux</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg></div>
+        <div class="marquee__group"><span class="marquee__item">Prendre soin de soi</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Un temps pour parler</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Le samedi, sur rendez-vous</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Centre de Santé Sourdis</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg><span class="marquee__item">Bordeaux</span><svg class="marquee__sep" viewBox="0 0 60 100"><use href="#m-drop"/></svg></div>
       </div>
     </div>
     <div class="ribbons__band ribbons__band--front">
@@ -1024,7 +1028,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
 
       <div class="cabinet-note" data-reveal>
         <span><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Au sein du Centre de Santé Sourdis</span>
-        <span><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Consultations sur rendez-vous</span>
+        <span><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Consultations le samedi, sur rendez-vous</span>
         <span><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Cadre confidentiel</span>
       </div>
     </div>
@@ -1102,7 +1106,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       <ul class="values" data-stagger>
         <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></span><div><strong>Une écoute bienveillante</strong><p>Un accueil chaleureux et sans jugement, à votre rythme.</p></div></li>
         <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg></span><div><strong>La confidentialité</strong><p>Le secret professionnel encadre chacun des échanges.</p></div></li>
-        <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg></span><div><strong>Des horaires étendus</strong><p>Du lundi au samedi : de 8h à 19h en semaine, dernier rendez-vous à 18h le samedi.</p></div></li>
+        <li data-reveal><span class="values__ico"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg></span><div><strong>Consultations le samedi</strong><p>De 8h à 12h et de 13h à 18h, sur rendez-vous (dernier rendez-vous à 18h).</p></div></li>
       </ul>
     </div>
   </section>
@@ -1116,7 +1120,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
           <p class="eyebrow">Infos pratiques</p>
           <h2 id="tarifs-title">Tarifs <em>&amp;</em> horaires</h2>
         </div>
-        <p class="section-head__text" data-reveal style="--d:.12s">Les consultations ont lieu au cabinet, sur rendez-vous, du lundi au samedi.</p>
+        <p class="section-head__text" data-reveal style="--d:.12s">Les consultations ont lieu au cabinet, sur rendez-vous, le samedi.</p>
       </header>
 
       <div class="practical">
@@ -1146,18 +1150,30 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
           <svg class="hours__motif" viewBox="0 0 120 120" aria-hidden="true"><use href="#m-paisley"/></svg>
           <header class="hours__head">
             <h3 class="hours__title">Horaires du cabinet</h3>
-            <span class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Sur rendez-vous</span></span>
+            <span class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Le samedi, sur rendez-vous</span></span>
           </header>
-          <ol class="days">
-            <li class="day" data-day="1"><span class="day__name">Lundi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.12s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
-            <li class="day" data-day="2"><span class="day__name">Mardi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.06s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.18s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
-            <li class="day" data-day="3"><span class="day__name">Mercredi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.12s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.24s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
-            <li class="day" data-day="4"><span class="day__name">Jeudi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.18s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.3s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
-            <li class="day" data-day="5"><span class="day__name">Vendredi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.24s"></span><span class="day__seg" style="--a:45.45%;--w:54.55%;--d:.36s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 19h00</span></li>
-            <li class="day" data-day="6"><span class="day__name">Samedi<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"><span class="day__seg" style="--a:0%;--w:36.36%;--d:.3s"></span><span class="day__seg" style="--a:45.45%;--w:45.45%;--d:.42s"></span><span class="day__now" hidden></span></span><span class="day__time">08h00 – 12h00 · 13h00 – 18h00<small>dernier rendez-vous à&nbsp;18h00</small></span></li>
-            <li class="day day--off" data-day="0"><span class="day__name">Dimanche<span class="day__today">Aujourd’hui</span></span><span class="day__track" aria-hidden="true"></span><span class="day__time">Fermé</span></li>
-          </ol>
-          <div class="hours__scale" aria-hidden="true"><span></span><span><i style="left:0%">8h</i><i style="left:36.36%">12h</i><i style="left:45.45%">13h</i><i style="left:100%">19h</i></span><span></span></div>
+          <ul class="week" aria-label="Jours de consultation">
+            <li class="week__day" data-day="1"><span aria-hidden="true">Lun</span><span class="sr-only">Lundi : pas de consultation</span></li>
+            <li class="week__day" data-day="2"><span aria-hidden="true">Mar</span><span class="sr-only">Mardi : pas de consultation</span></li>
+            <li class="week__day" data-day="3"><span aria-hidden="true">Mer</span><span class="sr-only">Mercredi : pas de consultation</span></li>
+            <li class="week__day" data-day="4"><span aria-hidden="true">Jeu</span><span class="sr-only">Jeudi : pas de consultation</span></li>
+            <li class="week__day" data-day="5"><span aria-hidden="true">Ven</span><span class="sr-only">Vendredi : pas de consultation</span></li>
+            <li class="week__day is-open" data-day="6"><span aria-hidden="true">Sam</span><span class="sr-only">Samedi : consultations</span></li>
+            <li class="week__day" data-day="0"><span aria-hidden="true">Dim</span><span class="sr-only">Dimanche : pas de consultation</span></li>
+          </ul>
+          <div class="sat" data-day="6">
+            <p class="sat__title">Le samedi <span class="day__today">Aujourd’hui</span></p>
+            <dl class="slots">
+              <div class="slot"><dt>Matin</dt><dd>08h00 – 12h00</dd></div>
+              <div class="slot"><dt>Après-midi</dt><dd>13h00 – 18h00<small>dernier rendez-vous à&nbsp;18h00</small></dd></div>
+            </dl>
+            <span class="day__track" aria-hidden="true">
+              <span class="day__seg" style="--a:0%;--w:36.36%"></span>
+              <span class="day__seg day__seg--last" style="--a:45.45%;--w:45.45%;--d:.15s"></span>
+              <span class="day__now" hidden></span>
+            </span>
+            <div class="sat__scale" aria-hidden="true"><i style="left:0%">8h</i><i style="left:36.36%">12h</i><i style="left:45.45%">13h</i><i style="left:90.91%">18h</i></div>
+          </div>
           <footer class="hours__foot">
             <p><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Consultations sur rendez-vous uniquement</p>
             <a class="btn btn--light btn--sm" href="#contact" data-open="rdv" data-magnetic="0.2">Prendre rendez-vous <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -1264,7 +1280,6 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
     <div>
       <h4>Horaires</h4>
       <ul>
-        <li><span class="footer__day">Du lundi au vendredi</span><br>08h00 – 12h00 · 13h00 – 19h00</li>
         <li><span class="footer__day">Le samedi</span><br>08h00 – 12h00 · 13h00 – 18h00<br><small>Dernier rendez-vous à&nbsp;18h00</small></li>
       </ul>
     </div>
@@ -1307,7 +1322,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       </a>
     </div>
     <ul class="modal__infos">
-      <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span>Lundi – vendredi : 08h00 – 12h00 / 13h00 – 19h00<br>Samedi : 08h00 – 12h00 / 13h00 – 18h00 (dernier rendez-vous à&nbsp;18h00)<br><span class="modal__status" data-status><span data-status-text></span></span></span></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span>Le samedi : 08h00 – 12h00 / 13h00 – 18h00 (dernier rendez-vous à&nbsp;18h00)<br><span class="modal__status" data-status><span data-status-text></span></span></span></li>
       <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><a href="https://www.google.com/maps/dir/?api=1&amp;destination=132%20rue%20Fran%C3%A7ois%20de%20Sourdis%2C%2033000%20Bordeaux" target="_blank" rel="noopener">132 rue François de Sourdis, 33000 Bordeaux (Centre de Santé Sourdis)</a></li>
       <li><svg class="i" aria-hidden="true"><use href="#i-cap"/></svg><span>Consultation 60&nbsp;€ · Tarif étudiant 50&nbsp;€</span></li>
     </ul>
@@ -1378,17 +1393,14 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
   /* ==========================================================================
      ✏️ RÉGLAGES DU CABINET
      ========================================================================== */
-  // Horaires (heure de Paris) en minutes depuis minuit — 1 = lundi … 6 = samedi.
+  // Jours et horaires de consultation (heure de Paris), en minutes depuis minuit.
+  // Clés : 0 = dimanche, 1 = lundi … 6 = samedi. Les jours absents sont sans consultation.
   // Un 3e élément « true » signifie que l'heure indiquée est celle du DERNIER rendez-vous
   // (la séance ne se termine pas à cette heure-là).
   const HOURS = {
-    1: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
-    2: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
-    3: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
-    4: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
-    5: [[8 * 60, 12 * 60], [13 * 60, 19 * 60]],
-    6: [[8 * 60, 12 * 60], [13 * 60, 18 * 60, true]] // samedi : dernier rendez-vous à 18h00
+    6: [[8 * 60, 12 * 60], [13 * 60, 18 * 60, true]] // samedi : 8h-12h et 13h-18h, dernier rendez-vous à 18h
   };
+  const TRACK = [8 * 60, 19 * 60]; // échelle de la frise horaire (8h → 19h)
   const SLIDE_MS = 6500; // durée d'affichage de chaque photo du carrousel
   const THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
   const THREE_SRI = 'sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==';
@@ -1658,7 +1670,7 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
       if (next) return { open: false, text: (slots[0][0] < now.min ? 'Pause · reprise à ' : 'Fermé · ouvre à ') + fmt(next[0]) };
       for (let i = 1; i <= 7; i++) {
         const d = (now.day + i) % 7;
-        if (HOURS[d]) return { open: false, text: 'Fermé · ouvre ' + (i === 1 ? 'demain' : DAYS[d]) + ' à ' + fmt(HOURS[d][0][0]) };
+        if (HOURS[d]) return { open: false, text: 'Fermé · ouvre ' + (i === 1 ? 'demain' : i === 7 ? DAYS[d] + ' prochain' : DAYS[d]) + ' à ' + fmt(HOURS[d][0][0]) };
       }
       return { open: false, text: 'Fermé' };
     };
@@ -1669,15 +1681,14 @@ dialog.is-closing::backdrop { animation: fade-out .32s ease forwards; }
         const t = $('[data-status-text]', el);
         if (t) t.textContent = st.text;
       });
-      const all = Object.values(HOURS).flat(), first = Math.min(...all.map((s) => s[0])), last = Math.max(...all.map((s) => s[1]));
-      $$('.day').forEach((li) => {
-        const today = Number(li.dataset.day) === now.day;
-        li.classList.toggle('is-today', today);
-        const mark = $('.day__now', li);
+      $$('[data-day]').forEach((el) => {
+        const today = Number(el.dataset.day) === now.day;
+        el.classList.toggle('is-today', today);
+        const mark = $('.day__now', el);
         if (!mark) return;
-        const show = today && now.min >= first && now.min <= last;
+        const show = today && now.min >= TRACK[0] && now.min <= TRACK[1];
         mark.hidden = !show;
-        if (show) mark.style.left = ((now.min - first) / (last - first) * 100).toFixed(2) + '%';
+        if (show) mark.style.left = ((now.min - TRACK[0]) / (TRACK[1] - TRACK[0]) * 100).toFixed(2) + '%';
       });
     };
     render();

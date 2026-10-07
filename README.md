@@ -18,7 +18,8 @@ L'identité visuelle reprend celle de la carte de visite :
 ## Contenu de la page
 
 1. **Bandeau d'adresse fixe** avec l'adresse (lien vers l'itinéraire Google Maps), le téléphone,
-   l'e-mail et l'état du cabinet en direct (« Ouvert · jusqu'à 19h00 », calculé à l'heure de Paris).
+   l'e-mail et l'état du cabinet en direct (« Ouvert · dernier RDV à 18h00 », « Fermé · ouvre samedi
+   à 08h00 »…), calculé à l'heure de Paris.
 2. **En-tête fixe** en verre dépoli, avec le nom, la navigation, le téléphone et un bouton
    « Prendre RDV ». Sur mobile, une barre en bas d'écran garde l'adresse, l'appel et le RDV
    toujours à portée de pouce.
@@ -28,8 +29,9 @@ L'identité visuelle reprend celle de la carte de visite :
    vignettes, glisser au doigt, flèches du clavier et visionneuse plein écran.
 5. **Accompagnement** : trois cartes 3D (Enfants, Adolescents, Adultes) qui s'inclinent sous le
    curseur, avec un reflet et un effet de profondeur.
-6. **Tarifs & horaires** : 60 € / 50 € (étudiants), frise horaire du lundi au samedi avec le
-   jour courant et l'heure actuelle (samedi : 8h–12h / 13h–18h, dernier rendez-vous à 18h).
+6. **Tarifs & horaires** : 60 € / 50 € (étudiants). Consultations **uniquement le samedi** :
+   8h–12h et 13h–18h, dernier rendez-vous à 18h (la séance ne se termine pas à 18h). Frise de la
+   semaine, jour courant et heure actuelle.
 7. **Contact & mentions** : liens directs (`tel:0601685312`, `mailto:`, Google Maps), boutons
    « copier », photo de l'entrée avec repère sur la plaque, numéros ADELI et RPPS, numéros d'urgence.
 8. **Pied de page** avec le rappel des informations légales et une fenêtre « Mentions légales ».
@@ -54,9 +56,9 @@ Les endroits à modifier sont signalés par `✏️` dans `index.html`.
   ou changez les chemins `src`. Dans chaque diapositive, `--pos` règle le cadrage
   (ex. `--pos:50% 40%`), et `data-title` / `data-text` donnent le titre et la légende affichés.
   Une photo manquante est remplacée par un visuel d'attente élégant.
-- **Horaires :** modifiez la liste « HORAIRES » dans le HTML **et** la constante `HOURS` en haut du
+- **Horaires :** modifiez la carte « HORAIRES » dans le HTML **et** la constante `HOURS` en haut du
   script : c'est elle qui calcule l'état « Ouvert / Fermé ». Un 3e élément `true` sur un créneau
-  indique que l'heure de fin est celle du dernier rendez-vous (cas du samedi).
+  indique que l'heure de fin est celle du dernier rendez-vous (cas du samedi à 18h).
 - **Tarifs, textes :** directement dans le HTML (sections `#tarifs`, `#accompagnement`, etc.).
 - **Couleurs :** variables CSS au début de la feuille de style (`--cream`, `--peri`, `--royal`…).
 - **Mentions légales :** complétez la rubrique « Hébergement » au moment de la mise en ligne.
