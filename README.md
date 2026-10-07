@@ -61,16 +61,19 @@ Les endroits à modifier sont signalés par `✏️` dans `index.html`.
   indique que l'heure de fin est celle du dernier rendez-vous (cas du samedi à 18h).
 - **Tarifs, textes :** directement dans le HTML (sections `#tarifs`, `#accompagnement`, etc.).
 - **Couleurs :** variables CSS au début de la feuille de style (`--cream`, `--peri`, `--royal`…).
-- **Mentions légales :** complétez la rubrique « Hébergement » au moment de la mise en ligne.
-  Elle est obligatoire (loi pour la confiance dans l'économie numérique).
+- **Mentions légales :** la rubrique « Hébergement » est remplie pour Cloudflare Pages. Si le site est
+  publié ailleurs, indiquez le nom, l'adresse et le téléphone du nouvel hébergeur (mention obligatoire).
 
 ## Mettre en ligne
 
-C'est un site statique : il suffit de déposer `index.html` et le dossier `images/` chez n'importe
-quel hébergeur (OVH, o2switch, Netlify, GitHub Pages…).
+C'est un site statique : il suffit de déposer `index.html` et le dossier `images/` chez un hébergeur.
 
-- **GitHub Pages :** *Settings → Pages → Deploy from a branch*, choisir la branche et la racine `/`.
-- **Netlify :** glisser-déposer le dossier du projet sur app.netlify.com.
+**Méthode conseillée, gratuite : Cloudflare Pages.** Dans le tableau de bord Cloudflare :
+*Workers & Pages → Create application → Get started → Drag and drop your files*, puis nommer le
+projet et déposer une archive ZIP contenant `index.html` et `images/` à sa racine. Le site est en
+ligne à l'adresse `<nom-du-projet>.pages.dev`.
+
+Autres possibilités : Netlify (glisser-déposer) ou GitHub Pages (dépôt public sur le plan gratuit).
 
 ## Qualité, accessibilité, performances
 
