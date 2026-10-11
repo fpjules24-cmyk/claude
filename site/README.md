@@ -10,6 +10,12 @@ Score Lighthouse mesuré en octobre 2026, en mode mobile, sur la page d'accueil 
 - `mentions-legales.html` : mentions légales et confidentialité (obligatoires en France)
 - `robots.txt`, `sitemap.xml` : indexation par les moteurs de recherche
 - `favicon.svg`, `apple-touch-icon.png`, `og-image.png` : icônes et image de partage (1200 × 630)
+- `fonts/` : polices hébergées sur le site (Schibsted Grotesk pour les titres, Atkinson Hyperlegible pour le texte, IBM Plex Mono pour les numéros). Licence SIL Open Font License, usage commercial autorisé.
+
+## Identité
+
+- Palette Bleu & crème : bleu nuit `#0A2393`, pervenche `#9BAEFF`, orange brique `#B8461A` (boutons), crème `#FDF1DC` (fond), encre `#161A33` (texte).
+- Élément signature : l'anneau et le point (le « 0 » avec une pastille de notification), utilisé pour le logo, les puces et le favicon. Les arcs de relance montrent l'avancement d'un devis.
 
 ## À remplacer avant la mise en ligne
 
