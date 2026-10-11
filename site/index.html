@@ -23,10 +23,9 @@
 <meta property="og:image:alt" content="Zéro Oubli, plus aucun devis oublié">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"></noscript>
+<link rel="preload" href="/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/atkinson-hyperlegible-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/atkinson-hyperlegible-700.woff2" as="font" type="font/woff2" crossorigin>
 
 <script type="application/ld+json">
 {
@@ -75,6 +74,10 @@
 </script>
 
 <style>
+@font-face { font-family: "Schibsted Grotesk"; font-style: normal; font-weight: 600 800; font-display: swap; src: url("/fonts/schibsted-grotesk.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/atkinson-hyperlegible-400.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/atkinson-hyperlegible-700.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("/fonts/ibm-plex-mono-500.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 /* Mise en page : en-tête collant, accroche en deux colonnes, méthode en frise verticale, packs en grille asymétrique,
    réalisations en défilement horizontal, FAQ en accordéon, bandeau final. Thème clair et sombre automatiques. */
 :root {
@@ -96,8 +99,8 @@
   --shadow: 0 18px 40px -18px rgba(10, 35, 147, 0.35);
   --radius: 14px;
   --radius-sm: 8px;
-  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-body: "IBM Plex Sans", "Segoe UI", Roboto, sans-serif;
+  --font-display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", Roboto, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   color-scheme: light;
@@ -183,9 +186,14 @@ p { margin: 0; }
 .demo-head span { font-family: var(--font-mono); font-size: 12px; color: var(--ink-mute); }
 .devis { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .devis li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 10px; background: var(--bg); }
+.devis .left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.arc { flex: none; width: 34px; height: 34px; }
+.arc circle { fill: none; stroke-width: 5; }
+.arc .track { stroke: var(--line); }
+.arc .fill { stroke: var(--primary); stroke-linecap: round; transform: rotate(-90deg); transform-origin: 17px 17px; stroke-dasharray: 88; stroke-dashoffset: calc(88 - 88 * var(--p, 0)); transition: stroke-dashoffset 1.2s var(--ease); }
 .devis .what { font-weight: 600; font-size: 15px; }
 .devis .meta { font-family: var(--font-mono); font-size: 12px; color: var(--ink-mute); }
-.status { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 5px 11px; border-radius: 999px; white-space: nowrap; transition: background-color 0.4s ease, color 0.4s ease; }
+.status { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 5px 11px; border-radius: 999px; white-space: nowrap; }
 .status .icon { width: 14px; height: 14px; }
 .status-signed { background: var(--secondary-tint); color: var(--secondary-deep); }
 .status-sent { background: var(--bg-alt); color: var(--primary); border: 1px solid var(--line); }
@@ -223,7 +231,8 @@ p { margin: 0; }
 .pack p { color: var(--ink-soft); }
 .pack ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .pack li { display: flex; gap: 10px; align-items: flex-start; }
-.pack li .icon { margin-top: 3px; color: var(--secondary); }
+.ring-dot { position: relative; flex: none; width: 15px; height: 15px; margin-top: 5px; border-radius: 50%; border: 3px solid var(--secondary); }
+.ring-dot::after { content: ""; position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); right: -5px; top: -5px; }
 .price { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 10px; }
 .pack-feature .price { border-top-color: color-mix(in srgb, var(--bg) 25%, transparent); }
 .price strong { font-family: var(--font-display); font-size: 28px; font-weight: 800; }
@@ -313,6 +322,8 @@ p { margin: 0; }
   @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
   .hero-ring-big { animation: drift 16s ease-in-out infinite alternate; }
   @keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(10deg) translateY(14px); } }
+  .site-header .mark::after { animation: notif 6s ease-in-out 2.4s infinite; }
+  @keyframes notif { 0%, 88%, 100% { transform: scale(1); } 91% { transform: scale(1.5); } 94% { transform: scale(0.85); } 97% { transform: scale(1.1); } }
   @keyframes underline-in { from { transform: translateY(0.12em); color: var(--primary); } to { transform: none; color: var(--accent); } }
   @keyframes pop { 0% { transform: scale(0.85); } 60% { transform: scale(1.06); } 100% { transform: scale(1); } }
 }
@@ -364,9 +375,9 @@ p { margin: 0; }
       <figure class="demo" aria-label="Exemple de relances de devis automatiques" style="margin:0">
         <div class="demo-head"><strong>Vos devis cette semaine</strong><span>Exemple</span></div>
         <ul class="devis">
-          <li><div><div class="what">Rénovation salle de bain</div><div class="meta">Devis n° 2026-041 · 4 850 € HT</div></div><span class="status status-signed"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Signé</span></li>
-          <li><div><div class="what">Remplacement chaudière</div><div class="meta">Devis n° 2026-044 · 3 200 € HT</div></div><span class="status status-sent">Relancé à J+3</span></li>
-          <li><div><div class="what">Tableau électrique</div><div class="meta">Devis n° 2026-047 · 1 380 € HT</div></div><span class="status status-wait" id="demo-status" aria-live="polite">En attente</span></li>
+          <li><div class="left"><svg class="arc" viewBox="0 0 34 34" aria-hidden="true" style="--p:1"><circle class="track" cx="17" cy="17" r="14"/><circle class="fill" cx="17" cy="17" r="14"/></svg><div><div class="what">Rénovation salle de bain</div><div class="meta">Devis n° 2026-041 · 4 850 € HT</div></div></div><span class="status status-signed"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Signé</span></li>
+          <li><div class="left"><svg class="arc" viewBox="0 0 34 34" aria-hidden="true" style="--p:0.5"><circle class="track" cx="17" cy="17" r="14"/><circle class="fill" cx="17" cy="17" r="14"/></svg><div><div class="what">Remplacement chaudière</div><div class="meta">Devis n° 2026-044 · 3 200 € HT</div></div></div><span class="status status-sent">Relancé à J+3</span></li>
+          <li><div class="left"><svg class="arc" viewBox="0 0 34 34" aria-hidden="true" id="demo-arc" style="--p:0.12"><circle class="track" cx="17" cy="17" r="14"/><circle class="fill" cx="17" cy="17" r="14"/></svg><div><div class="what">Tableau électrique</div><div class="meta">Devis n° 2026-047 · 1 380 € HT</div></div></div><span class="status status-wait" id="demo-status" aria-live="polite">En attente</span></li>
         </ul>
         <div class="toast" id="demo-toast" data-pending>
           <span class="bubble" aria-hidden="true"><svg class="icon"><use href="#i-phone-x"/></svg></span>
@@ -403,9 +414,9 @@ p { margin: 0; }
           <h3>Zéro devis oublié</h3>
           <p>Vos devis non signés sont relancés automatiquement, au bon moment, avec vos mots. Vous êtes prévenu dès qu'un client est prêt à signer.</p>
           <ul>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Relance par e-mail et SMS à J+3 puis J+10</span></li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Messages écrits avec vous, à votre nom</span></li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Compatible avec votre logiciel de devis</span></li>
+            <li><span class="ring-dot" aria-hidden="true"></span><span>Relance par e-mail et SMS à J+3 puis J+10</span></li>
+            <li><span class="ring-dot" aria-hidden="true"></span><span>Messages écrits avec vous, à votre nom</span></li>
+            <li><span class="ring-dot" aria-hidden="true"></span><span>Compatible avec votre logiciel de devis</span></li>
           </ul>
           <p class="price"><strong>39 € / mois</strong><span>+ 290 € d'installation</span></p>
         </article>
@@ -558,6 +569,7 @@ p { margin: 0; }
   function play() {
     status.textContent = "Relance J+3 envoyée";
     status.classList.add("is-updated");
+    document.getElementById("demo-arc").style.setProperty("--p", "0.5");
     setTimeout(function () { toast.removeAttribute("data-pending"); }, reduce ? 0 : 900);
   }
   if (reduce) { play(); } else { setTimeout(play, 1800); }
