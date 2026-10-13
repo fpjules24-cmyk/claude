@@ -3,6 +3,10 @@
 (function (DT) {
   const U = DT.U, D = DT.D, C = DT.C, G = DT.G, E = DT.E;
   let booted = false, lastTick = Date.now(), loopsOn = false;
+  // Crochets pour les modules : wire (abonnements aux événements, rappelés après chaque E.reset),
+  // boot (une fois la partie chargée), slow (toutes les 10 s), badges (chaque seconde)
+  DT.HOOKS = DT.HOOKS || { wire: [], boot: [], slow: [], badges: [] };
+  const runHooks = (k, ...a) => { for (const fn of DT.HOOKS[k] || []) { try { fn(...a); } catch (e) { console.error('hook ' + k, e); } } };
 
   function wire() {
     const UI = DT.UI;
@@ -22,6 +26,7 @@
     E.on('clsup', ({ cls, lvl }) => { DT.A.play('lvl'); UI.toast(D.CLASSES[cls].n + ' niveau ' + lvl + ' ! +1 point de capacité', 'gold', true); });
     E.on('chest', () => badges());
     E.on('net', () => { UI.hud(); if (DT.SCR.park && DT.NET.players.length) DT.SCR.park.refreshBots(); });
+    runHooks('wire');
     for (const ev of ['log', 'skill', 'skillLvl', 'inv', 'dungeon', 'quest', 'prestige', 'look', 'raid', 'gems', 'shop', 'chest', 'cls', 'clsup', 'ability', 'trade', 'loadout']) E.on(ev, () => DT.NET.mark());
   }
 
@@ -34,6 +39,7 @@
     const claim = r.th.filter((t, i) => r.dmg >= t && !r.claimed.includes(i)).length;
     DT.UI.badge('dungeon', claim);
     DT.UI.badge('hero', DT.SCR.hero.badge());
+    runHooks('badges');
     const qClaim = S.daily.q.filter((id) => { const q = D.QUESTS.find((x) => x.id === id); return q && G.questProgress(q) >= q.n && !S.daily.got.includes(id); }).length;
     DT.UI.badge('park', qClaim + (S.daily.chest ? 0 : 1));
   }
@@ -63,7 +69,7 @@
       if (cur && DT.SCR[cur].update) DT.SCR[cur].update();
     }, 250);
     setInterval(() => { if (!document.hidden) badges(); }, 1000);
-    setInterval(() => { DT.SAVE.save(); if (G.dailyCheck()) DT.UI.toast('Nouvelle journée : nouvelles quêtes et nouveau cadeau !', 'gold', true); G.checkAch(); }, 10000);
+    setInterval(() => { DT.SAVE.save(); if (G.dailyCheck()) DT.UI.toast('Nouvelle journée : nouvelles quêtes et nouveau cadeau !', 'gold', true); G.checkAch(); runHooks('slow'); }, 10000);
     const flush = () => { DT.SAVE.save(); DT.NET.flush(); };
     document.addEventListener('visibilitychange', () => { if (document.hidden) flush(); else { lastTick = Date.now(); DT.SCR.park.resize && DT.SCR.park.resize(); } });
     window.addEventListener('pagehide', flush);
@@ -102,6 +108,7 @@
     if (DT.S.settings.music) document.addEventListener('pointerdown', () => DT.A.musicOn(true), { once: true });
     DT.SAVE.save();
     try { if (window.claude && window.claude.hot && typeof window.claude.hot.snapshot === 'function') window.claude.hot.snapshot(() => ({ save: DT.SAVE.serialize() })); } catch (e) { /* pas de rechargement à chaud */ }
+    runHooks('boot');
     DT.NET.init().catch(() => {});
     registerSW();
   }

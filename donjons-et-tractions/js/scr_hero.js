@@ -23,7 +23,7 @@
   SCR.render = function (root) {
     els.tabs = h('div', { class: 'seg', role: 'tablist' });
     els.body = h('div');
-    root.append(h('h1', { class: 'scr-t', text: 'Héros' }), els.tabs, els.body);
+    root.append(h('div', { class: 'row between scr-head' }, h('h1', { class: 'scr-t', text: 'Héros' }), UI.btn('Index', () => DT.CODEX.open(), { cls: 'ghost sm' })), els.tabs, els.body);
     const on = (ev, list) => DT.E.on(ev, () => { if (SCR.root && !SCR.root.hidden && list.includes(sub)) draw(); });
     on('inv', ['eq', 'bag']);
     on('look', ['eq', 'style']);

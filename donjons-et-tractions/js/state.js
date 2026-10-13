@@ -7,7 +7,7 @@
 
   function fresh() {
     const now = Date.now();
-    return {
+    const st = {
       v: VERSION, created: now, t: now, last: now,
       nick: 'Athlète', started: false,
       look: { skin: '#e8b48a', hair: '#5b3a29', hs: 'short', top: '#b13e53' },
@@ -36,6 +36,10 @@
       tut: 0,
       offline: null,
     };
+    // champs ajoutés par les modules (DT.STATE_DEFAULTS = { clé: valeur par défaut })
+    const ext = DT.STATE_DEFAULTS || {};
+    for (const k in ext) if (!(k in st)) st[k] = JSON.parse(JSON.stringify(ext[k]));
+    return st;
   }
 
   function merge(def, src) {

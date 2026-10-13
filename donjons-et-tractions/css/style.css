@@ -543,6 +543,39 @@ textarea.code { width: 100%; background: var(--ink); color: var(--chalk); border
 .bt-over > b { color: var(--gold); }
 .bt-over .btn { min-width: 120px; }
 
+/* ---------- v3 : index ---------- */
+.scr-head { gap: 8px; }
+.scr-head .btn { margin-top: 8px; }
+.codex-body { display: flex; flex-direction: column; gap: 8px; }
+
+/* ===== [wp-economy] équilibrage ===== */
+/* (ajouter ici) */
+/* ===== fin [wp-economy] ===== */
+
+/* ===== [wp-pose3d] vue 360° ===== */
+/* (ajouter ici) */
+/* ===== fin [wp-pose3d] ===== */
+
+/* ===== [wp-fx] effets de combat ===== */
+/* (ajouter ici) */
+/* ===== fin [wp-fx] ===== */
+
+/* ===== [wp-gear] équipement, sets, index ===== */
+/* (ajouter ici) */
+/* ===== fin [wp-gear] ===== */
+
+/* ===== [wp-season] quêtes hebdo et saison ===== */
+/* (ajouter ici) */
+/* ===== fin [wp-season] ===== */
+
+/* ===== [wp-profile] matériel et entraînement du héros ===== */
+/* (ajouter ici) */
+/* ===== fin [wp-profile] ===== */
+
+/* ===== [wp-classes] classes et grimoire ===== */
+/* (ajouter ici) */
+/* ===== fin [wp-classes] ===== */
+
 @media (min-width: 521px) {
   #app { border-left: 3px solid var(--ink); border-right: 3px solid var(--ink); }
 }
