@@ -23,8 +23,8 @@
             }, { cls: 'gold sm' }) : (q.irl ? UI.btn('Go', () => { UI.closeSheet(); UI.go('sport'); }, { cls: 'ghost sm' }) : null)));
         });
         const all = S.daily.q.every((id) => S.daily.got.includes(id));
-        el.append(h('div', { class: 'card center' }, h('b', { text: 'Bonus : les 3 quêtes = Coffre du Jour' }),
-          S.daily.all ? h('p', { class: 'muted', text: 'Coffre récupéré. À demain !' }) : UI.btn('Ouvrir le coffre', () => { const its = DT.G.claimAllBonus(); if (its) { UI.rewards('Coffre du Jour', { items: its }); draw(); } }, { cls: 'gold', disabled: !all })));
+        el.append(h('div', { class: 'card center' }, h('b', { text: 'Bonus : les 3 quêtes = Coffre en Fer' }),
+          S.daily.all ? h('p', { class: 'muted', text: 'Coffre récupéré. À demain !' }) : UI.btn('Prendre le coffre', () => { const ch = DT.G.claimAllBonus(); if (ch) { UI.rewards('Quêtes terminées !', { chests: [ch] }); draw(); } }, { cls: 'gold', disabled: !all })));
       };
       draw();
     } });
@@ -125,9 +125,13 @@
         sec('Le principe', 'Ton héros progresse quand TOI tu t\'entraînes. Fais de vraies pompes, tractions, squats ou gainage, puis enregistre-les dans l\'onglet Sport.'),
         sec('Les pièces', 'Chaque rep réelle rapporte des pièces (bien plus que l\'idle), de l\'XP et de l\'énergie. Elle active aussi le PUMP : production x2 pendant quelques minutes.', 'Tes skills produisent des pièces en continu, même quand le jeu est fermé (jusqu\'à 8 h).'),
         sec('Les skills', 'Comme en vraie calisthénie : chaque skill a des prérequis et demande un volume d\'entraînement réel dans sa famille (Poussée, Tirage, Équilibre, Gainage, Jambes, Explosivité). Une fois appris, il produit des pièces : monte-le en niveau, chaque palier (10, 25, 50, 100…) double sa production.', 'Si tu réussis le skill pour de vrai, certifie-le : x3 de production et un bonus d\'éclats.'),
-        sec('Les éclats', 'La deuxième monnaie, débloquée avec ton premier nouveau skill. Elle sert aux coffres, aux apparences, à recharger l\'énergie et à revenir d\'un K.O.'),
-        sec('Donjons et stuff', 'Les donjons coûtent de l\'énergie. Chaque skill débloqué te donne une technique de combat. Ton stuff, tes skills et ton volume réel (Force, Endurance, Gainage, Agilité) définissent ta puissance.', 'Battre un boss pour la première fois débloque une apparence et une arme unique. Le mode Héroïque donne un familier, le mode Légende un objet Mythique.'),
-        sec('Séances guidées', 'Le coach génère une séance complète adaptée à ton niveau, avec chrono et temps de repos. À la fin : gros bonus, coffre, +10 énergie et PUMP 1 h.'),
+        sec('Les éclats', 'La deuxième monnaie, débloquée avec ton premier nouveau skill. Elle sert aux coffres, aux grimoires, aux enchantements, aux apparences, à recharger l\'énergie et à revenir d\'un K.O.'),
+        sec('Ton héros et sa classe', 'De l\'autre côté du miroir, ton athlète devient un héros fantasy : Guerrier (Poussée), Assassin (Tirage), Mage (Équilibre), Paladin (Gainage), Berserker (Jambes) ou Moine (Explosivité).', 'Ta classe gagne de l\'XP quand tu fais pour de vrai les exercices de sa famille, quand tu montes les skills correspondants et en donjon. Chaque niveau donne un point pour apprendre ou renforcer une capacité (rang 5 max). Tu peux changer de classe quand tu veux : chacune garde sa progression.'),
+        sec('Combats au tour par tour', 'L\'ordre des tours dépend de la vitesse. À ton tour : Attaque (+mana), une de tes 4 capacités (mana + recharge), Garde (-50 % de dégâts) ou Potion. Tape un ennemi pour le cibler.', 'Quand un ennemi CHARGE, étourdis-le (ça l\'interrompt) ou mets-toi en garde. Le mode Auto joue à ta place.'),
+        sec('Donjons à 30 paliers', 'Une expédition = jusqu\'à 10 paliers (énergie). Gardien aux paliers 10 et 20, boss au 30. Tous les 10 paliers : un coffre plus rare que la normale. Tu peux repartir des paliers 11 et 21 une fois atteints.', 'Palier 30 en Normal : apparence + arme unique. Héroïque : un familier. Légende : objet Mythique et le Chevalier Dragon.'),
+        sec('Coffres', '6 niveaux : Bois, Fer, Doré, Diamant, Mythique, Cosmique. Améliore un coffre avec des éclats et des pièces, ou fusionne 3 coffres identiques en un meilleur. Les plus beaux cachent des apparences exclusives.'),
+        sec('Marché et échanges', 'Chaque objet a une valeur. À l\'Armurerie, essaie et achète du vrai matos pour ta classe. Chez les marchands, paie avec tes objets : la cote change chaque jour et chacun a ses goûts. Grimoires : de nouvelles capacités pour toutes les classes. Enchantement : grave une capacité sur une arme ou un accessoire (Rare ou mieux).', 'Potes : envoie un objet à un ami sous forme de code à usage unique.'),
+        sec('Séances guidées', 'Le coach génère une séance complète adaptée à ton niveau, avec chrono et temps de repos. À la fin : gros bonus, coffre en Fer (Doré pour 45 min), +10 énergie et PUMP 1 h.'),
         sec('Série', 'Chaque jour avec 20 points d\'effort prolonge ta série : +5 % par jour sur tes gains d\'exos (max +50 %). Un jour de repos est toléré : ta série ne casse qu\'après 2 jours sans sport.'),
         sec('Sauvegarde', 'Ta partie est enregistrée sur cet appareil' + (DT.NET && DT.NET.cloud ? ' et dans le cloud (synchronisée entre ton téléphone et ton ordinateur).' : '.') + ' Tu peux aussi exporter un code de sauvegarde dans les réglages.'),
         h('p', { class: 'muted', text: 'Écoute ton corps : échauffe-toi, progresse doucement, et consulte un professionnel en cas de douleur.' }));
@@ -156,7 +160,7 @@
             const ok = await UI.confirm({ title: 'Tout effacer ?', text: 'Ta partie sera remplacée par une nouvelle. Exporte d\'abord ta sauvegarde si tu veux pouvoir revenir en arrière.', ok: 'Tout effacer', danger: true });
             if (ok) { DT.SAVE.reset(); location.reload(); }
           }, { cls: 'danger sm' })),
-          h('p', { class: 'muted center', text: 'Donjons & Tractions · v1.0 · fait avec des pompes et du code' }));
+          h('p', { class: 'muted center', text: 'Donjons & Tractions · v2.0 · fait avec des pompes et du code' }));
       };
       draw();
     } });
@@ -223,7 +227,7 @@
         h('ol', { class: 'steps' },
           h('li', { text: 'Fais de vrais exercices et enregistre-les : pièces, XP, énergie.' }),
           h('li', { text: 'Débloque les skills de calisthénie : ils produisent des pièces en continu.' }),
-          h('li', { text: 'Équipe-toi et explore les donjons pour gagner apparences, armes et familiers.' })),
+          h('li', { text: 'Choisis ta classe de héros, équipe-toi et grimpe les donjons au tour par tour.' })),
         h('label', { class: 'lbl', for: 'obNick', text: 'TON PSEUDO' }), inp,
         h('span', { class: 'lbl', text: 'PEAU' }), sw(D.SKIN_TONES, 'skin'),
         h('span', { class: 'lbl', text: 'CHEVEUX' }), sw(D.HAIR_COLORS, 'hair'),

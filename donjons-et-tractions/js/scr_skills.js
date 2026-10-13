@@ -1,26 +1,8 @@
 'use strict';
-// Donjons & Tractions — arbre des skills (générateurs de pièces + techniques de combat)
+// Donjons & Tractions — arbre des skills (générateurs de pièces + XP de classe du héros)
 (function (DT) {
   const U = DT.U, D = DT.D, C = DT.C, h = U.h, P = DT.P, UI = DT.UI;
 
-  function abDesc(ab) {
-    const p = (x) => Math.round(x * 100) + '%';
-    switch (ab.ty) {
-      case 'dmg': return 'Inflige ' + p(ab.p) + ' de ton ATK.';
-      case 'multi': return ab.n2 + ' coups de ' + p(ab.p) + ' ATK.';
-      case 'crit': return 'Coup critique garanti de ' + p(ab.p) + ' ATK.';
-      case 'stun': return p(ab.p) + ' ATK et étourdit ' + ab.s + ' s.';
-      case 'heal': return 'Soigne ' + p(ab.h) + ' de tes PV max.';
-      case 'shield': return 'Bouclier de ' + p(ab.h) + ' de tes PV max pendant ' + ab.d + ' s.';
-      case 'buff': return '+' + p(ab.v) + ' ATK pendant ' + ab.d + ' s.';
-      case 'bcrit': return '+' + p(ab.v) + ' de chance de critique pendant ' + ab.d + ' s.';
-      case 'haste': return '+' + p(ab.v) + ' de vitesse pendant ' + ab.d + ' s.';
-      case 'drain': return p(ab.p) + ' ATK et récupère ' + p(ab.h) + ' des dégâts en PV.';
-      case 'dodge': return 'Esquive les ' + ab.n2 + ' prochaines attaques.';
-      default: return '';
-    }
-  }
-  DT.abDesc = abDesc;
   const tierTag = (t) => 'P' + t;
 
   // Quantité achetée selon le mode x1 / x10 / x100 / MAX
@@ -40,7 +22,7 @@
         h('p', { class: 'center', text: 'Il produit maintenant des pièces en continu. Monte-le en niveau pour multiplier sa production.' }),
         h('div', { class: 'rw-list' },
           h('div', { class: 'rw' }, UI.icon('gem', 'big'), h('b', { text: '+' + D.TIERS[sk.t].gems }), h('span', { text: 'éclats' })),
-          h('div', { class: 'rw' }, UI.icon('sword', 'big'), h('b', { text: sk.ab.n }), h('span', { text: abDesc(sk.ab) }))),
+          h('div', { class: 'rw' }, UI.icon('up', 'big'), h('b', { text: '+' + 60 * sk.t + ' XP' }), h('span', { text: 'classe ' + D.CLASSES[C.clsOfBranch(sk.br)].n }))),
         h('p', { class: 'muted center', text: 'Tu sais le faire pour de vrai ? Certifie-le pour x3 de production.' }),
         UI.btn('Continuer', close, { cls: 'go wide' }));
     } });
@@ -66,17 +48,12 @@
         }
         ul.append(h('li', {}, h('span', { text: 'Bonus de combat' }), h('b', { text: '+' + (br.stat === 'crit' ? (0.4 * sk.t).toFixed(1) + '% CRIT' : br.stat === 'spd' ? (0.15 * sk.t).toFixed(2) + ' VIT' : U.fmt(D.TIERS[sk.t].stat * (br.stat === 'hp' ? 6 : br.stat === 'def' ? 0.6 : 1)) + ' ' + br.sn) + (st && st.cert ? ' (x2)' : '') })));
         el.append(ul);
-        el.append(h('div', { class: 'card ab' }, h('div', { class: 'row gap' }, UI.icon('sword', 'big'), h('b', { text: sk.ab.n })), h('p', { text: abDesc(sk.ab) + ' Recharge : ' + sk.ab.cd + ' s.' })));
+        const cl = D.CLASSES[C.clsOfBranch(sk.br)];
+        el.append(h('div', { class: 'card ab', style: { '--c': cl.c } }, h('div', { class: 'row gap' }, UI.icon('sword', 'big'), h('b', { text: 'Nourrit la classe ' + cl.n })),
+          h('p', { text: 'Débloquer, monter et certifier ce skill donne de l\'XP de classe ' + cl.n + ' à ton héros (comme tes vrais exercices de ' + br.n + ').' })));
         el.append(h('div', { class: 'card irl' }, h('b', { text: 'Validation dans la vraie vie' }), h('p', { text: sk.irl })));
         const acts = h('div', { class: 'acts' });
         if (st) {
-          const inLo = S.loadout.includes(id);
-          acts.append(UI.btn(inLo ? 'Retirer du combat' : 'Utiliser en combat', () => {
-            if (inLo) S.loadout = S.loadout.filter((x) => x !== id);
-            else if (S.loadout.length < C.abilitySlots()) S.loadout.push(id);
-            else { UI.toast('Tes ' + C.abilitySlots() + ' emplacements de techniques sont pleins. Retires-en une d\'abord.', 'bad'); return; }
-            DT.E.emit('loadout'); draw();
-          }, { cls: inLo ? 'ghost' : 'go' }));
           if (!st.cert) acts.append(UI.btn('Je le réussis pour de vrai', async () => {
             const ok = await UI.confirm({ title: 'Certifier « ' + sk.n + ' »', text: 'Critère : ' + sk.irl + '. Tu confirmes l\'avoir réussi en vrai ? (Le jeu te fait confiance.)', ok: 'Oui, je l\'ai fait !' });
             if (ok && DT.G.certify(id)) { DT.A.play('ach'); UI.toast(sk.n + ' certifié ! Production x3, +' + D.TIERS[sk.t].gems * 2 + ' éclats', 'gold', true); draw(); SCR.redraw(); }
@@ -117,7 +94,7 @@
       h('button', { type: 'button', class: S.settings.buy === v ? 'on' : '', on: { click: () => { S.settings.buy = v; drawBuy(); SCR.update(); } } }, n)));
   }
   function drawList() {
-    const S = DT.S, look = P.lookFor(S.look, S.skin);
+    const S = DT.S, look = P.lookFor(S.look, 'base');
     U.clear(els.list);
     refs = [];
     const order = br === 'all' ? D.BR_ORDER : [br];

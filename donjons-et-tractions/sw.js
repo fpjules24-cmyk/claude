@@ -1,9 +1,9 @@
 // Donjons & Tractions — service worker : le jeu fonctionne hors connexion une fois chargé
-const CACHE = 'dt-v1';
+const CACHE = 'dt-v2';
 const SHELL = [
   './', 'index.html', 'manifest.webmanifest', 'css/style.css',
-  'js/util.js', 'js/data.js', 'js/pixel.js', 'js/audio.js', 'js/state.js', 'js/game.js', 'js/ui.js', 'js/battle.js',
-  'js/scr_park.js', 'js/scr_sport.js', 'js/scr_skills.js', 'js/scr_dungeon.js', 'js/scr_stuff.js', 'js/scr_social.js', 'js/net.js', 'js/main.js',
+  'js/util.js', 'js/data.js', 'js/data2.js', 'js/pixel.js', 'js/figure.js', 'js/audio.js', 'js/state.js', 'js/game.js', 'js/ui.js', 'js/battle.js',
+  'js/scr_park.js', 'js/scr_sport.js', 'js/scr_skills.js', 'js/scr_hero.js', 'js/scr_dungeon.js', 'js/scr_market.js', 'js/scr_social.js', 'js/net.js', 'js/main.js',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-180.png',
 ];
 self.addEventListener('install', (e) => {

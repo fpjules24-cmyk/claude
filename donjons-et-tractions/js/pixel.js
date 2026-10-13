@@ -95,6 +95,8 @@
     skull: ['.oooooo.', 'owwwwwwo', 'owoowoow', 'owoowoow', 'owwwwwwo', '.owwwwo.', '.owowwo.', '..oooo..'],
     paw: ['.o..o...', 'oso.oso.', '.o..o...', '..oo..o.', '.osso.os', 'ossssoo.', 'osssso..', '.oooo...'],
     timer: ['..oooo..', '.owwwwo.', 'owwoowwo', 'owwowwwo', 'owwwwwwo', 'owwwwwwo', '.owwwwo.', '..oooo..'],
+    val: ['...oo...', '..oyyo..', '.oyppyo.', 'oypwwpyo', 'oyppppyo', '.oyppyo.', '..oyyo..', '...oo...'],
+    potion: ['...oo...', '...ss...', '..oRRo..', '.oRrRRo.', 'oRrRRRRo', 'oRRRRRRo', '.oRRRRo.', '..oooo..'],
     fist: ['........', '.oooo...', 'orrrro..', 'orRrroo.', 'orrrrrro', 'orrrrRro', '.orrrro.', '..oooo..'],
   };
   const NAV = {
@@ -102,6 +104,8 @@
     sport: ['............', '............', '.oo......oo.', 'osso....osso', 'oswooooooswo', 'osssssssssso', 'oswooooooswo', 'osso....osso', '.oo......oo.', '............', '............', '............'],
     skills: ['.....oo.....', '.....oyo....', '....oyyo....', 'oooooyyooooo', 'oyyyyyyyyyYo', '.oyyyyyyyYo.', '..oyyyyyYo..', '..oyyyyyYo..', '.oyyyooyyYo.', '.oyYo..oyYo.', 'oyYo....oYYo', 'ooo......ooo'],
     dungeon: ['...oooooo...', '..owwwwwwo..', '.owwwwwwwwo.', '.owwwwwwwwo.', '.owoowwoowo.', '.owoowwoowo.', '.owwwwwwwwo.', '..owwoowwo..', '..owwwwwwo..', '...owwwwo...', '...oooooo...', '............'],
+    hero: ['o..........o', 'owo......owo', '.owo....owo.', '..owo..owo..', '...owoowo...', '....owwo....', '....owwo....', '...oyooyo...', '..oyo..oyo..', '.oBo....oBo.', 'oBo......oBo', 'oo........oo'],
+    market: ['....oooo....', '.....oo.....', '....oyyo....', '...oyyyyo...', '..oyyYyyyo..', '.oyyYYYyyyo.', '.oyyyYyyyYo.', '.oyyYYYyyYo.', '.oyyyYyyyYo.', '..oyyyyyYo..', '...oooooo...', '............'],
     stuff: ['............', '.oooooooooo.', 'obbbbbbbbbbo', 'obBBBBBBBBbo', 'obBBBBBBBBbo', 'oooooyyooooo', 'obbbbyybbbbo', 'obbbbbbbbbbo', 'obbbbbbbbbbo', 'oBBBBBBBBBBo', '.oooooooooo.', '............'],
   };
   // Objets (12×12) — a couleur de rareté, b ombre, c reflet, d métal, e métal sombre
@@ -111,7 +115,12 @@
     hands: ['............', '...o.o.o....', '..oaoaoaoo..', '..oaoaoaoao.', '..oaaaaaaao.', '.ooaaaaaaao.', 'oaoaaaaaaao.', 'oaaaaaaaao..', '.oaaaaaaao..', '..oddddddo..', '..oooooooo..', '............'],
     legs: ['............', '............', '..oooooooo..', '..oddddddo..', '..oaaaaaao..', '.oaaaaaaaao.', '.oaacooaaao.', '.oaaao.oaaao', '.oaaao.oaaao', '.obbbo.obbbo', '.ooooo.ooooo', '............'],
     feet: ['............', '............', '............', '....oooo....', '...oaaaao...', '...oaaaao...', '...oaaaaaoo.', '..oaaaaaaaao', '.oaacaaaaaao', 'oddddddddddo', '.oooooooooo.', '............'],
-    acc: ['o..........o', '.o........o.', '..o......o..', '...o....o...', '....o..o....', '.....oo.....', '....oaao....', '...oacaao...', '...oacaao...', '...oaaaao...', '....oaao....', '.....oo.....'],
+    acc: ['d..........d', '.d........d.', '..d......d..', '...d....d...', '....d..d....', '.....dd.....', '....oaao....', '...oacaao...', '...oacaao...', '...oaaaao...', '....oaao....', '.....oo.....'],
+    ring: ['............', '.....oo.....', '....oaco....', '....oaao....', '...oddddo...', '..odo..odo..', '.odo....odo.', '.od......do.', '.odo....odo.', '..odo..odo..', '...oddddo...', '............'],
+    orb: ['............', '....oooo....', '...oaaaao...', '..oaccaaao..', '..oacaaaao..', '..oaaaaabo..', '..oaaaabbo..', '...oabbbo...', '....oooo....', '...oddddo...', '..oeeeeeeo..', '...oooooo...'],
+    belt: ['............', '............', '............', 'oooooooooooo', 'bbbboddddobb', 'aaaaodaadoaa', 'aaaaodcadoaa', 'bbbboddddobb', 'oooooooooooo', '............', '............', '............'],
+    armor: ['............', '.oo......oo.', 'oddo....oddo', 'oddaooooaddo', '.oaaaccaaao.', '.oaaaaaaaao.', '..oaaccaao..', '..oaaaaaao..', '..oaaaaaao..', '..obbbbbbo..', '...oooooo...', '............'],
+    robe: ['...oo..oo...', '..oaaooaao..', '.oaaaccaaao.', 'oaaoaaaaoaao', 'oao.oaao.oao', '.o..oaao..o.', '...oaaaao...', '...oaacao...', '..oaaaaaao..', '..oaaaaaao..', '.oabbbbbbao.', '.oooooooooo.'],
     dumbbell: ['............', '............', '.ooo....ooo.', 'oaaao..oaaao', 'oacaooooacao', 'oaaaodddoaao', 'oaaaooooaaao', 'oaaao..oaaao', '.ooo....ooo.', '............', '............', '............'],
     kettlebell: ['....oooo....', '...oo..oo...', '...o....o...', '..ooooooo...', '.oaaaaaaao..', 'oaccaaaaaao.', 'oacaaaaaaao.', 'oaaaaaaaabo.', 'oaaaaaaaabo.', '.oaaaaaabo..', '..oooooo....', '............'],
     whip: ['.......ooo..', '......oaaao.', '.....oa...ao', '....oa....ao', '...oa....oa.', '..oa....oa..', '.oo....oa...', 'odo...oa....', 'odo..oa.....', 'oeo.oa......', '.o..oo......', '............'],
@@ -565,8 +574,14 @@
     const flip = !!o.flip;
     const props = o.noProps ? null : p.props;
     if (props) flushPix(ctx, propPixels(props, time, J), Math.round(x), Math.round(y), s, flip);
-    const P = figurePixels(J, look, { time, weapon: o.weapon });
-    flushPix(ctx, P, Math.round(x) + sx * s, Math.round(y) + sy * s, s, flip, o.tint);
+    const fx = look.fx && DT.P.heroPixels;
+    const P = fx ? DT.P.heroPixels(J, look, { time, weapon: o.weapon, pose: p, poseId, back: o.weaponBack }) : figurePixels(J, look, { time, weapon: o.weapon });
+    const ox = Math.round(x) + sx * s, oy = Math.round(y) + sy * s;
+    if (P.glow && !o.tint) flushPix(ctx, P.glow, ox, oy, s, flip);
+    if (P.alpha && !o.tint) ctx.globalAlpha = P.alpha;
+    flushPix(ctx, P, ox, oy, s, flip, o.tint);
+    ctx.globalAlpha = 1;
+    if (P.sparks && !o.tint) for (const sp of P.sparks) { ctx.fillStyle = sp.c; ctx.fillRect(ox + (flip ? -sp.x - 1 : sp.x) * s, oy + sp.y * s, s, s); }
   }
   function figureBounds(poseId) {
     const p = POSES[poseId] || POSES.idle;
@@ -847,5 +862,5 @@
     return bgCanvas('th_' + theme + w + 'x' + h, w, h, THEMES[theme] || THEMES.park);
   }
 
-  DT.P = { OUT, SPR, DEF_PAL, IPAL, ICONS, NAV, ITEM_SPR, spriteCanvas, spriteURL, silURL, iconURL, navURL, itemURL, shade, mix, POSES, poseAt, drawFigure, figureBounds, poseThumb, lookFor, Stage, parkBg, themeBg, period };
+  DT.P = { OUT, SPR, DEF_PAL, IPAL, ICONS, NAV, ITEM_SPR, spriteCanvas, spriteURL, silURL, iconURL, navURL, itemURL, shade, mix, POSES, poseAt, drawFigure, figureBounds, poseThumb, lookFor, Stage, joints, resolve, Pix, flushPix, LEN, dir, ik, parkBg, themeBg, period };
 })(window.DT);

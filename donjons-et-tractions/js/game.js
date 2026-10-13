@@ -98,6 +98,7 @@
     const en = Math.floor(s.energyFrac);
     s.energyFrac -= en;
     if (en > 0) addEnergy(en);
+    addClassXP(C.clsOfBranch(ex.cat), pe * 2);
     const pumpAdd = (opts.pumpMin != null ? opts.pumpMin : 5 + pe / 5) * 60000;
     s.pump = Math.min(Math.max(s.pump, Date.now()) + pumpAdd, Date.now() + 2 * 3600000);
     s.log.unshift({ t: Date.now(), e: exoId, u: units, pe: Math.round(pe * 10) / 10, c: coins, m: mult !== 1 ? mult : undefined });
@@ -130,13 +131,7 @@
     if (!spend(st.cost)) return false;
     s.skills[id] = { lvl: 1, cert: false };
     s.life.skills = Object.keys(s.skills).length;
-    if (s.loadout.length < C.abilitySlots()) s.loadout.push(id);
-    else {
-      // remplace la technique la plus faible si la nouvelle est d'un palier supérieur
-      let worst = 0;
-      s.loadout.forEach((lid, i) => { if (D.SKILL[lid].t < D.SKILL[s.loadout[worst]].t) worst = i; });
-      if (D.SKILL[s.loadout[worst]].t < sk.t) s.loadout[worst] = id;
-    }
+    addClassXP(C.clsOfBranch(sk.br), 60 * sk.t);
     addGems(D.TIERS[sk.t].gems);
     if (!s.gemsOn) { s.gemsOn = true; E.emit('toast', { t: "Nouvelle monnaie débloquée : les Éclats (" + s.gems + ") ! Coffres, apparences, énergie, boosts.", k: 'gem', big: true }); }
     C.dirty();
@@ -152,6 +147,7 @@
     const before = st.lvl;
     st.lvl += n;
     daily('levels', n);
+    addClassXP(C.clsOfBranch(D.SKILL[id].br), n * D.SKILL[id].t * 2);
     C.dirty();
     const ms = D.MILESTONES.filter((m) => m > before && m <= st.lvl);
     E.emit('skillLvl', { id, ms });
@@ -162,6 +158,7 @@
     if (!st || st.cert) return false;
     st.cert = true;
     s.life.cert++;
+    addClassXP(C.clsOfBranch(D.SKILL[id].br), 200 * D.SKILL[id].t);
     addGems(D.TIERS[D.SKILL[id].t].gems * 2);
     C.dirty();
     E.emit('skill', id);
@@ -188,10 +185,15 @@
     for (let i = minR; i <= maxR; i++) list.push([i, base[i] * Math.pow(f, i)]);
     return U.weighted(list);
   }
-  function makeItem(slot, ilvl, r) {
+  // vis : aspect voulu (sinon au hasard, avec un penchant pour l'arme de ta classe)
+  function makeItem(slot, ilvl, r, vis) {
     slot = slot || U.pick(D.SLOTS).id;
-    const [base, icon] = U.pick(D.ITEM_NAMES[slot]);
-    const it = { id: U.uid(), slot, n: base + ' ' + U.pick(D.ITEM_SUFFIX[r]), icon, r, ilvl: Math.max(0, Math.round(ilvl)), plus: 0, aff: [] };
+    if (!vis && slot === 'weapon' && S().cls && Math.random() < 0.35) vis = D.CLASSES[C.cls()].weapon;
+    const names = D.ITEM_NAMES[slot].filter((x) => x[2] === vis);
+    const [base, icon] = U.pick(names.length ? names : D.ITEM_NAMES[slot]);
+    vis = (names.length ? names[0] : D.ITEM_NAMES[slot].find((x) => x[0] === base))[2];
+    const it = { id: U.uid(), slot, n: base + ' ' + U.pick(D.ITEM_SUFFIX[r]), icon, vis, r, ilvl: Math.max(0, Math.round(ilvl)), plus: 0, aff: [] };
+    if ((slot === 'weapon' && r >= 4 && Math.random() < (r >= 5 ? 1 : 0.5)) || (slot === 'acc' && r >= 5 && Math.random() < 0.4)) it.ab = U.pick(D.ENCHANTS);
     const nAff = D.RAR[r].aff + (slot === 'acc' ? 1 : 0);
     const pool = U.shuffle(D.AFFIXES);
     for (let i = 0; i < nAff; i++) {
@@ -202,26 +204,33 @@
   }
   function makeUnique(key) {
     const u = D.UNIQUES[key];
-    return { id: U.uid(), slot: u.slot, n: u.n, icon: u.icon, r: u.r, ilvl: u.ilvl, plus: 0, aff: u.aff.map((a) => a.slice()), uq: key };
+    return { id: U.uid(), slot: u.slot, n: u.n, icon: u.icon, vis: u.vis, ab: u.ab, r: u.r, ilvl: u.ilvl, plus: 0, aff: u.aff.map((a) => a.slice()), uq: key };
   }
   function addItem(it) {
     const s = S();
     s.inv.push(it);
     if (it.r > s.life.bestRar) s.life.bestRar = it.r;
     // équipe tout seul si l'emplacement est vide
-    if (!s.eq[it.slot]) { s.eq[it.slot] = it.id; C.dirty(); }
+    if (!s.eq[it.slot]) { s.eq[it.slot] = it.id; C.dirty(); syncLoadout(it); E.emit('look'); }
     E.emit('inv');
     checkAch();
     return it;
   }
   const findItem = (id) => S().inv.find((x) => x.id === id);
+  // Les capacités d'enchantement suivent l'équipement porté
+  function syncLoadout(it) {
+    const s = S();
+    s.loadout = s.loadout.filter((id) => C.abRank(id) > 0);
+    if (it && it.ab && isEquipped(it) && !s.loadout.includes(it.ab) && s.loadout.length < C.abilitySlots()) s.loadout.push(it.ab);
+    E.emit('loadout');
+  }
   function equip(id) {
     const it = findItem(id);
     if (!it) return;
     S().eq[it.slot] = it.id;
-    C.dirty(); E.emit('inv');
+    C.dirty(); syncLoadout(it); E.emit('inv'); E.emit('look');
   }
-  function unequip(slot) { delete S().eq[slot]; C.dirty(); E.emit('inv'); }
+  function unequip(slot) { delete S().eq[slot]; C.dirty(); syncLoadout(); E.emit('inv'); E.emit('look'); }
   function isEquipped(it) { return S().eq[it.slot] === it.id; }
   function sellValue(it) { return Math.max(10 * (it.r + 1), C.priceBase() * D.RAR[it.r].sec * 0.12 * (1 + it.plus * 0.3)); }
   function sell(id) {
@@ -250,21 +259,34 @@
     return true;
   }
 
-  // Boutique : 6 objets, renouvelée toutes les 4 heures
+  // Armurerie : 8 objets (dont des armes de ta classe), renouvelée toutes les 4 heures
   const SHOP_EVERY = 4 * 3600000;
   function shopRefresh(force) {
     const s = S();
     if (!force && s.shop.items.length && Date.now() - s.shop.t < SHOP_EVERY) return;
     const il = refIlvl();
-    s.shop.items = [];
-    for (let i = 0; i < 6; i++) {
-      const r = rollRarity(1.6, 0, 3);
-      s.shop.items.push(makeItem(null, il + U.randInt(-2, 4), r));
-    }
+    const cw = D.CLASSES[C.cls()].weapon;
+    s.shop.items = ['weapon', 'weapon', 'head', 'top', 'hands', 'legs', 'feet', 'acc'].map((slot, i) =>
+      makeItem(slot, il + U.randInt(-1, 4), rollRarity(1.7, 0, 4), i === 0 ? cw : null));
     s.shop.t = Date.now();
     E.emit('shop');
   }
-  const shopPrice = (it) => Math.max(50 * Math.pow(it.r + 1, 2), C.priceBase() * D.RAR[it.r].sec * (1 + it.ilvl / 200));
+  const shopPrice = (it) => Math.max(50 * Math.pow(it.r + 1, 2), C.priceBase() * D.RAR[it.r].sec * (1 + it.ilvl / 200)) * (it.ab ? 1.5 : 1);
+  // Enchanter une arme ou un accessoire (Rare ou mieux) : lui ajoute une capacité de combat
+  const ENCH_GEMS = [0, 0, 25, 50, 90, 150];
+  const enchantCost = (it) => ({ gems: ENCH_GEMS[it.r], coins: Math.max(400, C.priceBase() * 500 * it.r) });
+  const canEnchant = (it) => (it.slot === 'weapon' || it.slot === 'acc') && it.r >= 2;
+  function enchant(id, abId) {
+    const s = S(), it = findItem(id);
+    if (!it || !canEnchant(it) || !D.ABI[abId] || !D.ABI[abId].ench || it.ab === abId) return false;
+    const c = enchantCost(it);
+    if (s.gems < c.gems || s.coins < c.coins) return false;
+    spendGems(c.gems); spend(c.coins);
+    it.ab = abId;
+    if (isEquipped(it) && s.loadout.length < C.abilitySlots() && !s.loadout.includes(abId)) s.loadout.push(abId);
+    C.dirty(); E.emit('inv'); E.emit('ability');
+    return true;
+  }
   function buyShop(id) {
     const s = S(), it = s.shop.items.find((x) => x.id === id);
     if (!it || it.sold) return false;
@@ -276,27 +298,60 @@
     E.emit('shop');
     return copy;
   }
-  const CHESTS = {
-    gold: { n: "Coffre Doré", gems: 60, f: 3, min: 2, count: 1, d: "1 objet Rare ou mieux. Chance de Légendaire et de Mythique." },
-    seance: { n: "Coffre de Séance", f: 1.8, min: 1, count: 2, d: "Gagné en terminant une séance guidée." },
-    daily: { n: "Coffre du Jour", f: 1.5, min: 0, count: 1, d: "Récompense des quêtes du jour." },
-    raid: { n: "Coffre de Raid", f: 3.5, min: 2, count: 2, d: "Récompense du boss de raid." },
-  };
-  function openChest(type) {
-    const ch = CHESTS[type], s = S();
-    const out = [];
-    for (let i = 0; i < ch.count; i++) {
-      const r = rollRarity(ch.f, ch.min, 5);
-      out.push(addItem(makeItem(null, refIlvl() + U.randInt(0, 5), r)));
+  // ---------- Coffres (6 niveaux) ----------
+  const CHEST_PRICE = { 2: 60, 3: 150, 4: 400 };
+  function addChest(tier, src) {
+    const s = S();
+    const ch = { id: U.uid(), t: U.clamp(tier, 0, 5), src: src || '' };
+    s.chests.push(ch);
+    E.emit('chest');
+    return ch;
+  }
+  function chestCount(tier) { return S().chests.filter((c) => tier == null || c.t === tier).length; }
+  function openChest(id) {
+    const s = S(), i = s.chests.findIndex((c) => c.id === id);
+    if (i < 0) return null;
+    const ch = s.chests.splice(i, 1)[0], T = D.CHEST_T[ch.t];
+    const out = { tier: ch.t, items: [], coins: Math.max(100, C.priceBase() * T.sec), gems: T.gems, skin: null, pet: null };
+    for (let k = 0; k < T.items; k++) out.items.push(addItem(makeItem(null, refIlvl() + ch.t * 2 + U.randInt(0, 4), rollRarity(T.f, T.min, 5))));
+    addCoins(out.coins);
+    if (out.gems) addGems(out.gems);
+    if (Math.random() < T.skin) {
+      const pool = D.SKINS.filter((sk) => sk.chest != null && sk.chest <= ch.t && !s.skins.includes(sk.id));
+      if (pool.length) { out.skin = U.pick(pool).id; unlockSkin(out.skin); }
+    }
+    if (Math.random() < [0, 0, 0.01, 0.03, 0.06, 0.12][ch.t]) {
+      const pool = D.PETS.filter((p) => !s.pets.includes(p.id));
+      if (pool.length) { out.pet = U.pick(pool).id; unlockPet(out.pet); }
     }
     s.life.chests++;
+    s.life.bestChest = Math.max(s.life.bestChest == null ? -1 : s.life.bestChest, ch.t);
     daily('chest');
+    E.emit('chest'); E.emit('coins');
+    checkAch();
     return out;
   }
-  function buyChest(type) {
-    const ch = CHESTS[type];
-    if (!ch.gems || !spendGems(ch.gems)) return null;
-    return openChest(type);
+  const chestUpCost = (t) => { const u = D.CHEST_T[t].up; return u ? { gems: u.gems, coins: Math.max(200, C.priceBase() * u.sec) } : null; };
+  function upgradeChest(id) {
+    const s = S(), ch = s.chests.find((c) => c.id === id);
+    if (!ch || ch.t >= 5) return false;
+    const cost = chestUpCost(ch.t);
+    if (s.gems < cost.gems || s.coins < cost.coins) return false;
+    spendGems(cost.gems); spend(cost.coins);
+    ch.t++;
+    E.emit('chest');
+    return true;
+  }
+  function fuseChests(tier) {
+    const s = S();
+    if (tier >= 5 || chestCount(tier) < 3) return null;
+    for (let k = 0; k < 3; k++) s.chests.splice(s.chests.findIndex((c) => c.t === tier), 1);
+    return addChest(tier + 1, 'fusion');
+  }
+  function buyChest(tier) {
+    const price = CHEST_PRICE[tier];
+    if (!price || !spendGems(price)) return null;
+    return addChest(tier, 'boutique');
   }
 
   // ---------- Apparences & familiers ----------
@@ -327,54 +382,212 @@
   }
   function setPet(id) { const s = S(); if (id === null || s.pets.includes(id)) { s.pet = id; C.dirty(); E.emit('look'); } }
 
-  // ---------- Donjons ----------
-  function roomReward(d, mode, room, boss) {
-    const s = S(), M = D.MODES[mode];
-    const r = { coins: 0, gems: 0, items: [], pet: null };
-    r.coins = Math.max(20 * Math.pow(3, d), C.priceBase() * 25 * (1 + d * 0.3)) * (mode + 1) * (1 + C.bonus('loot')) * (boss ? 4 : 1);
+  // ---------- Donjons à paliers ----------
+  // Un palier gagné : pièces, chance d'objet, XP de classe ; tous les 10 paliers, un coffre plus rare
+  function floorWin(d, mode, fl, kind) {
+    const s = S(), dg = D.DUNGEONS[d], M = D.MODES[mode];
+    const F = s.dungeon.floors[dg.id] || (s.dungeon.floors[dg.id] = [0, 0, 0]);
+    const best = F[mode] || 0;
+    const first = fl > best;
+    const r = { coins: 0, gems: 0, items: [], chest: null, first, clear: null, pet: null };
+    const dEff = d + (fl - 1) / D.FLOORS;
+    r.coins = Math.max(15 * Math.pow(3, dEff), C.priceBase() * 12 * (1 + dEff * 0.3)) * (mode + 1) * (1 + C.bonus('loot')) * (kind === 'boss' ? 4 : kind === 'guard' ? 2 : 1);
     addCoins(r.coins);
-    if (boss) {
-      r.gems = 2 + d + mode * 3;
+    const ilvl = Math.round(dEff * 10) + M.ilvl + U.randInt(0, 3);
+    if (kind !== 'mob') {
+      r.gems = 1 + d + mode * 2 + (kind === 'boss' ? 3 : 0);
       addGems(r.gems);
-      const rr = rollRarity(2 * M.rar, 1, 5);
-      r.items.push(addItem(makeItem(null, d * 10 + 5 + M.ilvl + U.randInt(0, 4), rr)));
-      const pid = D.DUNGEONS[d].pet;
-      if (!s.pets.includes(pid) && Math.random() < 0.03 * (mode + 1)) { unlockPet(pid); r.pet = pid; }
-    } else if (Math.random() < 0.22 + mode * 0.08) {
-      const rr = rollRarity(M.rar, 0, 5);
-      r.items.push(addItem(makeItem(null, d * 10 + room + M.ilvl + U.randInt(0, 3), rr)));
+      r.items.push(addItem(makeItem(null, ilvl + 2, rollRarity(1.8 * M.rar, 1, 5))));
+      const pid = dg.pet;
+      if (kind === 'boss' && !s.pets.includes(pid) && Math.random() < 0.03 * (mode + 1)) { unlockPet(pid); r.pet = pid; }
+      s.life.bosses++; daily('boss');
+    } else if (Math.random() < 0.12 + mode * 0.06) {
+      r.items.push(addItem(makeItem(null, ilvl, rollRarity(M.rar, 0, 5))));
     }
+    if (Math.random() < 0.08) { s.potions = Math.min(20, s.potions + 1); r.potion = 1; }
+    if (fl % 10 === 0) {
+      const tier = first ? Math.min(5, fl / 10 + mode) : Math.max(0, fl / 10 - 1 + mode);
+      r.chest = addChest(tier, 'palier ' + fl);
+    }
+    if (first) F[mode] = fl;
+    s.life.floors = 0;
+    for (const id in s.dungeon.floors) s.life.floors += (s.dungeon.floors[id] || []).reduce((a, b) => a + (b || 0), 0);
+    if (s.life.floors >= 100) unlockSkin('givre');
+    addClassXP(C.cls(), 6 * (d + 1) * (mode + 1) * (kind === 'mob' ? 1 : 3));
     s.life.wins++;
     daily('win');
-    if (boss) { s.life.bosses++; daily('boss'); }
-    E.emit('coins');
+    if (first && fl === D.FLOORS) r.clear = dungeonClear(d, mode);
+    C.dirty();
+    E.emit('coins'); E.emit('dungeon');
+    checkAch();
     return r;
   }
   function dungeonClear(d, mode) {
     const s = S(), dg = D.DUNGEONS[d];
-    const p = s.dungeon.prog[dg.id] || (s.dungeon.prog[dg.id] = {});
-    const first = !p['c' + mode];
-    const out = { first, skin: null, item: null, pet: null, gems: 0 };
-    p['c' + mode] = (p['c' + mode] || 0) + 1;
-    if (first) {
-      if (mode === 0) {
-        s.dungeon.cleared = D.DUNGEONS.filter((x) => (s.dungeon.prog[x.id] || {}).c0).length;
-        if (unlockSkin(dg.first.skin)) out.skin = dg.first.skin;
-        out.item = addItem(makeUnique(dg.first.item));
-        out.gems = 20 + d * 10;
-      } else if (mode === 1) {
-        if (unlockPet(dg.pet)) out.pet = dg.pet;
-        out.gems = 40 + d * 15;
-      } else {
-        out.item = addItem(makeItem(null, d * 10 + 15, 5));
-        out.gems = 100 + d * 20;
-      }
-      addGems(out.gems);
+    const out = { first: true, skin: null, item: null, pet: null, gems: 0 };
+    if (mode === 0) {
+      s.dungeon.cleared = D.DUNGEONS.filter((x, i) => C.floor(i, 0) >= D.FLOORS).length;
+      if (unlockSkin(dg.first.skin)) out.skin = dg.first.skin;
+      out.item = addItem(makeUnique(dg.first.item));
+      out.gems = 20 + d * 10;
+    } else if (mode === 1) {
+      if (unlockPet(dg.pet)) out.pet = dg.pet;
+      out.gems = 40 + d * 15;
+    } else {
+      out.item = addItem(makeItem(null, d * 10 + 15, 5));
+      out.gems = 100 + d * 20;
+      if (unlockSkin('dragon')) out.skin = 'dragon';
     }
+    addGems(out.gems);
+    return out;
+  }
+
+  // ---------- Classes, capacités, grimoires, potions ----------
+  function addClassXP(cls, n) {
+    if (!cls || !(n > 0)) return;
+    const cd = C.clsData(cls);
+    cd.xp += n;
+    let ups = 0;
+    while (cd.lvl < 50 && cd.xp >= C.clsXpNeed(cd.lvl)) { cd.xp -= C.clsXpNeed(cd.lvl); cd.lvl++; cd.pts++; ups++; }
+    if (ups) { C.dirty(); E.emit('clsup', { cls, lvl: cd.lvl }); }
+  }
+  function setClass(id) {
+    const s = S();
+    if (!D.CLASSES[id]) return false;
+    s.cls = id;
+    C.clsData(id);
+    // les deux capacités de niveau 1 sont offertes
+    for (const a of D.AB) if (a.cls === id && a.lvl === 1 && !s.abRanks[a.id]) s.abRanks[a.id] = 1;
     C.dirty();
-    E.emit('dungeon');
+    C.autoLoadout();
+    E.emit('cls'); E.emit('look');
+    return true;
+  }
+  function rankUp(abId) {
+    const s = S(), a = D.ABI[abId];
+    if (!a || !a.cls) return false;
+    const cd = C.clsData(a.cls), r = s.abRanks[abId] || 0;
+    if (cd.lvl < a.lvl || cd.pts < 1 || r >= 5) return false;
+    cd.pts--;
+    s.abRanks[abId] = r + 1;
+    if (r === 0 && a.cls === C.cls() && s.loadout.length < C.abilitySlots()) s.loadout.push(abId);
+    C.dirty();
+    E.emit('ability');
+    return true;
+  }
+  function toggleLoadout(abId) {
+    const s = S();
+    if (s.loadout.includes(abId)) s.loadout = s.loadout.filter((x) => x !== abId);
+    else if (C.abRank(abId) > 0 && s.loadout.length < C.abilitySlots()) s.loadout.push(abId);
+    else return false;
+    E.emit('loadout');
+    return true;
+  }
+  const scrollPrice = (a) => (a.scroll.gems ? { gems: a.scroll.gems } : { coins: Math.max(a.scroll.coins, C.priceBase() * a.scroll.coins / 6) });
+  function buyScroll(abId) {
+    const s = S(), a = D.ABI[abId];
+    if (!a || !a.scroll || s.scrolls.includes(abId)) return false;
+    const pr = scrollPrice(a);
+    if (pr.gems ? !spendGems(pr.gems) : !spend(pr.coins)) return false;
+    s.scrolls.push(abId);
+    if (s.loadout.length < C.abilitySlots()) s.loadout.push(abId);
+    E.emit('ability');
+    return true;
+  }
+  const potionPrice = () => Math.max(60, C.priceBase() * 90);
+  function buyPotions(n) {
+    const s = S();
+    n = Math.min(n, 20 - s.potions);
+    if (n <= 0 || !spend(potionPrice() * n)) return 0;
+    s.potions += n;
+    E.emit('inv');
+    return n;
+  }
+
+  // ---------- Échanges ----------
+  const TRADE_EVERY = 3 * 3600000;
+  function trends() {
+    const r = U.rng(U.hash('trend' + U.dayIndex()));
+    const out = {};
+    for (const sl of D.SLOTS) out[sl.id] = Math.round((0.75 + r() * 0.7) * 100) / 100;
+    return out;
+  }
+  function traderMult(tr, it) {
+    let m = trends()[it.slot] || 1;
+    if (tr.pref === 'weapon') m *= it.slot === 'weapon' ? 1.3 : 0.85;
+    else if (tr.pref === 'armor') m *= ['head', 'top', 'hands', 'legs', 'feet'].includes(it.slot) ? 1.25 : 0.85;
+    else if (tr.pref === 'acc') m *= it.slot === 'acc' ? 1.35 : 0.85;
+    else if (tr.pref === 'rare') m *= it.r >= 3 ? 1.3 : 0.5;
+    return m;
+  }
+  function tradeRefresh(force) {
+    const s = S();
+    if (!force && s.trade.offers.length && Date.now() - s.trade.t < TRADE_EVERY) return;
+    s.trade.offers = D.TRADERS.map((tr) => {
+      const isChest = Math.random() < 0.3;
+      if (isChest) {
+        const tier = U.weighted([[1, 30], [2, 40], [3, 22], [4, 8]]);
+        return { id: U.uid(), tr: tr.id, chest: tier, ask: Math.round(D.CHEST_T[tier].val * tr.mk) };
+      }
+      const slot = tr.pref === 'weapon' ? 'weapon' : tr.pref === 'acc' ? 'acc' : tr.pref === 'armor' ? U.pick(['head', 'top', 'hands', 'legs', 'feet']) : null;
+      const it = makeItem(slot, refIlvl() + U.randInt(2, 6), rollRarity(tr.pref === 'rare' ? 3.5 : 2.4, tr.pref === 'rare' ? 3 : 2, 5));
+      return { id: U.uid(), tr: tr.id, item: it, ask: Math.round(C.itemValue(it) * tr.mk) };
+    });
+    s.trade.t = Date.now();
+    E.emit('trade');
+  }
+  function offerPay(offer, ids) {
+    const s = S(), tr = D.TRADERS.find((x) => x.id === offer.tr);
+    let v = 0;
+    for (const id of ids) { const it = s.inv.find((x) => x.id === id); if (it) v += C.itemValue(it) * traderMult(tr, it); }
+    return Math.round(v);
+  }
+  function doTrade(offerId, ids) {
+    const s = S(), off = s.trade.offers.find((o) => o.id === offerId);
+    if (!off || off.done) return null;
+    const items = ids.map((id) => s.inv.find((x) => x.id === id)).filter(Boolean);
+    if (!items.length || items.some((it) => isEquipped(it) || it.lock)) return null;
+    if (offerPay(off, ids) < off.ask) return null;
+    s.inv = s.inv.filter((x) => !ids.includes(x.id));
+    off.done = true;
+    const out = {};
+    if (off.chest != null) out.chest = addChest(off.chest, 'échange');
+    else { const it = Object.assign({}, off.item, { id: U.uid() }); out.item = addItem(it); }
+    s.life.trades = (s.life.trades || 0) + 1;
+    E.emit('trade'); E.emit('inv');
     checkAch();
     return out;
+  }
+  // Échange entre amis : un objet devient un code, ton pote le récupère
+  const SALT = 'dt-pompes-et-dragons';
+  function b64e(str) { return btoa(unescape(encodeURIComponent(str))); }
+  function b64d(str) { return decodeURIComponent(escape(atob(str))); }
+  function itemToCode(id) {
+    const s = S(), it = s.inv.find((x) => x.id === id);
+    if (!it || isEquipped(it) || it.lock) return null;
+    const i = Object.assign({}, it);
+    delete i.id; delete i.lock;
+    const json = JSON.stringify({ v: 1, i, u: U.uid(), n: s.nick });
+    const code = 'DT-' + b64e(json) + '-' + U.hash(json + SALT).toString(36);
+    s.inv = s.inv.filter((x) => x.id !== id);
+    E.emit('inv');
+    return code;
+  }
+  function codeToItem(code) {
+    const s = S();
+    const m = String(code || '').trim().match(/^DT-([A-Za-z0-9+/=]+)-([a-z0-9]+)$/);
+    if (!m) return { err: 'Ce code ne ressemble pas à un code d\'objet.' };
+    let json, o;
+    try { json = b64d(m[1]); o = JSON.parse(json); } catch (e) { return { err: 'Code illisible : vérifie qu\'il est complet.' }; }
+    if (U.hash(json + SALT).toString(36) !== m[2]) return { err: 'Code modifié ou incomplet.' };
+    if (!o.i || !D.SLOTS.find((x) => x.id === o.i.slot) || !D.RAR[o.i.r]) return { err: 'Objet inconnu.' };
+    if (s.trade.redeemed.includes(o.u)) return { err: 'Ce code a déjà été utilisé.' };
+    s.trade.redeemed.push(o.u);
+    if (s.trade.redeemed.length > 300) s.trade.redeemed.shift();
+    const it = addItem(Object.assign({}, o.i, { id: U.uid(), plus: Math.min(10, o.i.plus || 0) }));
+    s.life.trades = (s.life.trades || 0) + 1;
+    checkAch();
+    return { item: it, from: String(o.n || 'un ami').slice(0, 16) };
   }
 
   // ---------- Quêtes & succès ----------
@@ -403,7 +616,7 @@
     if (s.daily.all || s.daily.q.some((id) => !s.daily.got.includes(id))) return null;
     s.daily.all = true;
     E.emit('quest');
-    return openChest('daily');
+    return addChest(1, 'quêtes');
   }
   function claimDailyChest() {
     const s = S();
@@ -434,11 +647,11 @@
     const s = S(), wk = U.weekIndex();
     if (s.raid.week !== wk) s.raid = { week: wk, dmg: 0, hits: 0, claimed: [], th: [] };
     // paliers fixés sur ta puissance au moment de ta première attaque de la semaine
-    if (!s.raid.hits) { const a = Math.max(20, C.stats().atk); s.raid.th = [40, 150, 350, 700].map((k) => Math.round(a * k)); }
+    if (!s.raid.hits) { const a = Math.max(20, C.stats().atk); s.raid.th = [12, 50, 120, 250].map((k) => Math.round(a * k)); }
     return s.raid;
   }
   const RAID_REW = [
-    { gems: 10, sec: 600 }, { gems: 20, sec: 1200 }, { gems: 35, chest: 'raid', sec: 1800 }, { gems: 60, skin: 'spartan', sec: 3600 },
+    { gems: 10, sec: 600, chest: 1 }, { gems: 20, sec: 1200, chest: 2 }, { gems: 35, chest: 3, sec: 1800 }, { gems: 60, chest: 4, skin: 'spartan', sec: 3600 },
   ];
   function raidAddDamage(dmg) {
     const r = raidState();
@@ -457,7 +670,7 @@
     const rw = RAID_REW[i];
     const out = { gems: rw.gems, coins: Math.max(100, C.priceBase() * rw.sec) };
     addGems(rw.gems); addCoins(out.coins);
-    if (rw.chest) out.items = openChest(rw.chest);
+    if (rw.chest) out.chest = addChest(rw.chest, 'raid');
     if (rw.skin && unlockSkin(rw.skin)) out.skin = rw.skin;
     E.emit('raid'); E.emit('coins');
     return out;
@@ -480,6 +693,7 @@
     s.prestige.run = 0;
     s.coins = s.prestige.aura >= 100 ? 1e6 : 0;
     for (const id in s.skills) s.skills[id].lvl = 1;
+    unlockSkin('cosmique');
     C.dirty();
     E.emit('prestige', gain);
     checkAch();
@@ -533,9 +747,11 @@
     today, addCoins, spend, addGems, spendGems, addEnergy, spendEnergy, daily,
     logExercise, gainXP, unlockSkill, buyLevels, certify, autoBuy,
     refIlvl, rollRarity, makeItem, makeUnique, addItem, findItem, equip, unequip, isEquipped, sellValue, sell, sellBelow, upgradeCost, upgrade,
-    shopRefresh, buyShop, shopPrice, SHOP_EVERY, CHESTS, openChest, buyChest,
+    shopRefresh, buyShop, shopPrice, SHOP_EVERY, enchant, enchantCost, canEnchant, addChest, chestCount, openChest, chestUpCost, upgradeChest, fuseChests, buyChest, CHEST_PRICE,
     unlockSkin, buySkin, setSkin, unlockPet, setPet,
-    roomReward, dungeonClear,
+    floorWin, dungeonClear,
+    addClassXP, setClass, rankUp, toggleLoadout, scrollPrice, buyScroll, potionPrice, buyPotions,
+    trends, traderMult, tradeRefresh, offerPay, doTrade, TRADE_EVERY, itemToCode, codeToItem,
     dailyCheck, questProgress, claimQuest, claimAllBonus, claimDailyChest, checkAch,
     raidState, raidAddDamage, raidClaim, raidCommunity, RAID_REW,
     prestige, tick, energyNextIn, offline,

@@ -81,7 +81,7 @@
 
   function lbEntry() {
     const S = DT.S, me = DT.SCR.social.myEntry();
-    return { nick: S.nick, power: me.power, lvl: me.lvl, skills: me.skills, rv: me.rv, skin: S.skin, look: { skin: S.look.skin, hair: S.look.hair, hs: S.look.hs, top: S.look.top } };
+    return { nick: S.nick, power: me.power, lvl: me.lvl, skills: me.skills, rv: me.rv, skin: S.skin, cls: S.cls || null, look: { skin: S.look.skin, hair: S.look.hair, hs: S.look.hs, top: S.look.top } };
   }
   async function pushLb() {
     if (!NET.db || !NET.uid) return;
@@ -101,7 +101,7 @@
     const o = d.data() || {};
     return {
       nick: String(o.nick || 'Athlète').slice(0, 16), power: Number(o.power) || 0, lvl: Number(o.lvl) || 1, skills: Number(o.skills) || 0, rv: Number(o.rv) || 0,
-      skin: DT.D.SKIN[o.skin] ? o.skin : 'base', look: o.look && typeof o.look === 'object' ? o.look : {}, t: Number(o.t) || 0, me: d.id === NET.uid,
+      skin: DT.D.SKIN[o.skin] ? o.skin : 'base', cls: DT.D.CLASSES[o.cls] ? o.cls : null, look: o.look && typeof o.look === 'object' ? o.look : {}, t: Number(o.t) || 0, me: d.id === NET.uid,
     };
   }
   function subscribe() {

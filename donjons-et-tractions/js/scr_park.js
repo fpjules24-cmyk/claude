@@ -21,9 +21,12 @@
     const r = U.rng(U.hash('bots' + U.dayIndex()));
     const names = U.shuffle(D.BOTS, r).slice(0, 6);
     const real = (DT.NET && DT.NET.players) ? DT.NET.players.slice(0, 3) : [];
-    const list = real.map((p) => ({ name: p.nick, real: true, look: P.lookFor(p.look || {}, p.skin || 'base') }))
-      .concat(names.map((n) => ({ name: n, look: P.lookFor({ skin: U.pick(D.SKIN_TONES, r), hair: U.pick(D.HAIR_COLORS, r), hs: U.pick(['short', 'long', 'mohawk', 'bun', 'short'], r), top: U.pick(D.TOP_COLORS, r), bottom: U.pick(['#333c57', '#1a1c2c', '#29366f', '#566c86'], r) }, r() < 0.25 ? U.pick(['rocky', 'ninja', 'aerobic', 'pirate', 'moine'], r) : 'base') })));
-    bots = list.slice(0, 7).map((b, i) => ({ ...b, x: 10 + i * 22 + r() * 8, y: GROUND - 2 + Math.floor(r() * 9), tx: null, st: 'idle', pose: 'idle', t: r() * 3, timer: 1 + r() * 4, flip: r() < 0.5, chat: null }));
+    // les autres héros du parc : une classe, parfois une apparence de prestige
+    const fancy = D.SKINS.filter((s) => s.id !== 'base').map((s) => s.id);
+    const list = real.map((p) => ({ name: p.nick, real: true, look: C.heroLook({ base: p.look || {}, skin: p.skin || 'base', cls: p.cls || U.pick(D.CLASS_ORDER, r), gear: false }) }))
+      .concat(names.map((n) => ({ name: n, look: C.heroLook({ base: { skin: U.pick(D.SKIN_TONES.slice(0, 6), r), hair: U.pick(D.HAIR_COLORS, r), hs: U.pick(['short', 'long', 'mohawk', 'bun', 'spiky', 'ponytail'], r) }, cls: U.pick(D.CLASS_ORDER, r), skin: r() < 0.3 ? U.pick(fancy, r) : 'base', gear: false }) })));
+    const SPOTS = [14, 32, 96, 118, 142];
+    bots = list.slice(0, 5).map((b, i) => ({ ...b, x: SPOTS[i] + r() * 6, y: GROUND - 3 - Math.floor(r() * 5), tx: null, st: 'idle', pose: 'idle', t: r() * 3, timer: 1 + r() * 4, flip: r() < 0.5, chat: null }));
   }
 
   function updBots(dt) {
@@ -35,7 +38,7 @@
         b.x += Math.sign(dx) * Math.min(Math.abs(dx), dt * 12);
         if (Math.abs(dx) < 0.5) { b.st = 'idle'; b.pose = 'idle'; b.timer = 1 + Math.random() * 3; }
       } else if (b.timer <= 0) {
-        if (Math.random() < 0.55) { b.st = 'walk'; b.pose = 'walk'; b.tx = U.clamp(b.x + U.rand(-40, 40), 8, W - 8); }
+        if (Math.random() < 0.55) { b.st = 'walk'; b.pose = 'walk'; b.tx = U.clamp(b.x + U.rand(-40, 40), 8, W - 8); if (b.tx > 44 && b.tx < 82) b.tx = b.tx < 63 ? 44 : 82; }
         else { b.st = 'exo'; b.pose = U.pick(BOT_POSES); b.t = 0; b.timer = 4 + Math.random() * 6; }
       }
       if (b.chat && b.chat.until < t0) b.chat = null;
@@ -51,6 +54,8 @@
   function frame(ts) {
     raf = requestAnimationFrame(frame);
     const now = ts / 1000;
+    // 30 images/s suffisent pour du pixel art (et économisent la batterie)
+    if (t0 && now - t0 < 1 / 31) return;
     const dt = Math.min(0.1, now - (t0 || now));
     t0 = now;
     if (!stage) return;
@@ -59,7 +64,7 @@
     lc.drawImage(P.parkBg(W, H), 0, 0);
     // entités triées par profondeur
     const ents = bots.map((b) => ({ y: b.y, draw: () => P.drawFigure(lc, b.pose, b.look, b.x, b.y, { time: b.t, flip: b.flip, noProps: true }) }));
-    const look = P.lookFor(S.look, S.skin);
+    const look = C.heroLook();
     const pose = heroPose();
     ents.push({ y: hero.y + 0.5, draw: () => P.drawFigure(lc, pose, look, hero.x, hero.y, { time: now }) });
     if (S.pet && D.PET[S.pet]) {
@@ -120,7 +125,7 @@
     els.prest = h('button', { class: 'tile', type: 'button', on: { click: () => DT.SCR.social.prestige() } }, DT.UI.icon('aura', 'big'), h('b', { text: 'Renaissance' }), h('small', { id: 'prestTxt' }));
     root.append(
       els.stageWrap,
-      h('p', { class: 'hint', text: 'Tape ton athlète pour l\'encourager. Tape les autres pour les saluer.' }),
+      h('p', { class: 'hint', text: 'Tape ton héros pour l\'encourager. Tape les autres pour les saluer.' }),
       h('div', { class: 'card prodcard' },
         h('div', { class: 'row between' }, h('span', { class: 'lbl', text: 'PRODUCTION' }), els.prod),
         els.pumpLine,
@@ -143,7 +148,7 @@
     const S = DT.S;
     DT.UI.sheet({ title: 'Skill montré au parc', body: (el, close) => {
       const grid = h('div', { class: 'thumbs' });
-      const look = P.lookFor(S.look, S.skin);
+      const look = C.heroLook();
       Object.keys(S.skills).sort((a, b) => D.SKILL[b].t - D.SKILL[a].t).forEach((id) => {
         const sk = D.SKILL[id];
         grid.append(h('button', { type: 'button', class: 'thumbbtn' + (showPose === id ? ' on' : ''), on: { click: () => { showPose = id; U.store.set('dt_show', id); close(); } } },

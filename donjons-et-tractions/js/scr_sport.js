@@ -11,7 +11,8 @@
     const cv = h('canvas', { class: 'anim ' + (o.cls || '') });
     const wrap = h('div', { class: 'anim-wrap ' + (o.wcls || '') }, cv);
     let st = null, raf = 0, start = performance.now(), pose = poseId;
-    const look = () => P.lookFor(DT.S.look, DT.S.skin);
+    // athlète (côté sport) par défaut, héros fantasy si o.look est fourni
+    const look = o.look || (() => P.lookFor(DT.S.look, 'base'));
     function draw(ts) {
       raf = requestAnimationFrame(draw);
       if (!st) { if (!wrap.isConnected || !wrap.clientWidth) return; st = new P.Stage(cv, w, hh); }
@@ -21,7 +22,7 @@
       lc.fillStyle = '#333c57'; lc.fillRect(0, hh - 6, w, 6);
       lc.fillStyle = '#566c86'; lc.fillRect(0, hh - 6, w, 1);
       const b = P.figureBounds(pose);
-      const ox = Math.round(w / 2 - (b.x0 + b.x1) / 2);
+      const ox = Math.round(w / 2 - (b.x0 + b.x1) / 2) + (o.dx || 0);
       P.drawFigure(lc, pose, look(), ox, hh - 7, { time: (ts - start) / 1000 * (o.speed || 1) });
       st.present();
     }
@@ -199,11 +200,11 @@
         DT.G.addCoins(bonus);
         DT.G.addEnergy(10);
         S.pump = Math.min(Math.max(S.pump, Date.now()) + 3600000, Date.now() + 2 * 3600000);
-        const items = DT.G.openChest('seance');
+        const chest = DT.G.addChest(plan.cfg.dur >= 45 ? 2 : 1, 'séance');
         DT.G.checkAch();
         DT.E.emit('coins');
         close && close();
-        UI.rewards('Séance terminée !', { text: done + ' séries en ' + mins + ' min · ' + Math.round(peTot) + ' points d\'effort. Production x2 pendant 1 h.', coins: coinsTot + bonus, energy: 10, items, sound: 'win', okLabel: 'Bien joué !' });
+        UI.rewards('Séance terminée !', { text: done + ' séries en ' + mins + ' min · ' + Math.round(peTot) + ' points d\'effort. Production x2 pendant 1 h.', coins: coinsTot + bonus, energy: 10, chests: [chest], sound: 'win', okLabel: 'Bien joué !' });
       } else {
         close && close();
         UI.toast('Séance interrompue. Les séries faites sont enregistrées.', '');
@@ -313,7 +314,7 @@
     b.append(h('p', { class: 'intro', text: 'Fais l\'exercice pour de vrai, puis enregistre-le. Chaque rep rapporte des pièces, de l\'XP et de l\'énergie, et active le PUMP (production x2).' }));
     b.append(h('div', { class: 'chips' }, CATS.map(([id, n]) => h('button', { type: 'button', class: 'chip-b' + (cat === id ? ' on' : ''), on: { click: () => { cat = id; draw(); } } }, n))));
     const grid = h('div', { class: 'exgrid' });
-    const look = P.lookFor(DT.S.look, DT.S.skin);
+    const look = P.lookFor(DT.S.look, 'base');
     els.cards = [];
     D.EXOS.filter((e) => cat === 'all' || e.cat === cat).forEach((e) => {
       const tot = h('small', { class: 'tot' });
@@ -343,7 +344,7 @@
       row('Repos entre séries', [[45, '45 s'], [60, '60 s'], [75, '75 s'], [90, '90 s']], 'rest'),
       UI.btn('Générer ma séance', () => { plan = generate({ dur: st.dur, focus: st.focus, level: st.level, bar: st.bar, rest: st.rest }); draw(); }, { cls: 'gold wide big' }));
     if (plan) {
-      const look = P.lookFor(S.look, S.skin);
+      const look = P.lookFor(S.look, 'base');
       const box = h('div', { class: 'plan card' }, h('div', { class: 'row between' }, h('b', { text: 'Ta séance' }), h('small', { text: '≈ ' + Math.round(plan.sec / 60) + ' min · ' + Math.round(plan.pe) + ' pts d\'effort' })));
       plan.blocks.forEach((bl) => {
         box.append(h('h4', { text: bl.n }));

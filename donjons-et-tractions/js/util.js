@@ -109,7 +109,7 @@ window.DT = window.DT || {};
         if (k === 'class') el.className = v;
         else if (k === 'text') el.textContent = v;
         else if (k === 'on') { for (const ev in v) el.addEventListener(ev, v[ev]); }
-        else if (k === 'style') { if (typeof v === 'string') el.style.cssText = v; else Object.assign(el.style, v); }
+        else if (k === 'style') { if (typeof v === 'string') el.style.cssText = v; else for (const sk in v) { if (sk.startsWith('--')) el.style.setProperty(sk, v[sk]); else el.style[sk] = v[sk]; } }
         else if (k === 'data') { for (const d in v) el.dataset[d] = v[d]; }
         else if (k in el && k !== 'list' && k !== 'type' && k !== 'for') el[k] = v;
         else el.setAttribute(k, v === true ? '' : v);

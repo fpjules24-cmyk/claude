@@ -19,8 +19,10 @@
       }
     });
     E.on('look', () => { DT.lookV = (DT.lookV || 0) + 1; });
+    E.on('clsup', ({ cls, lvl }) => { DT.A.play('lvl'); UI.toast(D.CLASSES[cls].n + ' niveau ' + lvl + ' ! +1 point de capacité', 'gold', true); });
+    E.on('chest', () => badges());
     E.on('net', () => { UI.hud(); if (DT.SCR.park && DT.NET.players.length) DT.SCR.park.refreshBots(); });
-    for (const ev of ['log', 'skill', 'skillLvl', 'inv', 'dungeon', 'quest', 'prestige', 'look', 'raid', 'gems', 'shop']) E.on(ev, () => DT.NET.mark());
+    for (const ev of ['log', 'skill', 'skillLvl', 'inv', 'dungeon', 'quest', 'prestige', 'look', 'raid', 'gems', 'shop', 'chest', 'cls', 'clsup', 'ability', 'trade', 'loadout']) E.on(ev, () => DT.NET.mark());
   }
 
   function badges() {
@@ -31,6 +33,7 @@
     const r = G.raidState();
     const claim = r.th.filter((t, i) => r.dmg >= t && !r.claimed.includes(i)).length;
     DT.UI.badge('dungeon', claim);
+    DT.UI.badge('hero', DT.SCR.hero.badge());
     const qClaim = S.daily.q.filter((id) => { const q = D.QUESTS.find((x) => x.id === id); return q && G.questProgress(q) >= q.n && !S.daily.got.includes(id); }).length;
     DT.UI.badge('park', qClaim + (S.daily.chest ? 0 : 1));
   }
@@ -86,12 +89,16 @@
     DT.SAVE.setState(saved);
     G.dailyCheck();
     G.shopRefresh(false);
+    G.tradeRefresh(false);
     const off = saved ? G.offline() : null;
     DT.S.last = Date.now();
     buildUI(U.store.get('dt_tab'));
     startLoops();
-    if (!DT.S.started) DT.SCR.settings.onboard(() => { DT.SAVE.save(); DT.SCR.settings.firstMission(); });
-    else offlinePopup(off);
+    if (!DT.S.started) DT.SCR.settings.onboard(() => { DT.SAVE.save(); DT.SCR.hero.pickClass(() => { DT.SAVE.save(); DT.SCR.settings.firstMission(); }, { modal: true, intro: 'Dernière étape : ton héros. Chaque classe grandit avec une famille d\'exercices que tu fais pour de vrai.' }); });
+    else {
+      offlinePopup(off);
+      if (!DT.S.cls) DT.SCR.hero.pickClass(() => DT.SAVE.save(), { modal: true, intro: 'Nouveau : ton athlète a un alter ego fantasy ! Choisis sa classe. Tes skills et tout ton entraînement réel lui ont déjà donné de l\'expérience.' });
+    }
     if (DT.S.settings.music) document.addEventListener('pointerdown', () => DT.A.musicOn(true), { once: true });
     DT.SAVE.save();
     try { if (window.claude && window.claude.hot && typeof window.claude.hot.snapshot === 'function') window.claude.hot.snapshot(() => ({ save: DT.SAVE.serialize() })); } catch (e) { /* pas de rechargement à chaud */ }

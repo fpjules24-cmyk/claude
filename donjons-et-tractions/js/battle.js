@@ -1,289 +1,429 @@
 'use strict';
-// Donjons & Tractions — moteur de combat (simulation + rendu pixel)
+// Donjons & Tractions v2 — combat au tour par tour (moteur + rendu)
 (function (DT) {
   const U = DT.U, D = DT.D, C = DT.C;
-  const GAUGE = 6.5; // vitesse de remplissage de la jauge d'action
+  const FX_C = { bigslash: '#ef7d57', slash: '#ef7d57', spin: '#ffcd75', combo: '#73eff7', knives: '#c2d3de', dash: '#41a6f6', fire: '#ef7d57', bolt: '#ffcd75', frost: '#73eff7', meteor: '#ff5f6d', arcane: '#b65cd6', holy: '#fff3c0', smash: '#ffcd75', shield: '#73eff7', heal: '#a7f070', roar: '#ff5f6d', smoke: '#94b0c2', quake: '#c8b48a' };
+  const RANGED = ['fire', 'bolt', 'frost', 'meteor', 'arcane', 'holy', 'knives'];
+  function abColor(id) { const a = D.ABI[id]; if (!a) return '#94b0c2'; return a.cls ? D.CLASSES[a.cls].c : FX_C[a.fx] || '#b65cd6'; }
+  const FOE_WEAPON = { 'Le Gardien du Parc': ['hammer', 1], 'Le Roi des Toits': ['dagger', 3], 'Le Grand Maître Immobile': ['staff', 3], 'Héraclès': ['mace', 5], 'Parkourien Rival': ['dagger', 1], 'Moine de Bois': ['staff', 1], 'Squelette Chips': ['sword', 1], 'Forgeron Fou': ['hammer', 2], 'Cyber-Runner': ['great', 2], 'Hoplite': ['spear', 3] };
 
-  function abColor(id) { return D.BRANCHES[D.SKILL[id].br].c; }
-
-  // ===================== Simulation =====================
+  // ===================== Moteur =====================
   function Fight(cfg) {
     this.cfg = cfg;
     const st = cfg.hero;
-    this.hero = { name: cfg.heroName || 'Toi', max: st.hp, hp: st.hp, atk: st.atk, def: st.def, spd: st.spd, crit: st.crit, cdmg: st.cdmg, gauge: 50, shield: 0, shieldT: 0, buffs: [], stun: 0, dodge: 0 };
-    this.abs = (cfg.loadout || []).map((id) => ({ id, def: D.SKILL[id].ab, cd: 0, max: D.SKILL[id].ab.cd }));
-    this.foe = null;
-    this.time = 0; this.queue = []; this.ev = []; this.over = false; this.result = null;
-    this.auto = !!cfg.auto;
-    this.petT = 3; this.pet = !!cfg.pet;
-    this.dmgDealt = 0;
-    this.timeLimit = cfg.timeLimit || 0;
-  }
-  Fight.prototype.setFoe = function (f) {
-    this.foe = Object.assign({ gauge: 20, stun: 0, shield: 0, charge: 0, spT: 4 + Math.random() * 3, enraged: false, healed: 0, dead: false }, f);
-    this.foe.max = this.foe.hp;
+    this.hero = { id: 'h', side: 'h', n: cfg.heroName || 'Toi', max: st.hp, hp: st.hp, atk: st.atk, def: st.def, spd: st.spd, crit: st.crit, cdmg: st.cdmg, mpMax: st.mp || 100, mp: Math.round((st.mp || 100) * 0.6), st: {}, shield: 0, dodge: 0, guard: false, ct: 0, alive: true };
+    this.abs = (cfg.loadout || []).filter((id) => D.ABI[id]).map((id) => ({ id, a: C.abScaled(id), cd: 0 }));
+    this.foes = [];
+    this.ev = [];
     this.over = false; this.result = null;
-    for (const a of this.abs) a.cd = Math.max(a.cd, a.max * 0.4);
-    this.hero.gauge = 50;
-  };
-  Fight.prototype.buff = function (k) {
-    let v = 0;
-    for (const b of this.hero.buffs) if (b.k === k) v += b.v;
-    return v;
+    this.potions = cfg.potions || 0;
+    this.turns = 0; this.dmgDealt = 0;
+    this.target = null;
+    this.pet = !!cfg.pet; this.petN = 0;
+  }
+  Fight.prototype.setFoes = function (list) {
+    this.foes = list.map((f, i) => Object.assign({ id: 'f' + i, side: 'f', st: {}, shield: 0, dodge: 0, ct: 0, alive: true, charge: false, cds: { sp: 1 + Math.floor(Math.random() * 2) }, enraged: false, healed: 0 }, f, { max: f.hp }));
+    this.over = false; this.result = null;
+    for (const a of this.abs) a.cd = 0;
+    this.hero.guard = false;
+    const all = [this.hero, ...this.foes];
+    for (const a of all) a.ct = 100 / this.spd(a) * (0.75 + Math.random() * 0.35);
+    this.hero.ct *= 0.7;
+    this.target = this.foes[0].id;
   };
   Fight.prototype.emit = function (e) { if (!this.cfg.headless) this.ev.push(e); };
-  Fight.prototype.hitFoe = function (mult, forceCrit, tag) {
-    const f = this.foe, H = this.hero;
-    if (!f || f.dead) return 0;
-    const atk = H.atk * (1 + this.buff('atk'));
-    let dmg = atk * atk / (atk + f.def) * mult * U.rand(0.9, 1.1);
-    const crit = forceCrit || Math.random() < H.crit + this.buff('crit');
-    if (crit) dmg *= H.cdmg;
-    if (f.shield > 0) { const a = Math.min(f.shield, dmg); f.shield -= a; dmg -= a; this.emit({ t: 'block', who: 'foe' }); }
-    dmg = Math.max(1, dmg);
-    if (!f.inv) f.hp -= dmg;
-    this.dmgDealt += dmg;
-    this.emit({ t: 'dmg', who: 'foe', amt: dmg, crit, tag });
-    if (f.hp <= 0 && !f.dead) { f.hp = 0; f.dead = true; this.emit({ t: 'die', who: 'foe' }); this.end(true); }
-    return dmg;
+  Fight.prototype.alive = function () { return this.foes.filter((f) => f.alive); };
+  Fight.prototype.byId = function (id) { return id === 'h' ? this.hero : this.foes.find((f) => f.id === id); };
+  Fight.prototype.sv = function (a, k) { const s = a.st[k]; return s && s.t > 0 ? s.v : 0; };
+  Fight.prototype.spd = function (a) { return Math.max(2, a.spd * (1 + this.sv(a, 'spd') - this.sv(a, 'slow'))); };
+  // Ordre des prochains tours (pour l'affichage)
+  Fight.prototype.order = function (n = 6) {
+    const sim = [this.hero, ...this.alive()].map((a) => ({ id: a.id, ct: a.ct, step: 100 / this.spd(a) }));
+    const out = [];
+    for (let k = 0; k < n; k++) { sim.sort((a, b) => a.ct - b.ct); const a = sim[0]; out.push(a.id); a.ct += a.step; }
+    return out;
   };
-  Fight.prototype.hitHero = function (mult, extra) {
-    const f = this.foe, H = this.hero;
-    if (H.dodge > 0) { H.dodge--; this.emit({ t: 'dodge', who: 'hero' }); return 0; }
-    const atk = f.atk * (f.enraged ? 1.5 : 1);
-    let dmg = atk * atk / (atk + H.def) * mult * U.rand(0.9, 1.1);
-    const crit = Math.random() < (f.crit || 0.05);
-    if (crit) dmg *= 1.5;
-    if (H.shield > 0) { const a = Math.min(H.shield, dmg); H.shield -= a; dmg -= a; this.emit({ t: 'block', who: 'hero', amt: a }); }
-    if (dmg > 0) {
-      H.hp -= dmg;
-      this.emit({ t: 'dmg', who: 'hero', amt: dmg, crit });
+  // Prochain acteur (et avance le temps)
+  Fight.prototype.nextActor = function () {
+    const all = [this.hero, ...this.alive()];
+    all.sort((a, b) => a.ct - b.ct);
+    const a = all[0], dt = a.ct;
+    for (const x of all) x.ct -= dt;
+    a.ct = 100 / this.spd(a);
+    return a;
+  };
+  Fight.prototype.damage = function (att, tgt, mult, o = {}) {
+    if (!tgt.alive) return 0;
+    if (tgt.dodge > 0 && !o.dot) { tgt.dodge--; this.emit({ t: 'dodge', id: tgt.id }); return 0; }
+    let atk = att.atk * (1 + this.sv(att, 'atk')) * (att.enraged ? 1.5 : 1);
+    if (att.side === 'h' && att.st.rage && att.st.rage.t > 0) atk *= 1 + 0.5 * (1 - att.hp / att.max);
+    const def = Math.max(1, tgt.def * (1 + this.sv(tgt, 'defup') + this.sv(tgt, 'def')) * (1 - (o.pierce || 0)));
+    let d = o.flat != null ? o.flat : atk * atk / (atk + def) * mult * U.rand(0.9, 1.1);
+    let crit = false;
+    if (!o.dot) {
+      const cc = (att.crit || 0.05) + this.sv(att, 'crit') + (this.sv(tgt, 'mark') ? 0.25 : 0);
+      crit = !!o.crit || Math.random() < cc;
+      if (crit) d *= att.cdmg || 1.5;
+      if (this.sv(tgt, 'mark')) d *= 1 + this.sv(tgt, 'mark');
+      if (o.exec && tgt.hp < tgt.max * o.exec) d *= 2;
     }
-    if (extra === 'stun') { H.stun = Math.max(H.stun, 1); this.emit({ t: 'text', who: 'hero', text: 'ÉTOURDI', c: '#ffcd75' }); }
-    if (extra === 'drain' && dmg > 0) { f.hp = Math.min(f.max, f.hp + dmg * 0.5); this.emit({ t: 'heal', who: 'foe', amt: dmg * 0.5 }); }
-    if (H.hp <= 0) { H.hp = 0; this.emit({ t: 'die', who: 'hero' }); this.end(false); }
-    return dmg;
+    if (tgt.guard) d *= 0.5;
+    if (tgt.shield > 0) { const a = Math.min(tgt.shield, d); tgt.shield -= a; d -= a; this.emit({ t: 'block', id: tgt.id, amt: a }); }
+    d = Math.max(1, d);
+    tgt.hp -= d;
+    if (att.side === 'h') this.dmgDealt += d;
+    if (tgt.inv && tgt.hp <= 0) tgt.hp = tgt.max;
+    this.emit({ t: 'hit', id: tgt.id, amt: d, crit, dot: o.dot, hp: Math.max(0, tgt.hp) });
+    if (tgt.hp <= 0) { tgt.hp = 0; tgt.alive = false; this.emit({ t: 'die', id: tgt.id }); }
+    return d;
   };
-  Fight.prototype.end = function (win) {
-    if (this.over) return;
-    this.over = true;
-    this.result = { win, time: this.time };
-    this.queue = [];
+  Fight.prototype.heal = function (tgt, v) { const h = Math.max(0, Math.min(tgt.max - tgt.hp, v)); tgt.hp += h; this.emit({ t: 'heal', id: tgt.id, amt: h }); };
+  Fight.prototype.status = function (tgt, k, v, turns, text, c) {
+    const cur = tgt.st[k];
+    if (k === 'stun' && tgt.boss && Math.random() < 0.4) { this.emit({ t: 'text', id: tgt.id, text: 'RÉSISTE', c: '#94b0c2' }); return; }
+    tgt.st[k] = { v: Math.max(v, cur && cur.t > 0 ? cur.v : 0), t: Math.max(turns, cur && cur.t > 0 ? cur.t : 0) };
+    if (k === 'stun' && tgt.charge) { tgt.charge = false; this.emit({ t: 'text', id: tgt.id, text: 'INTERROMPU', c: '#73eff7' }); }
+    if (text) this.emit({ t: 'text', id: tgt.id, text, c });
   };
-  Fight.prototype.ready = function (i) {
-    const a = this.abs[i];
-    return a && a.cd <= 0 && !this.over && this.hero.stun <= 0 && this.foe && !this.foe.dead;
-  };
-  Fight.prototype.use = function (i) {
-    if (!this.ready(i)) return false;
-    const a = this.abs[i], ab = a.def, H = this.hero;
-    a.cd = a.max;
-    this.emit({ t: 'ability', id: a.id, name: ab.n, c: abColor(a.id), ty: ab.ty });
-    switch (ab.ty) {
-      case 'dmg': this.hitFoe(ab.p, false, 'ab'); break;
-      case 'crit': this.hitFoe(ab.p, true, 'ab'); break;
-      case 'multi': for (let k = 0; k < ab.n2; k++) this.queue.push({ t: this.time + k * 0.14, fn: () => this.hitFoe(ab.p, false, 'ab') }); break;
-      case 'stun': this.hitFoe(ab.p, false, 'ab'); if (this.foe && !this.foe.dead) { this.foe.stun = Math.max(this.foe.stun, ab.s); if (this.foe.charge > 0) { this.foe.charge = 0; this.emit({ t: 'text', who: 'foe', text: 'INTERROMPU', c: '#73eff7' }); } this.emit({ t: 'text', who: 'foe', text: 'ÉTOURDI', c: '#ffcd75' }); } break;
-      case 'heal': { const v = H.max * ab.h; H.hp = Math.min(H.max, H.hp + v); this.emit({ t: 'heal', who: 'hero', amt: v }); break; }
-      case 'shield': H.shield = H.max * ab.h; H.shieldT = ab.d; this.emit({ t: 'shield', who: 'hero' }); break;
-      case 'buff': H.buffs.push({ k: 'atk', v: ab.v, t: ab.d }); this.emit({ t: 'text', who: 'hero', text: '+ATK', c: '#ef7d57' }); break;
-      case 'bcrit': H.buffs.push({ k: 'crit', v: ab.v, t: ab.d }); this.emit({ t: 'text', who: 'hero', text: '+CRIT', c: '#ffcd75' }); break;
-      case 'haste': H.buffs.push({ k: 'spd', v: ab.v, t: ab.d }); this.emit({ t: 'text', who: 'hero', text: '+VIT', c: '#73eff7' }); break;
-      case 'drain': { const d = this.hitFoe(ab.p, false, 'ab'); const v = d * ab.h; H.hp = Math.min(H.max, H.hp + v); this.emit({ t: 'heal', who: 'hero', amt: v }); break; }
-      case 'dodge': H.dodge += ab.n2; this.emit({ t: 'text', who: 'hero', text: 'ESQUIVE x' + ab.n2, c: '#a7f070' }); break;
-      default: break;
+  // Début de tour : effets sur la durée, étourdissement
+  Fight.prototype.startTurn = function (a) {
+    a.guard = false;
+    for (const k of ['burn', 'poison', 'bleed']) {
+      const s = a.st[k];
+      if (s && s.t > 0) { this.damage({ atk: 1, side: 'x', st: {} }, a, 0, { dot: true, flat: s.v }); s.t--; if (!a.alive) { this.check(); return false; } }
     }
+    const rg = a.st.regen;
+    if (rg && rg.t > 0) { this.heal(a, a.max * rg.v); rg.t--; }
+    for (const k in a.st) if (!['burn', 'poison', 'bleed', 'regen', 'stun'].includes(k) && a.st[k].t > 0) a.st[k].t--;
+    if (a.side === 'h') { a.mp = Math.min(a.mpMax, a.mp + 8); for (const ab of this.abs) if (ab.cd > 0) ab.cd--; }
+    if (a.st.stun && a.st.stun.t > 0) { a.st.stun.t--; this.emit({ t: 'act', who: a.id, kind: 'stunned' }); this.emit({ t: 'text', id: a.id, text: 'ÉTOURDI', c: '#ffcd75' }); return false; }
     return true;
   };
-  // IA du mode auto : soigne, protège, interrompt, puis frappe
-  Fight.prototype.autoPlay = function () {
-    const H = this.hero, f = this.foe;
-    if (!f || f.dead) return;
-    const hpf = H.hp / H.max;
-    let pick = -1, best = -1;
-    this.abs.forEach((a, i) => {
-      if (!this.ready(i)) return;
-      const ty = a.def.ty;
-      let sc = 0;
-      if (ty === 'heal') sc = hpf < 0.5 ? 100 : -1;
-      else if (ty === 'shield') sc = hpf < 0.75 && H.shield <= 0 ? 80 : -1;
-      else if (ty === 'dodge') sc = (f.charge > 0 || hpf < 0.5) && H.dodge === 0 ? 85 : -1;
-      else if (ty === 'stun') sc = f.charge > 0 ? 120 : 50 + (a.def.p || 0) * 5;
-      else if (ty === 'buff' || ty === 'bcrit' || ty === 'haste') sc = this.buff(ty === 'buff' ? 'atk' : ty === 'bcrit' ? 'crit' : 'spd') > 0 ? -1 : 60;
-      else if (ty === 'drain') sc = 40 + (1 - hpf) * 40;
-      else sc = 30 + (a.def.p || 1) * (a.def.n2 || 1) * 5;
-      if (sc > best) { best = sc; pick = i; }
-    });
-    if (pick >= 0 && best > 0) this.use(pick);
+  Fight.prototype.canUse = function (i) {
+    const ab = this.abs[i];
+    return !!ab && ab.cd <= 0 && this.hero.mp >= ab.a.mp && !this.over;
   };
-  Fight.prototype.update = function (dt) {
-    if (this.over || !this.foe) return;
-    this.time += dt;
-    const H = this.hero, f = this.foe;
-    // file d'attente (coups multiples)
-    for (let i = this.queue.length - 1; i >= 0; i--) if (this.queue[i].t <= this.time) { const q = this.queue.splice(i, 1)[0]; q.fn(); if (this.over) return; }
-    for (const a of this.abs) if (a.cd > 0) a.cd = Math.max(0, a.cd - dt);
-    H.buffs = H.buffs.filter((b) => (b.t -= dt) > 0);
-    if (H.shieldT > 0) { H.shieldT -= dt; if (H.shieldT <= 0) H.shield = 0; }
-    if (this.timeLimit && this.time >= this.timeLimit) { this.end(true); this.result.timeout = true; return; }
-    // héros
-    if (H.stun > 0) H.stun -= dt;
-    else {
-      H.gauge += H.spd * (1 + this.buff('spd')) * dt * GAUGE;
-      if (H.gauge >= 100) {
-        H.gauge -= 100;
-        this.emit({ t: 'attack', who: 'hero' });
-        this.hitFoe(1);
-        if (this.over) return;
+  Fight.prototype.pickTarget = function () {
+    const t = this.byId(this.target);
+    if (t && t.alive && t.side === 'f') return t;
+    const a = this.alive()[0];
+    this.target = a ? a.id : null;
+    return a;
+  };
+  // Action du héros : { k: 'attack' | 'ab' | 'defend' | 'potion', i }
+  Fight.prototype.heroAct = function (act) {
+    const H = this.hero;
+    const tgt = this.pickTarget();
+    if (act.k === 'potion' && this.potions <= 0) return false;
+    if (act.k === 'ab' && !this.canUse(act.i)) return false;
+    this.turns++;
+    if (act.k === 'attack') {
+      this.emit({ t: 'act', who: 'h', kind: 'attack', tg: tgt ? [tgt.id] : [] });
+      if (tgt) this.damage(H, tgt, 1);
+      H.mp = Math.min(H.mpMax, H.mp + 10);
+    } else if (act.k === 'defend') {
+      this.emit({ t: 'act', who: 'h', kind: 'defend' });
+      H.guard = true; H.mp = Math.min(H.mpMax, H.mp + 22);
+      this.emit({ t: 'text', id: 'h', text: 'GARDE', c: '#73eff7' });
+    } else if (act.k === 'potion') {
+      this.potions--;
+      this.emit({ t: 'act', who: 'h', kind: 'potion' });
+      this.heal(H, H.max * 0.4);
+      if (this.cfg.onPotion) this.cfg.onPotion();
+    } else if (act.k === 'ab') {
+      const slot = this.abs[act.i], a = slot.a, e = a.eff || {};
+      H.mp -= a.mp; slot.cd = a.cd;
+      let tg = [];
+      if (a.tg === 'one') tg = tgt ? [tgt] : [];
+      else if (a.tg === 'all' || a.tg === 'rand') tg = this.alive();
+      this.emit({ t: 'act', who: 'h', kind: 'ab', id: a.id, name: a.n, fx: a.fx, tg: a.tg === 'self' ? [] : tg.map((x) => x.id), c: abColor(a.id) });
+      const hits = a.hits || 1;
+      let dealt = 0;
+      if (a.p > 0) {
+        for (let k = 0; k < hits; k++) {
+          const list = a.tg === 'rand' ? [U.pick(this.alive())].filter(Boolean) : tg.filter((x) => x.alive);
+          for (const x of list) {
+            dealt += this.damage(H, x, a.p, { pierce: e.pierce, crit: e.crit === 1, exec: e.exec });
+            if (e.splash) for (const o of this.alive()) if (o !== x) dealt += this.damage(H, o, e.splash);
+          }
+        }
       }
-      if (this.auto) this.autoPlay();
-      if (this.over) return;
+      if (a.tg !== 'self') for (const x of tg.filter((y) => y.alive)) {
+        const atk = H.atk * (1 + this.sv(H, 'atk'));
+        if (e.burn) this.status(x, 'burn', atk * e.burn[0], e.burn[1], 'BRÛLURE', '#ef7d57');
+        if (e.poison) this.status(x, 'poison', atk * e.poison[0], e.poison[1], 'POISON', '#a7f070');
+        if (e.bleed) this.status(x, 'bleed', atk * e.bleed[0], e.bleed[1], 'SAIGNE', '#ff5f6d');
+        if (e.def) this.status(x, 'def', e.def[0], e.def[1], 'ARMURE BRISÉE', '#ffcd75');
+        if (e.slow) this.status(x, 'slow', e.slow[0], e.slow[1], 'RALENTI', '#73eff7');
+        if (e.mark) this.status(x, 'mark', e.mark[0], e.mark[1], 'MARQUÉ', '#ff5f6d');
+        if (e.stun && (!e.chance || Math.random() < e.chance)) this.status(x, 'stun', 1, e.stun);
+      }
+      if (e.heal) this.heal(H, H.max * e.heal);
+      if (e.lifesteal && dealt) this.heal(H, dealt * e.lifesteal);
+      if (e.shield) { H.shield = Math.max(H.shield, H.max * e.shield); this.emit({ t: 'text', id: 'h', text: 'BOUCLIER', c: '#73eff7' }); }
+      if (e.atk) this.status(H, 'atk', e.atk[0], e.atk[1], '+ATK', '#ef7d57');
+      if (Array.isArray(e.crit)) this.status(H, 'crit', e.crit[0], e.crit[1], '+CRIT', '#ffcd75');
+      if (e.spd) this.status(H, 'spd', e.spd[0], e.spd[1], '+VIT', '#73eff7');
+      if (e.defup) this.status(H, 'defup', e.defup[0], e.defup[1], e.defup[0] > 0 ? '+DEF' : '-DEF', '#73eff7');
+      if (e.regen) this.status(H, 'regen', e.regen[0], e.regen[1], 'RÉGÉN', '#a7f070');
+      if (e.dodge) { H.dodge += e.dodge; this.emit({ t: 'text', id: 'h', text: 'ESQUIVE x' + e.dodge, c: '#a7f070' }); }
+      if (e.mp) H.mp = Math.min(H.mpMax, H.mp + e.mp);
+      if (e.cleanse) for (const k of ['burn', 'poison', 'bleed', 'stun', 'slow', 'def']) delete H.st[k];
+      if (e.selfdmg) { const sd = H.max * e.selfdmg; H.hp = Math.max(1, H.hp - sd); this.emit({ t: 'hit', id: 'h', amt: sd, self: true, hp: H.hp }); }
+      if (a.id === 'b_rage') H.st.rage = { v: 1, t: 3 };
     }
-    // familier
-    if (this.pet) { this.petT -= dt; if (this.petT <= 0) { this.petT = 4; this.emit({ t: 'pet' }); this.hitFoe(0.15, false, 'pet'); if (this.over) return; } }
-    // ennemi
-    if (!f.enraged && (f.boss || f.sp === 'enrage') && f.hp < f.max * 0.35 && !f.inv) { f.enraged = true; f.spd *= 1.3; this.emit({ t: 'text', who: 'foe', text: 'ENRAGÉ !', c: '#e0667a' }); }
-    if (f.stun > 0) { f.stun -= dt; return; }
-    if (f.charge > 0) {
-      f.charge -= dt;
-      if (f.charge <= 0) { this.emit({ t: 'attack', who: 'foe', heavy: true }); this.hitHero(2.5); }
+    // familier : un coup tous les 3 tours
+    if (this.pet && this.alive().length) { this.petN++; if (this.petN % 3 === 0) { const x = this.pickTarget(); this.emit({ t: 'pet', tg: x.id }); this.damage(H, x, 0.3); } }
+    this.check();
+    return true;
+  };
+  // IA ennemie
+  Fight.prototype.foeAct = function (f) {
+    const H = this.hero;
+    if (!f.enraged && (f.boss || f.sp === 'enrage') && f.hp < f.max * 0.35 && !f.inv) { f.enraged = true; this.emit({ t: 'text', id: f.id, text: 'ENRAGÉ !', c: '#e0667a' }); }
+    if (f.charge) {
+      f.charge = false;
+      this.emit({ t: 'act', who: f.id, kind: 'heavy', tg: ['h'] });
+      this.damage(f, H, 2.6);
+      this.check();
       return;
     }
-    f.spT -= dt;
-    if (f.spT <= 0 && f.sp) {
-      f.spT = 7 + Math.random() * 3;
+    f.cds.sp--;
+    if (f.sp && f.cds.sp <= 0) {
+      f.cds.sp = 3;
+      const allies = this.alive();
       switch (f.sp) {
-        case 'heavy': f.charge = 1.6; this.emit({ t: 'charge', who: 'foe' }); return;
-        case 'multi': for (let k = 0; k < 3; k++) this.queue.push({ t: this.time + k * 0.18, fn: () => { this.emit({ t: 'attack', who: 'foe' }); this.hitHero(0.45); } }); return;
-        case 'heal': if (f.hp < f.max * 0.6 && f.healed < 2) { f.healed++; const v = f.max * 0.12; f.hp = Math.min(f.max, f.hp + v); this.emit({ t: 'heal', who: 'foe', amt: v }); return; } break;
-        case 'shield': f.shield = f.max * 0.1; this.emit({ t: 'shield', who: 'foe' }); return;
-        case 'stun': this.emit({ t: 'attack', who: 'foe' }); this.hitHero(1.1, 'stun'); return;
-        case 'drain': this.emit({ t: 'attack', who: 'foe' }); this.hitHero(1.3, 'drain'); return;
+        case 'heavy': f.charge = true; this.emit({ t: 'act', who: f.id, kind: 'charge' }); this.emit({ t: 'text', id: f.id, text: 'CHARGE !', c: '#e0667a' }); return;
+        case 'multi': this.emit({ t: 'act', who: f.id, kind: 'multi', tg: ['h'] }); for (let k = 0; k < 3; k++) this.damage(f, H, 0.45); this.check(); return;
+        case 'heal': { const w = allies.slice().sort((a, b) => a.hp / a.max - b.hp / b.max)[0]; if (w && w.hp < w.max * 0.6 && f.healed < 3 && !w.inv) { f.healed++; this.emit({ t: 'act', who: f.id, kind: 'spell', tg: [w.id] }); this.heal(w, w.max * 0.2); return; } break; }
+        case 'shield': { const w = U.pick(allies); this.emit({ t: 'act', who: f.id, kind: 'spell', tg: [w.id] }); w.shield = Math.max(w.shield, w.max * 0.15); this.emit({ t: 'text', id: w.id, text: 'BOUCLIER', c: '#73eff7' }); return; }
+        case 'stun': this.emit({ t: 'act', who: f.id, kind: 'attack', tg: ['h'] }); this.damage(f, H, 1); if (H.hp > 0 && Math.random() < 0.6) this.status(H, 'stun', 1, 1); f.cds.sp = 4; this.check(); return;
+        case 'drain': { this.emit({ t: 'act', who: f.id, kind: 'attack', tg: ['h'] }); const d = this.damage(f, H, 1.3); if (!f.inv) this.heal(f, d * 0.5); this.check(); return; }
         default: break;
       }
     }
-    f.gauge += f.spd * dt * GAUGE;
-    if (f.gauge >= 100) {
-      f.gauge -= 100;
-      this.emit({ t: 'attack', who: 'foe' });
-      this.hitHero(1);
+    this.emit({ t: 'act', who: f.id, kind: 'attack', tg: ['h'] });
+    this.damage(f, H, 1);
+    this.check();
+  };
+  Fight.prototype.check = function () {
+    if (this.over) return;
+    if (this.hero.hp <= 0) { this.hero.hp = 0; this.over = true; this.result = { win: false }; return; }
+    if (!this.alive().length) { this.over = true; this.result = { win: true }; return; }
+    if (this.cfg.turnLimit && this.turns >= this.cfg.turnLimit) { this.over = true; this.result = { win: true, timeout: true }; }
+  };
+  // IA du mode auto
+  Fight.prototype.autoChoice = function () {
+    const H = this.hero, alive = this.alive(), hpf = H.hp / H.max;
+    const ready = this.abs.map((x, i) => ({ x, i })).filter((o) => this.canUse(o.i));
+    const find = (fn) => ready.find((o) => fn(o.x.a));
+    const charging = alive.find((f) => f.charge);
+    if (charging) {
+      const st = find((a) => a.eff && a.eff.stun && a.tg !== 'self');
+      if (st) { this.target = charging.id; return { k: 'ab', i: st.i }; }
+      const dg = find((a) => a.eff && (a.eff.dodge || a.eff.shield));
+      if (dg) return { k: 'ab', i: dg.i };
+      if (hpf < 0.6) return { k: 'defend' };
     }
+    if (hpf < 0.45) { const hl = find((a) => a.eff && a.eff.heal); if (hl) return { k: 'ab', i: hl.i }; if (this.potions > 0 && hpf < 0.33) return { k: 'potion' }; }
+    if (hpf < 0.7 && H.shield <= 0) { const sh = find((a) => a.tg === 'self' && a.eff && (a.eff.shield || (a.eff.defup && a.eff.defup[0] > 0))); if (sh) return { k: 'ab', i: sh.i }; }
+    const foeHp = alive.reduce((s, f) => s + f.hp, 0);
+    const buff = find((a) => a.tg === 'self' && a.eff && ((a.eff.atk && !this.sv(H, 'atk')) || (Array.isArray(a.eff.crit) && !this.sv(H, 'crit')) || (a.eff.spd && !this.sv(H, 'spd'))));
+    if (buff && foeHp > H.atk * 4) return { k: 'ab', i: buff.i };
+    if (alive.length >= 2) { const aoe = find((a) => a.tg === 'all' && a.p > 0); if (aoe) return { k: 'ab', i: aoe.i }; }
+    const weak = alive.slice().sort((a, b) => a.hp - b.hp)[0];
+    if (weak && !this.cfg.keepTarget) this.target = weak.id;
+    const dmg = ready.filter((o) => o.x.a.p > 0 && o.x.a.tg !== 'self').sort((a, b) => (b.x.a.p * (b.x.a.hits || 1)) - (a.x.a.p * (a.x.a.hits || 1)))[0];
+    if (dmg && (H.mp > dmg.x.a.mp + 15 || dmg.x.a.mp <= 12 || foeHp < H.atk * 3)) return { k: 'ab', i: dmg.i };
+    return { k: 'attack' };
+  };
+  // Un pas de combat sans affichage (simulations)
+  Fight.prototype.stepHeadless = function () {
+    const a = this.nextActor();
+    if (!this.startTurn(a)) { this.check(); return; }
+    if (a.side === 'h') this.heroAct(this.autoChoice());
+    else this.foeAct(a);
   };
 
-  // Construit un ennemi d'un donjon
-  function makeFoe(d, room, mode, def, boss) {
-    const st = C.foeStats(d, room, mode, boss);
-    const sp = { heavy: 0.95, multi: 0.95, heal: 1, shield: 1.05, stun: 1, drain: 1, enrage: 1 }[def.sp] || 1;
-    return Object.assign({}, def, { hp: st.hp * sp, atk: st.atk, def: st.def, spd: st.spd, crit: st.crit, boss: !!boss, s: def.s || (boss ? 2 : 1) });
+  // Ennemis d'un palier
+  function floorFoes(d, fl, mode) {
+    const dg = D.DUNGEONS[d];
+    const mk = (def, kind, gf) => {
+      const st = C.floorFoe(d, fl, mode, kind);
+      const g = gf || [1, 1];
+      const f = Object.assign({}, def, { hp: st.hp * g[0], atk: st.atk * g[1], def: st.def, spd: st.spd * U.rand(0.92, 1.08), crit: st.crit, boss: kind !== 'mob', kind, s: kind === 'mob' ? 1 : 2 });
+      if (f.spr === 'human') { const w = FOE_WEAPON[def.n.replace('Gardien : ', '')]; f.look = Object.assign({ fx: true }, def.look, w ? { weapon: { vis: w[0], r: w[1] } } : {}); }
+      return f;
+    };
+    if (fl === D.FLOORS) { const out = [mk(dg.boss, 'boss')]; if (mode > 0) out.push(mk(U.pick(dg.foes), 'mob', [0.5, 0.6])); return out; }
+    if (fl % 10 === 0) {
+      const g = U.pick(dg.foes);
+      const guard = mk(Object.assign({}, g, { n: 'Gardien : ' + g.n }), 'guard');
+      return fl >= 20 ? [guard, mk(U.pick(dg.foes), 'mob', [0.55, 0.6])] : [guard];
+    }
+    const n = fl <= 2 ? 1 : U.weighted([[1, 5], [2, 4 + fl / 5], [3, fl / 6]]);
+    const GF = [[1, 1], [0.62, 0.72], [0.48, 0.58]][n - 1];
+    const out = [];
+    for (let k = 0; k < n; k++) out.push(mk(U.pick(dg.foes), 'mob', GF));
+    return out;
   }
   function heroCfg(extra) {
     const S = DT.S;
-    const eqW = S.eq.weapon && DT.G.findItem(S.eq.weapon);
     return Object.assign({
-      hero: C.stats(), loadout: S.loadout.slice(0, C.abilitySlots()), auto: S.settings.auto, pet: !!S.pet, heroName: S.nick,
-      look: DT.P.lookFor(S.look, S.skin), weapon: eqW ? { icon: eqW.icon, c: D.RAR[eqW.r].c } : null,
+      hero: C.stats(), loadout: S.loadout.slice(0, C.abilitySlots()), pet: !!S.pet, heroName: S.nick, potions: Math.min(3, S.potions),
+      look: C.heroLook(), onPotion: () => { S.potions = Math.max(0, S.potions - 1); },
     }, extra || {});
   }
 
   // ===================== Rendu =====================
-  const W = 160, H = 90, GY = 77, HX = 46, FX = 114;
+  const W = 160, H = 90, GY = 79, HX = 40;
+  const SLOTS = { 1: [[116, 0]], 2: [[106, -2], [134, 2]], 3: [[100, -3], [122, 2], [144, -1]] };
   function View(fight, canvas, theme) {
     this.f = fight; this.theme = theme;
     this.st = new DT.P.Stage(canvas, W, H);
-    this.t = 0; this.nums = []; this.parts = []; this.shake = 0;
-    this.hAnim = { pose: 'fight', t: 0, until: 0, dx: 0 };
-    this.fAnim = { t: 0, until: 0, dx: 0, flash: 0, pose: 'fight', fade: 1 };
-    this.banner = null;
+    this.t = 0; this.nums = []; this.parts = []; this.shake = 0; this.projs = [];
+    this.ent = {};
+    this.layout();
+    this.script = []; this.cur = null; this.banner = null;
   }
-  View.prototype.consume = function () {
+  View.prototype.layout = function () {
     const f = this.f;
-    for (const e of f.ev) {
-      if (this.onEv) this.onEv(e);
-      if (e.t === 'dmg') {
-        const onFoe = e.who === 'foe';
-        this.num(onFoe ? FX : HX, GY - 30, (e.crit ? 'CRIT ' : '') + U.fmt(e.amt), onFoe ? (e.crit ? '#ffcd75' : e.tag === 'pet' ? '#a7f070' : '#f4f4f4') : '#e0667a', e.crit ? 5 : 4);
-        if (onFoe) { this.fAnim.flash = 0.09; DT.A.play(e.crit ? 'crit' : 'hit'); this.burst(FX, GY - 12, e.crit ? 10 : 5, e.crit ? '#ffcd75' : '#f4f4f4'); if (e.crit) this.shake = 0.2; }
-        else { this.hAnim.pose = 'hit'; this.hAnim.until = this.t + 0.2; DT.A.play('hurt'); this.shake = Math.max(this.shake, 0.1); U.vibrate(15); }
-      } else if (e.t === 'attack') {
-        if (e.who === 'hero') { this.hAnim.pose = Math.random() < 0.5 ? 'punch' : 'kick'; this.hAnim.until = this.t + 0.22; this.hAnim.dx = 8; }
-        else { this.fAnim.until = this.t + 0.22; this.fAnim.dx = e.heavy ? -16 : -8; this.fAnim.pose = 'punch'; if (e.heavy) this.shake = 0.3; }
-      } else if (e.t === 'ability') {
-        this.banner = { text: e.name, c: e.c, until: this.t + 1.1 };
-        this.hAnim.pose = 'cast'; this.hAnim.until = this.t + 0.35;
-        this.burst(HX, GY - 16, 14, e.c);
-        DT.A.play(e.ty === 'heal' ? 'heal' : e.ty === 'shield' ? 'shield' : 'skill');
-      } else if (e.t === 'heal') {
-        this.num(e.who === 'foe' ? FX : HX, GY - 34, '+' + U.fmt(e.amt), '#a7f070', 4);
-        this.burst(e.who === 'foe' ? FX : HX, GY - 10, 8, '#a7f070');
-      } else if (e.t === 'shield') {
-        this.num(e.who === 'foe' ? FX : HX, GY - 36, 'BOUCLIER', '#73eff7', 3.5);
-      } else if (e.t === 'block') {
-        this.burst(e.who === 'foe' ? FX : HX, GY - 14, 4, '#73eff7');
-      } else if (e.t === 'dodge') {
-        this.num(HX, GY - 34, 'ESQUIVE', '#a7f070', 4);
-        this.hAnim.dx = -8; this.hAnim.until = this.t + 0.2; this.hAnim.pose = 'fight';
-      } else if (e.t === 'text') {
-        this.num(e.who === 'foe' ? FX : HX, GY - 40, e.text, e.c, 3.5);
-      } else if (e.t === 'charge') {
-        this.num(FX, GY - 42, '! ATTAQUE CHARGÉE !', '#e0667a', 3.2);
-      } else if (e.t === 'die') {
-        if (e.who === 'foe') { DT.A.play('win'); this.burst(FX, GY - 12, 24, '#ffcd75'); }
-        else DT.A.play('lose');
-      } else if (e.t === 'pet') {
-        this.burst(HX - 18, GY - 10, 4, '#a7f070');
+    const prevH = this.ent.h;
+    this.ent = { h: { x: HX, y: GY, hx: HX, pose: 'stance', dhp: f.hero.hp, flash: 0, fade: 1 } };
+    if (prevH) this.ent.h.dhp = f.hero.hp;
+    const sl = f.foes.length === 1 && f.foes[0].s === 2 ? [[118, 0]] : SLOTS[Math.min(3, f.foes.length)] || SLOTS[3];
+    f.foes.forEach((fo, i) => {
+      const [x, dy] = sl[i] || [100 + i * 20, 0];
+      this.ent[fo.id] = { x, y: GY + dy, hx: x, pose: 'stance', dhp: fo.hp, flash: 0, fade: 1 };
+    });
+  };
+  View.prototype.num = function (x, y, text, c, size) { this.nums.push({ x: x + U.rand(-5, 5), y, text, c, size: size || 4, life: 0.9 }); };
+  View.prototype.burst = function (x, y, n, c, sp) { for (let i = 0; i < n; i++) this.parts.push({ x, y, vx: U.rand(-40, 40) * (sp || 1), vy: U.rand(-55, -10) * (sp || 1), life: U.rand(0.3, 0.7), c }); };
+  View.prototype.busy = function () { return !!this.cur || this.script.length > 0; };
+  // Transforme les événements d'une action en séquence animée
+  View.prototype.play = function (evs, speed) {
+    const sp = speed || 1;
+    const act = evs.find((e) => e.t === 'act');
+    const rest = evs.filter((e) => e !== act);
+    const apply = () => rest.forEach((e) => this.applyEv(e));
+    const steps = [];
+    if (!act) steps.push({ d: 0.25, on: apply });
+    else {
+      const who = act.who, E = this.ent[who];
+      const tgId = (act.tg && act.tg[0]) || null;
+      const T = tgId ? this.ent[tgId] : null;
+      const isH = who === 'h';
+      const melee = act.kind === 'attack' || act.kind === 'heavy' || act.kind === 'multi' || (act.kind === 'ab' && !RANGED.includes(act.fx) && (act.tg || []).length && act.fx !== 'quake' && act.fx !== 'spin');
+      if (act.kind === 'ab') this.banner = { text: act.name, c: act.c || '#f4f4f4', until: this.t + 1.2 / sp };
+      if (!E) steps.push({ d: 0.2, on: apply });
+      else if (act.kind === 'stunned') steps.push({ d: 0.4, on: apply });
+      else if (act.kind === 'charge') steps.push({ d: 0.45, on: () => { E.pose = 'guard'; this.burst(E.x, E.y - 14, 10, '#e0667a'); apply(); DT.A.play('shield'); }, end: () => { E.pose = 'stance'; } });
+      else if (act.kind === 'defend') steps.push({ d: 0.35, on: () => { E.pose = 'guard'; apply(); DT.A.play('shield'); } });
+      else if (act.kind === 'potion') steps.push({ d: 0.4, on: () => { E.pose = 'cast2'; this.burst(E.x, E.y - 14, 14, '#a7f070'); apply(); DT.A.play('heal'); }, end: () => { E.pose = 'stance'; } });
+      else if (melee && T) {
+        const tx = T.x + (isH ? -16 : 16);
+        steps.push({ d: 0.16, on: () => { E.pose = 'dash'; }, upd: (u) => { E.x = E.hx + (tx - E.hx) * u; } });
+        steps.push({ d: act.kind === 'heavy' ? 0.24 : 0.12, on: () => { E.pose = 'windup'; } });
+        steps.push({ d: 0.14, on: () => { E.pose = 'strike'; apply(); if (act.kind === 'heavy') this.shake = 0.3; if (act.kind === 'ab') this.burst(T.x, T.y - 14, 12, act.c || '#ffcd75'); } });
+        steps.push({ d: 0.18, upd: (u) => { E.x = tx + (E.hx - tx) * u; }, end: () => { E.pose = 'stance'; E.x = E.hx; } });
+      } else {
+        const self = !(act.tg || []).length;
+        steps.push({ d: 0.22, on: () => { E.pose = 'cast2'; this.burst(E.x, E.y - 16, 10, act.c || '#b65cd6'); DT.A.play(act.fx === 'heal' ? 'heal' : act.fx === 'shield' ? 'shield' : 'skill'); } });
+        if (!self) {
+          const targets = (act.tg || []).map((id) => this.ent[id]).filter(Boolean);
+          if (RANGED.includes(act.fx) || act.kind === 'spell') steps.push({ d: 0.22, on: () => { for (const T2 of targets) this.projs.push({ x0: E.x + (isH ? 8 : -8), y0: E.y - 16, x1: T2.x, y1: T2.y - 12, c: act.c || '#ef7d57', t: 0, d: 0.22 / sp, fx: act.fx }); } });
+          if (act.fx === 'quake' || act.fx === 'spin') steps.push({ d: 0.15, on: () => { this.shake = 0.35; E.pose = 'strike'; } });
+          steps.push({ d: 0.1, on: () => { apply(); for (const T2 of targets) this.burst(T2.x, T2.y - 12, 10, act.c || '#ffcd75'); } });
+        } else steps.push({ d: 0.18, on: apply });
+        steps.push({ d: 0.18, end: () => { E.pose = 'stance'; } });
       }
     }
-    f.ev.length = 0;
+    steps.push({ d: 0.12 });
+    for (const s of steps) { s.d /= sp; this.script.push(s); }
   };
-  View.prototype.num = function (x, y, text, c, size) { this.nums.push({ x: x + U.rand(-6, 6), y, text, c, size: size || 4, life: 0.9 }); };
-  View.prototype.burst = function (x, y, n, c) { for (let i = 0; i < n; i++) this.parts.push({ x, y, vx: U.rand(-40, 40), vy: U.rand(-50, -10), life: U.rand(0.3, 0.7), c }); };
+  View.prototype.applyEv = function (e) {
+    const E = this.ent[e.id];
+    if (e.t === 'hit' && E) {
+      E.dhp = e.hp != null ? e.hp : Math.max(0, E.dhp - e.amt);
+      this.num(E.x, E.y - 30, (e.crit ? 'CRIT ' : '') + U.fmt(e.amt), e.id === 'h' ? '#e0667a' : e.crit ? '#ffcd75' : e.dot ? '#a7f070' : '#f4f4f4', e.crit ? 5 : 4);
+      if (!e.dot) { E.flash = 0.1; DT.A.play(e.crit ? 'crit' : e.id === 'h' ? 'hurt' : 'hit'); }
+      if (e.id === 'h' && !e.self) { E.pose = 'hurt'; setTimeout(() => { if (E.pose === 'hurt') E.pose = 'stance'; }, 240); U.vibrate(12); }
+      if (e.crit) this.shake = Math.max(this.shake, 0.18);
+    } else if (e.t === 'heal' && E) { const a = this.f.byId(e.id); E.dhp = Math.min(a ? a.max : E.dhp, E.dhp + e.amt); if (e.amt > 0) { this.num(E.x, E.y - 34, '+' + U.fmt(e.amt), '#a7f070', 4); this.burst(E.x, E.y - 10, 8, '#a7f070'); } }
+    else if (e.t === 'text' && E) this.num(E.x, E.y - 40, e.text, e.c, 3.4);
+    else if (e.t === 'dodge' && E) this.num(E.x, E.y - 34, 'ESQUIVE', '#a7f070', 4);
+    else if (e.t === 'block' && E) this.burst(E.x, E.y - 14, 5, '#73eff7');
+    else if (e.t === 'die' && E) { E.dead = true; this.burst(E.x, E.y - 12, 20, '#ffcd75'); DT.A.play(e.id === 'h' ? 'lose' : 'coin'); }
+    else if (e.t === 'pet') { const T = this.ent[e.tg]; if (T) this.projs.push({ x0: HX - 20, y0: GY - 10, x1: T.x, y1: T.y - 10, c: '#a7f070', t: 0, d: 0.25, fx: 'pet' }); }
+    if (this.onEv) this.onEv(e);
+  };
+  View.prototype.update = function (dt) {
+    if (!this.cur && this.script.length) { this.cur = this.script.shift(); this.cur.el = 0; if (this.cur.on) this.cur.on(); }
+    if (this.cur) {
+      this.cur.el += dt;
+      const u = Math.min(1, this.cur.el / this.cur.d);
+      if (this.cur.upd) this.cur.upd(u);
+      if (u >= 1) { if (this.cur.end) this.cur.end(); this.cur = null; }
+    }
+  };
   View.prototype.draw = function (dt) {
     this.t += dt;
-    this.consume();
+    this.update(dt);
     const f = this.f, st = this.st, lc = st.lc;
     lc.save();
     if (this.shake > 0) { this.shake -= dt; lc.translate(Math.round(U.rand(-1.5, 1.5)), Math.round(U.rand(-1, 1))); }
     lc.drawImage(DT.P.themeBg(this.theme, W, H), 0, 0);
-    // ombres
-    lc.fillStyle = 'rgba(26,28,44,0.35)'; lc.fillRect(HX - 8, GY, 16, 2); lc.fillRect(FX - 10, GY, 20, 2);
-    // héros
-    const cfg = f.cfg, Hh = f.hero;
-    let hp = 'fight', hdx = 0;
-    if (f.over && f.result && !f.result.win) hp = 'ko';
-    else if (f.over && f.result && f.result.win && !f.cfg.raid) hp = 'victory';
-    else if (this.t < this.hAnim.until) { hp = this.hAnim.pose; hdx = this.hAnim.dx * Math.sin((this.hAnim.until - this.t) / 0.22 * Math.PI); }
-    if (Hh.stun > 0 && !f.over) hp = 'hit';
-    if (cfg.petSpr) lc.drawImage(DT.P.spriteCanvas(DT.P.SPR[cfg.petSpr.spr], cfg.petSpr.pal, { flip: true }), HX - 28, GY - 15 + Math.round(Math.sin(this.t * 3)));
-    DT.P.drawFigure(lc, hp, cfg.look, HX + Math.round(hdx), GY, { time: this.t, weapon: cfg.weapon });
-    if (Hh.shield > 0) { lc.strokeStyle = 'rgba(115,239,247,0.8)'; lc.lineWidth = 1; lc.strokeRect(HX - 10, GY - 28, 20, 29); }
-    // ennemi
-    const fo = f.foe;
-    if (fo) {
-      let fdx = 0;
-      if (this.t < this.fAnim.until) fdx = this.fAnim.dx * Math.sin((this.fAnim.until - this.t) / 0.22 * Math.PI);
-      if (fo.charge > 0) fdx = Math.round(Math.sin(this.t * 50) * 1) + 3;
-      let alpha = 1;
-      if (fo.dead) { this.fAnim.fade = Math.max(0, this.fAnim.fade - dt * 1.5); alpha = this.fAnim.fade; }
-      if (alpha > 0) {
-        lc.globalAlpha = alpha;
-        const white = this.fAnim.flash > 0;
-        this.fAnim.flash -= dt;
-        const s = fo.s || 1;
-        if (fo.spr === 'human') {
-          let fp = 'fight';
-          if (fo.dead) fp = 'ko'; else if (this.t < this.fAnim.until) fp = 'punch'; else if (fo.stun > 0) fp = 'hit';
-          DT.P.drawFigure(lc, fp, DT.P.lookFor(fo.look, null), FX + Math.round(fdx), GY, { time: this.t + 0.3, flip: true, s, tint: white ? '#ffffff' : null });
-        } else {
-          const cv = DT.P.spriteCanvas(DT.P.SPR[fo.spr], fo.pal, { white });
-          const bob = fo.dead ? 0 : Math.round(Math.sin(this.t * 4) * 1);
-          lc.drawImage(cv, Math.round(FX - 8 * s + fdx), GY - 16 * s + 1 + bob, 16 * s, 16 * s);
-        }
-        lc.globalAlpha = 1;
-        if (fo.shield > 0) { lc.strokeStyle = 'rgba(115,239,247,0.8)'; lc.strokeRect(FX - 9 * s, GY - 17 * s, 18 * s, 18 * s); }
-        if (fo.stun > 0 && !fo.dead) { for (let k = 0; k < 3; k++) { const a = this.t * 5 + k * 2.1; lc.fillStyle = '#ffcd75'; lc.fillRect(Math.round(FX + Math.cos(a) * 6), Math.round(GY - 16 * s - 3 + Math.sin(a) * 2), 1, 1); } }
+    const cfg = f.cfg;
+    const foes = f.foes.slice().sort((a, b) => this.ent[a.id].y - this.ent[b.id].y);
+    for (const fo of foes) {
+      const E = this.ent[fo.id];
+      if (!E) continue;
+      if (E.dead) { E.fade = Math.max(0, E.fade - dt * 2); if (E.fade <= 0) continue; }
+      lc.globalAlpha = E.fade;
+      const white = E.flash > 0; E.flash -= dt;
+      const s = fo.s || 1;
+      lc.fillStyle = 'rgba(26,28,44,0.35)'; lc.fillRect(Math.round(E.x - 7 * s), E.y, 14 * s, 2);
+      let top;
+      if (fo.spr === 'human') {
+        const pose = E.dead ? 'down' : fo.st.stun && fo.st.stun.t > 0 ? 'hurt' : E.pose;
+        DT.P.drawFigure(lc, pose, fo.look, Math.round(E.x), E.y, { time: this.t + 0.3, flip: true, s, tint: white ? '#ffffff' : null });
+        top = E.y - 36 * s;
+      } else {
+        const cv = DT.P.spriteCanvas(DT.P.SPR[fo.spr], fo.pal, { white });
+        const bob = E.dead ? 0 : Math.round(Math.sin(this.t * 4 + E.hx) * 1);
+        const lunge = E.pose === 'strike' ? -4 : E.pose === 'windup' ? 2 : 0;
+        lc.drawImage(cv, Math.round(E.x - 8 * s + lunge), E.y - 16 * s + 1 + bob, 16 * s, 16 * s);
+        top = E.y - 16 * s;
+      }
+      lc.globalAlpha = 1;
+      if (!E.dead) {
+        const bw = 14 * Math.min(s, 1.6), bx = Math.round(E.x - bw / 2), by = Math.max(4, top - 5);
+        lc.fillStyle = '#1a1c2c'; lc.fillRect(bx - 1, by - 1, Math.round(bw) + 2, 4);
+        lc.fillStyle = fo.boss ? '#ef7d57' : '#b13e53'; lc.fillRect(bx, by, Math.round(bw * Math.max(0, E.dhp) / fo.max), 2);
+        if (fo.shield > 0) { lc.fillStyle = '#73eff7'; lc.fillRect(bx, by + 2, Math.round(bw * Math.min(1, fo.shield / fo.max)), 1); }
+        if (f.target === fo.id && !f.over) { const ay = by - 4 + Math.round(Math.sin(this.t * 6)); lc.fillStyle = '#ffcd75'; lc.fillRect(Math.round(E.x) - 1, ay, 3, 1); lc.fillRect(Math.round(E.x), ay + 1, 1, 1); }
+        if (fo.charge) { lc.fillStyle = Math.floor(this.t * 6) % 2 ? '#e0667a' : '#ffcd75'; lc.fillRect(Math.round(E.x) + 9, by - 6, 2, 4); lc.fillRect(Math.round(E.x) + 9, by - 1, 2, 1); }
+        if (fo.st.stun && fo.st.stun.t > 0) for (let k = 0; k < 3; k++) { const a = this.t * 5 + k * 2.1; lc.fillStyle = '#ffcd75'; lc.fillRect(Math.round(E.x + Math.cos(a) * 6), Math.round(by - 3 + Math.sin(a) * 2), 1, 1); }
       }
     }
-    // particules
+    const Hh = this.ent.h;
+    if (cfg.petSpr) lc.drawImage(DT.P.spriteCanvas(DT.P.SPR[cfg.petSpr.spr], cfg.petSpr.pal, { flip: true }), HX - 32, GY - 15 + Math.round(Math.sin(this.t * 3)));
+    let hp = f.over && f.result && !f.result.win ? 'down' : f.over && f.result && f.result.win && !cfg.raid ? 'triumph' : Hh.pose;
+    if (f.hero.st.stun && f.hero.st.stun.t > 0 && !f.over) hp = 'hurt';
+    lc.fillStyle = 'rgba(26,28,44,0.35)'; lc.fillRect(Math.round(Hh.x - 8), GY, 16, 2);
+    DT.P.drawFigure(lc, hp, cfg.look, Math.round(Hh.x), GY, { time: this.t, tint: Hh.flash > 0 ? '#ffffff' : null });
+    Hh.flash -= dt;
+    if (f.hero.shield > 0 || f.hero.guard) { lc.strokeStyle = f.hero.guard ? 'rgba(255,205,117,0.7)' : 'rgba(115,239,247,0.8)'; lc.lineWidth = 1; lc.strokeRect(Math.round(Hh.x) - 12, GY - 38, 24, 39); }
+    for (let i = this.projs.length - 1; i >= 0; i--) {
+      const p = this.projs[i];
+      p.t += dt;
+      const u = Math.min(1, p.t / p.d);
+      const x = p.x0 + (p.x1 - p.x0) * u, y = p.y0 + (p.y1 - p.y0) * u - Math.sin(u * Math.PI) * (p.fx === 'meteor' ? -10 : 6);
+      lc.fillStyle = p.c; lc.fillRect(Math.round(x) - 1, Math.round(y) - 1, 3, 3);
+      lc.fillStyle = '#ffffff'; lc.fillRect(Math.round(x), Math.round(y), 1, 1);
+      if (Math.random() < 0.7) this.parts.push({ x, y, vx: U.rand(-10, 10), vy: U.rand(-10, 10), life: 0.25, c: p.c });
+      if (u >= 1) this.projs.splice(i, 1);
+    }
     for (let i = this.parts.length - 1; i >= 0; i--) {
       const p = this.parts[i];
       p.vy += 80 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt;
@@ -292,7 +432,6 @@
     }
     lc.restore();
     st.present();
-    // textes nets
     for (let i = this.nums.length - 1; i >= 0; i--) {
       const n = this.nums[i];
       n.life -= dt; n.y -= dt * 14;
@@ -301,8 +440,14 @@
       st.text(n.text, n.x, n.y, { color: n.c, size: n.size });
       st.ctx.globalAlpha = 1;
     }
-    if (this.banner && this.t < this.banner.until) st.text(this.banner.text, W / 2, 14, { color: this.banner.c, size: 5, bg: 'rgba(26,28,44,0.8)' });
+    if (this.banner && this.t < this.banner.until) st.text(this.banner.text, W / 2, 12, { color: this.banner.c, size: 5, bg: 'rgba(26,28,44,0.8)' });
+  };
+  // Ennemi touché sur le canevas
+  View.prototype.pick = function (gx, gy) {
+    let best = null, bd = 1e9;
+    for (const fo of this.f.alive()) { const E = this.ent[fo.id]; const d = Math.abs(E.x - gx) + Math.abs(E.y - 14 - gy) * 0.5; if (d < bd) { bd = d; best = fo; } }
+    return bd < 26 ? best : null;
   };
 
-  DT.BT = { Fight, makeFoe, heroCfg, View, abColor };
+  DT.BT = { Fight, View, floorFoes, heroCfg, abColor, FX_C, W, H };
 })(window.DT);
