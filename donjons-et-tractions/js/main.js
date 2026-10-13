@@ -5,7 +5,8 @@
   let booted = false, lastTick = Date.now(), loopsOn = false;
   // Crochets pour les modules : wire (abonnements aux événements, rappelés après chaque E.reset),
   // boot (une fois la partie chargée), slow (toutes les 10 s), badges (chaque seconde)
-  DT.HOOKS = DT.HOOKS || { wire: [], boot: [], slow: [], badges: [] };
+  DT.HOOKS = DT.HOOKS || {};
+  for (const k of ['wire', 'boot', 'slow', 'badges', 'loot']) DT.HOOKS[k] = DT.HOOKS[k] || [];
   const runHooks = (k, ...a) => { for (const fn of DT.HOOKS[k] || []) { try { fn(...a); } catch (e) { console.error('hook ' + k, e); } } };
 
   function wire() {

@@ -294,7 +294,7 @@
         let text = loot.n + ' palier' + (loot.n > 1 ? 's' : '') + ' franchi' + (loot.n > 1 ? 's' : '') + ' · record ' + best + '/' + D.FLOORS + '.';
         if (c) text = 'Tu as vaincu ' + dg.boss.n + ' en ' + D.MODES[mode].n + ' ! ' + text;
         else if (reason === 'dead' && !loot.n) text = 'Monte ta classe en t\'entraînant, améliore ton stuff ou apprends des capacités, puis reviens.';
-        UI.rewards(title, { text, coins: loot.coins, gems: loot.gems + (c ? c.gems : 0), items: loot.items.concat(c && c.item ? [c.item] : []), chests: loot.chests, potions: loot.potions,
+        UI.rewards(title, { text, coins: loot.coins, gems: loot.gems + (c ? c.gems : 0), items: loot.items.concat(c && c.item ? [c.item] : [], (c && c.items) || []), chests: loot.chests, potions: loot.potions,
           skin: c && c.skin, pet: (c && c.pet) || loot.pet, sound: reason === 'dead' ? 'lose' : 'win', okLabel: 'Retour' });
         SCR.redraw();
       },

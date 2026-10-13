@@ -3,6 +3,12 @@
 (function (DT) {
   const U = DT.U, D = DT.D, C = DT.C, E = DT.E;
   const S = () => DT.S;
+  // Butin supplémentaire des modules : DT.HOOKS.loot.push((type, ctx, out) => { ... out.items.push(G.addItem(...)) })
+  // type : 'floor' (palier gagné), 'clear' (palier 30 la 1re fois), 'chest' (coffre ouvert)
+  function lootHooks(type, ctx, out) {
+    const list = (DT.HOOKS && DT.HOOKS.loot) || [];
+    for (const fn of list) { try { fn(type, ctx, out); } catch (e) { console.error('loot', e); } }
+  }
 
   function today() {
     const s = S(), di = U.dayIndex();
@@ -324,6 +330,7 @@
       const pool = D.PETS.filter((p) => !s.pets.includes(p.id));
       if (pool.length) { out.pet = U.pick(pool).id; unlockPet(out.pet); }
     }
+    lootHooks('chest', { tier: ch.t, src: ch.src }, out);
     s.life.chests++;
     s.life.bestChest = Math.max(s.life.bestChest == null ? -1 : s.life.bestChest, ch.t);
     daily('chest');
@@ -416,6 +423,7 @@
     addClassXP(C.cls(), 6 * (d + 1) * (mode + 1) * (kind === 'mob' ? 1 : 3));
     s.life.wins++;
     daily('win');
+    lootHooks('floor', { d, mode, fl, kind, first }, r);
     if (first && fl === D.FLOORS) r.clear = dungeonClear(d, mode);
     C.dirty();
     E.emit('coins'); E.emit('dungeon');
@@ -438,6 +446,8 @@
       out.gems = 100 + d * 20;
       if (unlockSkin('dragon')) out.skin = 'dragon';
     }
+    out.items = [];
+    lootHooks('clear', { d, mode }, out);
     addGems(out.gems);
     return out;
   }
